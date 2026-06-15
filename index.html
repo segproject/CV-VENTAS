@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV — Costo de Ventas</title>
+<style>
+  :root {
+    --bg: #0f1117; --surface: #181c27; --surface2: #1e2435;
+    --border: #2a3048; --accent: #3b82f6; --accent2: #6366f1;
+    --red: #ef4444; --green: #22c55e; --yellow: #f59e0b;
+    --text: #e2e8f0; --muted: #64748b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, #0d1b3e 0%, #1a2a6c 60%, #1e3a8a 100%);
+    padding: 16px 24px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  }
+  header h1 { font-size: 1.25rem; font-weight: 700; color: #fff; }
+  header p  { font-size: .72rem; color: #93c5fd; margin-top: 2px; }
+  .header-right { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+  .badge {
+    background: #1e3a8a; border: 1px solid var(--accent);
+    border-radius: 6px; padding: 4px 10px; font-size: .7rem;
+    color: #93c5fd; display: flex; align-items: center; gap: 6px;
+  }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); transition: background .3s; }
+  .dot.on  { background: var(--green); box-shadow: 0 0 6px var(--green); }
+  .dot.err { background: var(--red);   box-shadow: 0 0 6px var(--red); }
+
+  select {
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text); padding: 6px 10px; border-radius: 6px; font-size: .82rem;
+  }
+
+  /* KPI */
+  .kpi-strip {
+    display: flex; gap: 10px; padding: 12px 24px;
+    background: var(--surface); border-bottom: 1px solid var(--border); overflow-x: auto;
+  }
+  .kpi { min-width: 145px; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; flex: 1; }
+  .kpi .lbl { font-size: .67rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+  .kpi .val { font-size: 1.15rem; font-weight: 700; margin-top: 4px; font-variant-numeric: tabular-nums; }
+  .kpi .sub { font-size: .68rem; color: var(--muted); margin-top: 2px; }
+
+  /* Main */
+  main { padding: 16px 24px; }
+  .section-title { font-size: .7rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; font-weight: 600; margin-bottom: 8px; }
+  .actions { display: flex; gap: 8px; justify-content: flex-end; align-items: center; margin-bottom: 12px; }
+  .sync-msg { font-size: .7rem; color: var(--muted); display: flex; align-items: center; gap: 5px; }
+
+  button {
+    border: none; border-radius: 7px; padding: 7px 14px;
+    font-size: .75rem; font-weight: 600; cursor: pointer; transition: opacity .15s;
+  }
+  button:hover { opacity: .85; }
+  .btn-danger { background: #7f1d1d; color: #fca5a5; border: 1px solid var(--red); }
+
+  /* Chart */
+  .chart-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px 14px; margin-bottom: 20px;
+  }
+  #chartBars { display: flex; align-items: flex-end; gap: 4px; height: 110px; margin-bottom: 6px; }
+  .bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; min-width: 14px; }
+  .bar-inner { width: 100%; display: flex; align-items: flex-end; gap: 2px; }
+  .bar { border-radius: 3px 3px 0 0; min-height: 0; transition: height .3s; }
+  .bar-v { background: linear-gradient(180deg, #3b82f6, #1d4ed8); }
+  .bar-c { background: linear-gradient(180deg, #f59e0b, #d97706); }
+  .bar-lbl { font-size: .55rem; color: var(--muted); margin-top: 3px; }
+
+  /* Table */
+  .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); margin-bottom: 20px; }
+  table { border-collapse: collapse; width: 100%; font-size: .75rem; }
+  th { background: #0d1b3e; color: #93c5fd; padding: 7px 8px; font-size: .67rem; font-weight: 600; letter-spacing: .04em; border-right: 1px solid var(--border); border-bottom: 2px solid var(--accent2); position: sticky; top: 0; z-index: 3; white-space: nowrap; text-align: center; }
+  th:first-child { text-align: left; position: sticky; left: 0; z-index: 5; min-width: 175px; }
+  th.today-h { background: #1e1b4b; color: #a5b4fc; }
+  th.total-h { border-left: 2px solid var(--accent2); min-width: 88px; }
+
+  td { border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); white-space: nowrap; }
+  td.sticky { position: sticky; left: 0; z-index: 2; background: var(--surface); padding: 6px 10px; font-weight: 700; font-size: .73rem; min-width: 175px; max-width: 200px; white-space: normal; }
+  td.sticky.pct-label { font-weight: 400; font-size: .67rem; color: var(--muted); font-style: italic; padding-left: 20px; background: var(--surface2); }
+  td.sticky.cv-label  { color: var(--yellow); font-weight: 800; background: #1a1a0a; }
+
+  td.val  { text-align: right; padding: 4px 6px; min-width: 70px; }
+  td.pct  { text-align: right; padding: 3px 8px; font-size: .66rem; color: #94a3b8; min-width: 70px; font-variant-numeric: tabular-nums; background: var(--surface2); }
+  td.cv   { text-align: right; padding: 6px 8px; font-size: .72rem; font-weight: 700; color: var(--yellow); min-width: 70px; font-variant-numeric: tabular-nums; background: #1a1a0a; }
+  td.total-td { background: #0d1b3e; color: #93c5fd; font-weight: 700; border-left: 2px solid var(--accent2); }
+  td.today-td { background: rgba(99,102,241,.08) !important; }
+
+  input[type=number] {
+    background: transparent; border: none; text-align: right; width: 100%;
+    font-size: .75rem; font-family: inherit; font-variant-numeric: tabular-nums;
+    outline: none; padding: 0; color: var(--text);
+    -moz-appearance: textfield;
+  }
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+  input[type=number]:focus { background: rgba(59,130,246,.12); border-radius: 3px; }
+
+  /* Overlay de carga */
+  #loadOverlay {
+    position: fixed; inset: 0; background: rgba(15,17,23,.92);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 999;
+  }
+  #loadOverlay .spinner {
+    width: 40px; height: 40px; border: 3px solid var(--border);
+    border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite;
+  }
+  #loadOverlay p { margin-top: 14px; color: var(--muted); font-size: .85rem; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  footer { text-align: center; padding: 12px; font-size: .68rem; color: var(--muted); border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<!-- Overlay carga -->
+<div id="loadOverlay">
+  <div class="spinner"></div>
+  <p>Conectando con Firebase…</p>
+</div>
+
+<!-- Header -->
+<header>
+  <div>
+    <h1>📊 Costo de Ventas (CV)</h1>
+    <p>Colaborativo en tiempo real · cualquier usuario puede editar</p>
+  </div>
+  <div class="header-right">
+    <div class="badge">
+      <div class="dot" id="syncDot"></div>
+      <span id="syncLabel">Conectando…</span>
+    </div>
+    <span id="lastSaved" style="font-size:.65rem;color:var(--muted)"></span>
+    <select id="monthSel" onchange="changeMonth()">
+      <option value="2026-06">Junio 2026</option>
+      <option value="2026-07">Julio 2026</option>
+      <option value="2026-08">Agosto 2026</option>
+      <option value="2026-09">Septiembre 2026</option>
+      <option value="2026-10">Octubre 2026</option>
+      <option value="2026-11">Noviembre 2026</option>
+      <option value="2026-12">Diciembre 2026</option>
+    </select>
+  </div>
+</header>
+
+<!-- KPIs -->
+<div class="kpi-strip" id="kpiStrip"></div>
+
+<main>
+  <div class="actions">
+    <div class="sync-msg">
+      <div class="dot" id="syncDot2"></div>
+      <span id="syncMsg">Los cambios se sincronizan automáticamente</span>
+    </div>
+    <button class="btn-danger" onclick="clearMonth()">🗑 Limpiar mes</button>
+  </div>
+
+  <!-- Chart -->
+  <div class="section-title">Venta diaria</div>
+  <div class="chart-box">
+    <div id="chartBars"></div>
+  </div>
+
+  <!-- Table -->
+  <div class="section-title">Tabla de indicadores diarios</div>
+  <div class="table-wrap">
+    <table id="mainTable"></table>
+  </div>
+
+  <p style="text-align:center;font-size:.68rem;color:var(--muted);margin-top:4px">
+    Datos guardados en Firebase · Actualización en tiempo real
+  </p>
+</main>
+
+<footer>CV Dashboard © 2026 · Powered by Firebase + GitHub Pages</footer>
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp }         from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, onValue, get }
+                                  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+// ── Firebase config ──────────────────────────────────────────────────────────
+const firebaseConfig = {
+  apiKey:            "AIzaSyCM-AaRyHROJBi7KSO9w8dXMsMgufDeqeo",
+  authDomain:        "cv-ventas.firebaseapp.com",
+  databaseURL:       "https://cv-ventas-default-rtdb.firebaseio.com",
+  projectId:         "cv-ventas",
+  storageBucket:     "cv-ventas.firebasestorage.app",
+  messagingSenderId: "454027199753",
+  appId:             "1:454027199753:web:b364daa97e89c18b6a7fd8"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getDatabase(app);
+
+// ── Indicadores ───────────────────────────────────────────────────────────────
+const INDICATORS = [
+  { key:"venta",      label:"VENTA",               isCost:false },
+  { key:"receta",     label:"RECETA ( 951 )",       isCost:true  },
+  { key:"merma",      label:"MERMA ( 957, 958 )",   isCost:true  },
+  { key:"refrigerio", label:"REFRIGERIO (967,968)", isCost:true  },
+  { key:"ci",         label:"CI ( 975, 976 )",      isCost:true  },
+  { key:"ajuste",     label:"AJUSTE ( 701,702 )",   isCost:true  },
+  { key:"aej",        label:"AEJ ( 955,956 )",      isCost:true  },
+];
+
+const SEED = {
+  "2026-06": {
+    venta:      [6673.19,6287,6337.04,6552.15,8250.69,10941.54,11651.53,7458.53,6415.59],
+    receta:     [-2244.4,-2054.13,-1953.21,-2051.39,-2543.86,-3301.67,-3591.3,-2373.11,-2042.18],
+    merma:      [-9.78,-8.92,-18.54,-11.9,-6.05,-28.2,-16.14,-1.32,-171.69],
+    refrigerio: [-20.82,-13.78,-24.74,-17.71,-17.74,-17.28,-19.12,-24.53,-15.2],
+    ci:         [-6.02,-6.02,-6.08,-5.92,-5.92,0,0,-6.14,-6.14],
+    ajuste:     [-4.27,5.15,6.97,4.21,7.63,0.14,-47.17,28.68,35.49],
+    aej:        [8.66,3.66,4.39,4.8,6.43,8.41,31.4,23.35,17.2],
+  }
+};
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+const parseF = v => { if(v===""||v===null||v===undefined) return null; const n=parseFloat(v); return isNaN(n)?null:n; };
+const fmt    = v => v===null||v===""?"": parseFloat(v).toLocaleString("es-PE",{minimumFractionDigits:2,maximumFractionDigits:2});
+const fmtPct = v => v===null||v===null?"": (v*100).toFixed(2)+"%";
+
+function daysIn(ym) { const [y,m]=ym.split("-").map(Number); return new Date(y,m,0).getDate(); }
+function dayLabels(ym) {
+  const [y,m]=ym.split("-").map(Number);
+  const names=["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
+  return Array.from({length:daysIn(ym)},(_,i)=>{ const d=new Date(y,m-1,i+1); return {num:i+1,dow:names[d.getDay()]}; });
+}
+function todayDay(ym) {
+  const now=new Date(), [y,m]=ym.split("-").map(Number);
+  return (now.getFullYear()===y&&(now.getMonth()+1)===m) ? now.getDate() : -1;
+}
+function emptyData(ym) {
+  const n=daysIn(ym), obj={};
+  INDICATORS.forEach(ind=>{ obj[ind.key]=Array(n).fill(""); });
+  return obj;
+}
+function applySeed(ym, obj) {
+  if(!SEED[ym]) return;
+  INDICATORS.forEach(ind=>{
+    (SEED[ym][ind.key]||[]).forEach((v,i)=>{ if(obj[ind.key][i]==="") obj[ind.key][i]=v; });
+  });
+}
+
+function totalFor(data,key)   { return (data[key]||[]).reduce((a,v)=>a+(parseF(v)||0),0); }
+function pctFor(data,key,d)   { const v=parseF((data.venta||[])[d]),c=parseF((data[key]||[])[d]); return (!v||c===null)?null:c/v; }
+function totalPctFor(data,key){ const tv=totalFor(data,"venta"); return tv?totalFor(data,key)/tv:null; }
+function calcCV(data,d)       { const v=parseF((data.venta||[])[d]); if(!v) return null; return ["receta","merma","refrigerio","ci","ajuste","aej"].reduce((a,k)=>a+(parseF((data[k]||[])[d])/v||0),0); }
+function totalCV(data)        { const tv=totalFor(data,"venta"); if(!tv) return null; return ["receta","merma","refrigerio","ci","ajuste","aej"].reduce((a,k)=>a+(totalFor(data,k)/tv||0),0); }
+
+// ── Estado ────────────────────────────────────────────────────────────────────
+let currentYM   = "2026-06";
+let localData   = emptyData(currentYM);
+let saveTimer   = null;
+let ignoreNext  = false; // evitar loop: yo guardo → llega evento → no redibujo
+
+// ── Firebase listeners ────────────────────────────────────────────────────────
+let currentListener = null;
+
+function subscribe(ym) {
+  if (currentListener) currentListener(); // unsubscribe anterior
+  const dbRef = ref(db, `cv/${ym}`);
+  currentListener = onValue(dbRef, snapshot => {
+    if (ignoreNext) { ignoreNext = false; return; }
+    const val = snapshot.val();
+    if (val) {
+      localData = val;
+    } else {
+      // Primera vez: subir seed
+      localData = emptyData(ym);
+      applySeed(ym, localData);
+      saveNow(ym, localData);
+    }
+    renderAll();
+    setSynced(true);
+    document.getElementById("loadOverlay").style.display = "none";
+  }, err => {
+    console.error(err);
+    setSynced(false, true);
+    document.getElementById("loadOverlay").style.display = "none";
+  });
+}
+
+async function saveNow(ym, data) {
+  ignoreNext = true;
+  try {
+    await set(ref(db, `cv/${ym}`), data);
+    document.getElementById("lastSaved").textContent =
+      "Guardado: " + new Date().toLocaleTimeString("es-PE");
+    setSynced(true);
+  } catch(e) {
+    setSynced(false, true);
+  }
+}
+
+function triggerSave() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => saveNow(currentYM, localData), 800);
+}
+
+// ── Sync indicator ────────────────────────────────────────────────────────────
+function setSynced(ok, err=false) {
+  ["syncDot","syncDot2"].forEach(id=>{
+    const d = document.getElementById(id);
+    d.className = "dot" + (ok?" on": err?" err":"");
+  });
+  document.getElementById("syncLabel").textContent = ok?"Sincronizado": err?"Error de conexión":"Guardando…";
+  document.getElementById("syncMsg").textContent   = ok?"Cambios sincronizados en tiempo real": err?"Sin conexión — reintentando…":"Guardando…";
+}
+
+// ── Render ────────────────────────────────────────────────────────────────────
+function renderAll() {
+  renderKPIs();
+  renderTable();
+  renderChart();
+}
+
+function renderKPIs() {
+  const tv  = totalFor(localData,"venta");
+  const tcv = totalCV(localData);
+  const entered = (localData.venta||[]).filter(v=>v!=="").length;
+  document.getElementById("kpiStrip").innerHTML = `
+    <div class="kpi"><div class="lbl">Venta Total Mes</div><div class="val" style="color:#3b82f6">S/ ${tv?fmt(tv):"—"}</div><div class="sub">${entered} días ingresados</div></div>
+    <div class="kpi"><div class="lbl">Receta Total</div><div class="val" style="color:#ef4444">${fmt(totalFor(localData,"receta"))||"—"}</div><div class="sub">${fmtPct(totalPctFor(localData,"receta"))||"—"} de venta</div></div>
+    <div class="kpi"><div class="lbl">Merma Total</div><div class="val" style="color:#ef4444">${fmt(totalFor(localData,"merma"))||"—"}</div><div class="sub">${fmtPct(totalPctFor(localData,"merma"))||"—"} de venta</div></div>
+    <div class="kpi"><div class="lbl">AEJ Total</div><div class="val" style="color:#22c55e">${fmt(totalFor(localData,"aej"))||"—"}</div><div class="sub">${fmtPct(totalPctFor(localData,"aej"))||"—"} de venta</div></div>
+    <div class="kpi"><div class="lbl">CV Total Mes</div><div class="val" style="color:#f59e0b">${tcv!==null?fmtPct(tcv):"—"}</div><div class="sub">% sobre venta total</div></div>
+  `;
+}
+
+function renderTable() {
+  const labels = dayLabels(currentYM);
+  const n      = labels.length;
+  const today  = todayDay(currentYM);
+  let html = "<thead><tr>";
+  html += `<th>INDICADORES</th>`;
+  labels.forEach(l => html += `<th class="${l.num===today?"today-h":""}">${l.dow}<br>${l.num}</th>`);
+  html += `<th class="total-h">TOTAL MES</th></tr></thead><tbody>`;
+
+  INDICATORS.forEach(ind => {
+    const tot     = totalFor(localData, ind.key);
+    const hasData = (localData[ind.key]||[]).some(v=>v!=="");
+    // Fila de valores
+    html += `<tr>`;
+    html += `<td class="sticky">${ind.label}</td>`;
+    for(let d=0;d<n;d++){
+      const v   = (localData[ind.key]||[])[d];
+      const pv  = parseF(v);
+      const col = pv!==null&&pv<0?"#f87171": pv!==null&&pv>0&&ind.isCost?"#86efac":"#e2e8f0";
+      html += `<td class="val${(d+1)===today?" today-td":""}">
+        <input type="number" step="0.01" value="${v!==null&&v!==""?v:""}"
+          style="color:${col}"
+          data-key="${ind.key}" data-day="${d}" oninput="handleInput(this)">
+      </td>`;
+    }
+    html += `<td class="val total-td" style="color:${tot<0?"#f87171":tot>0&&ind.isCost?"#86efac":"#93c5fd"}">${hasData?fmt(tot):""}</td>`;
+    html += `</tr>`;
+
+    // Fila de porcentaje (solo costos)
+    if(ind.isCost){
+      html += `<tr>`;
+      html += `<td class="sticky pct-label">${ind.key.toUpperCase()} %</td>`;
+      for(let d=0;d<n;d++){
+        const p = pctFor(localData,ind.key,d);
+        html += `<td class="pct${(d+1)===today?" today-td":""}">${p!==null?fmtPct(p):""}</td>`;
+      }
+      html += `<td class="pct total-td">${fmtPct(totalPctFor(localData,ind.key))}</td>`;
+      html += `</tr>`;
+    }
+  });
+
+  // Fila CV
+  const tcv = totalCV(localData);
+  html += `<tr>`;
+  html += `<td class="sticky cv-label">CV</td>`;
+  for(let d=0;d<n;d++){
+    const cv = calcCV(localData,d);
+    html += `<td class="cv${(d+1)===today?" today-td":""}">${cv!==null?fmtPct(cv):""}</td>`;
+  }
+  html += `<td class="cv total-td" style="color:#fbbf24;border-left:2px solid #6366f1">${tcv!==null?fmtPct(tcv):""}</td>`;
+  html += `</tr></tbody>`;
+  document.getElementById("mainTable").innerHTML = html;
+}
+
+function renderChart() {
+  const labels = dayLabels(currentYM);
+  const today  = todayDay(currentYM);
+  const ventas = (localData.venta||[]).map(v=>parseF(v)||0);
+  const maxV   = Math.max(...ventas,1);
+  const maxH   = 100;
+  let html = "";
+  labels.forEach((l,i)=>{
+    const hv  = ventas[i] ? Math.round((ventas[i]/maxV)*maxH) : 0;
+    const cv  = calcCV(localData,i);
+    const cvH = cv!==null ? Math.min(Math.round(Math.abs(cv)*100*2), maxH) : 0;
+    const tod = l.num===today;
+    html += `<div class="bar-group">
+      <div class="bar-inner" style="height:${maxH}px">
+        <div class="bar bar-v" style="height:${hv}px;width:8px;${tod?"box-shadow:0 0 8px #6366f1;background:linear-gradient(180deg,#818cf8,#4338ca)":""}" title="Venta día ${l.num}: S/ ${fmt(ventas[i])}"></div>
+        <div class="bar bar-c" style="height:${cvH}px;width:8px" title="CV día ${l.num}: ${cv!==null?fmtPct(cv):''}"></div>
+      </div>
+      <div class="bar-lbl" style="color:${tod?"#a5b4fc":"#475569"}">${l.num}</div>
+    </div>`;
+  });
+  document.getElementById("chartBars").innerHTML = html;
+}
+
+// ── Interacción ───────────────────────────────────────────────────────────────
+window.handleInput = function(el) {
+  const key = el.dataset.key;
+  const day = parseInt(el.dataset.day);
+  const val = el.value===""?"": parseFloat(el.value);
+  if(!localData[key]) localData[key] = Array(daysIn(currentYM)).fill("");
+  localData[key][day] = val;
+  // Actualizar solo celdas derivadas (sin redibujar la tabla entera)
+  updateDerivedCells();
+  renderKPIs();
+  renderChart();
+  triggerSave();
+};
+
+function updateDerivedCells() {
+  const n = daysIn(currentYM);
+  // recalcular % y CV para cada día
+  for(let d=0;d<n;d++){
+    INDICATORS.forEach(ind=>{
+      if(!ind.isCost) return;
+      const cell = document.querySelector(`td.pct[data-pkey="${ind.key}-${d}"]`);
+      // las celdas pct no tienen data attrs, usamos posición: row index
+    });
+  }
+  // Más simple: solo re-renderizar tabla si no hay focus
+  const active = document.activeElement;
+  if(!active || active.tagName!=="INPUT") {
+    renderTable();
+  } else {
+    // Re-render solo filas pct y cv sin tocar inputs
+    partialUpdate();
+  }
+}
+
+function partialUpdate() {
+  const n      = daysIn(currentYM);
+  const today  = todayDay(currentYM);
+  const rows   = document.querySelectorAll("tbody tr");
+  let rowIdx   = 0;
+  INDICATORS.forEach(ind => {
+    rowIdx++; // fila de valores — no tocar inputs
+    if(ind.isCost){
+      const pctRow = rows[rowIdx];
+      if(pctRow){
+        const cells = pctRow.querySelectorAll("td.pct");
+        for(let d=0;d<n;d++){
+          const p = pctFor(localData,ind.key,d);
+          if(cells[d]) cells[d].textContent = p!==null?fmtPct(p):"";
+        }
+        const totCell = pctRow.querySelector("td.total-td");
+        if(totCell) totCell.textContent = fmtPct(totalPctFor(localData,ind.key));
+      }
+      rowIdx++;
+    }
+    // Total de la fila de valores
+    const valRow = rows[rowIdx-1-(ind.isCost?1:0)];
+    if(valRow){
+      const totCell = valRow.querySelector("td.total-td");
+      if(totCell){
+        const tot = totalFor(localData,ind.key);
+        const hasData = (localData[ind.key]||[]).some(v=>v!=="");
+        totCell.textContent = hasData?fmt(tot):"";
+        totCell.style.color = tot<0?"#f87171": tot>0&&ind.isCost?"#86efac":"#93c5fd";
+      }
+    }
+  });
+  // Fila CV
+  const cvRow = rows[rowIdx];
+  if(cvRow){
+    const cells = cvRow.querySelectorAll("td.cv");
+    for(let d=0;d<n;d++){
+      const cv = calcCV(localData,d);
+      if(cells[d]) cells[d].textContent = cv!==null?fmtPct(cv):"";
+    }
+    const totCell = cvRow.querySelector("td.total-td");
+    const tcv = totalCV(localData);
+    if(totCell) totCell.textContent = tcv!==null?fmtPct(tcv):"";
+  }
+}
+
+window.changeMonth = function() {
+  currentYM = document.getElementById("monthSel").value;
+  localData = emptyData(currentYM);
+  document.getElementById("loadOverlay").style.display = "flex";
+  subscribe(currentYM);
+};
+
+window.clearMonth = function() {
+  if(!confirm("¿Limpiar todos los datos de este mes?")) return;
+  localData = emptyData(currentYM);
+  saveNow(currentYM, localData);
+  renderAll();
+};
+
+// ── Arranque ──────────────────────────────────────────────────────────────────
+subscribe(currentYM);
+</script>
+</body>
+</html>
