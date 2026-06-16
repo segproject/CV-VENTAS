@@ -66,12 +66,6 @@ button.btn:hover{opacity:.85;}
 .btn-danger{background:#7f1d1d;color:#fca5a5;border:1px solid var(--red);}
 .btn-ghost{background:var(--surface2);color:var(--text);border:1px solid var(--border);}
 
-/* CHART */
-.chart-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:18px;}
-.bar{border-radius:3px 3px 0 0;width:8px;}
-.bar-v{background:linear-gradient(180deg,#3b82f6,#1d4ed8);}
-.bar-c{background:linear-gradient(180deg,#f59e0b,#d97706);}
-
 /* TABLE */
 .table-wrap{overflow-x:auto;border-radius:9px;border:1px solid var(--border);background:var(--surface);margin-bottom:18px;}
 table{border-collapse:collapse;width:100%;font-size:.73rem;}
@@ -467,23 +461,6 @@ function renderKPIs_tienda(){
 
 function renderTablaEditable(container,tiendaId){
   const labels=dayLabels(currentYM);const n=labels.length;const today=todayDay(currentYM);
-  // Chart
-  const ventas=(localData.venta||[]).map(v=>parseF(v)||0);const maxV=Math.max(...ventas,1);
-  let chartHtml=`<div class="section-title">Venta diaria</div><div class="chart-box">
-    <div style="display:flex;align-items:flex-end;gap:3px;height:90px;margin-bottom:4px">`;
-  labels.forEach((l,i)=>{
-    const hv=ventas[i]?Math.round((ventas[i]/maxV)*85):0;
-    const cv=calcCV(localData,i);const cvH=cv!==null?Math.min(Math.round(Math.abs(cv)*100*1.5),85):0;
-    const tod=l.num===today;
-    chartHtml+=`<div style="flex:1;display:flex;flex-direction:column;align-items:center;min-width:12px">
-      <div style="display:flex;align-items:flex-end;gap:2px;height:85px">
-        <div class="bar bar-v" style="height:${hv}px;${tod?"box-shadow:0 0 7px #6366f1;background:linear-gradient(180deg,#818cf8,#4338ca)":""}" title="S/ ${fmt(ventas[i])}"></div>
-        <div class="bar bar-c" style="height:${cvH}px" title="${cv!==null?fmtPct(cv):""}"></div>
-      </div>
-      <div style="font-size:.5rem;color:${tod?"#a5b4fc":"#475569"};margin-top:2px">${l.num}</div>
-    </div>`;
-  });
-  chartHtml+=`</div></div>`;
 
   // Tabla
   let tbl=`<div class="section-title">Indicadores diarios</div>
@@ -496,7 +473,7 @@ function renderTablaEditable(container,tiendaId){
     for(let d=0;d<n;d++){
       const v=(localData[ind.key]||[])[d];const pv=parseF(v);
       const col=pv!==null&&pv<0?"#f87171":pv!==null&&pv>0&&ind.isCost?"#86efac":"#e2e8f0";
-      tbl+=`<td class="val${(d+1)===today?" today-td":""}"><input type="number" step="0.01" value="${v!==null&&v!==""?v:""}" style="color:${col}" data-key="${ind.key}" data-day="${d}" oninput="handleInput(this,'${tiendaId}')"></td>`;
+      tbl+=`<td class="val${(d+1)===today?" today-td":""}"><input type="number" step="0.01" value="${v!==null&&v!==""?v:""}" style="color:${col}" data-key="${ind.key}" data-day="${d}" oninput="handleInput(this,'${tiendaId}')" onblur="handleBlur(this,'${tiendaId}')"></td>`;
     }
     tbl+=`<td class="val total-td" style="color:${tot<0?"#f87171":tot>0&&ind.isCost?"#86efac":"#93c5fd"}">${hasData?fmt(tot):""}</td></tr>`;
     if(ind.isCost){
@@ -509,7 +486,7 @@ function renderTablaEditable(container,tiendaId){
   tbl+=`<tr><td class="sticky cv-lbl">CV</td>`;
   for(let d=0;d<n;d++){const cv=calcCV(localData,d);tbl+=`<td class="cv${(d+1)===today?" today-td":""}">${cv!==null?fmtPct(cv):""}</td>`;}
   tbl+=`<td class="cv total-td" style="color:#fbbf24">${tcv!==null?fmtPct(tcv):""}</td></tr></tbody></table></div>`;
-  if(container)container.innerHTML=chartHtml+tbl;
+  if(container)container.innerHTML=tbl;
 }
 
 window.handleInput=function(el,tiendaId){
@@ -518,7 +495,13 @@ window.handleInput=function(el,tiendaId){
   if(!localData[key])localData[key]=Array(daysIn(currentYM)).fill("");
   localData[key][day]=val;
   partialUpdate();renderKPIs_tienda();
-  clearTimeout(saveTimer);saveTimer=setTimeout(()=>saveNow(tiendaId),800);
+  setSynced(false); // muestra "Guardando..." inmediatamente
+  clearTimeout(saveTimer);saveTimer=setTimeout(()=>saveNow(tiendaId),250);
+};
+window.handleBlur=function(el,tiendaId){
+  // Al salir del campo, guarda de inmediato sin esperar el debounce
+  clearTimeout(saveTimer);
+  saveNow(tiendaId);
 };
 
 function partialUpdate(){
