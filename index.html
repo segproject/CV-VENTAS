@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
 <title>CV — Costo de Ventas</title>
 <style>
 :root {
@@ -116,6 +116,75 @@ input[type=number]:focus{background:rgba(59,130,246,.1);border-radius:3px;}
 #loadOverlay p{margin-top:12px;color:var(--muted);font-size:.82rem;}
 @keyframes spin{to{transform:rotate(360deg);}}
 footer{text-align:center;padding:10px;font-size:.65rem;color:var(--muted);border-top:1px solid var(--border);}
+
+/* ══ SCROLL TÁCTIL SUAVE EN TABLAS (iOS/Android) ══ */
+.table-wrap{-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
+.swipe-hint{display:none;font-size:.68rem;color:var(--muted);text-align:center;padding:5px 0;background:var(--surface2);border-radius:6px;margin-bottom:6px;}
+
+/* ══ RESPONSIVE: TABLETS Y MÓVILES GRANDES (≤768px) ══ */
+@media (max-width: 768px){
+  header{padding:10px 14px;}
+  .swipe-hint{display:block;}
+  header h1{font-size:1rem;}
+  .header-right{width:100%;justify-content:space-between;gap:6px;}
+  .badge{order:1;}
+  #lastSaved{display:none;} /* ocupa espacio innecesario en pantallas chicas */
+  select{padding:7px 8px;font-size:.8rem;}
+  #yearSel{min-width:64px!important;}
+  #monthSel{min-width:92px!important;}
+  .btn-logout{padding:7px 10px;font-size:.7rem;}
+
+  .kpi-strip{padding:8px 12px;gap:8px;}
+  .kpi{min-width:118px;padding:8px 11px;}
+  .kpi .val{font-size:.95rem;}
+
+  .tabs{padding:0 10px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .tab{padding:9px 13px;font-size:.72rem;white-space:nowrap;}
+
+  main{padding:10px 12px;}
+  .actions{gap:8px;}
+  button.btn{padding:8px 14px;font-size:.76rem;min-height:36px;} /* objetivo táctil ≥36px */
+
+  /* Tabla: celdas e inputs más cómodos al tacto */
+  table{font-size:.72rem;}
+  td.sticky{min-width:140px;max-width:160px;font-size:.68rem;padding:7px 8px;}
+  td.val{padding:7px 4px;min-width:58px;}
+  td.pct,td.cv{min-width:58px;}
+  input[type=number]{font-size:.78rem;padding:4px 2px;} /* ≥16px evita zoom en iOS si se usa rem base 1=16px; .78rem≈12.5px, ver nota abajo */
+  th{padding:7px 5px;font-size:.6rem;}
+  th:first-child{min-width:140px;}
+
+  .stores-grid{grid-template-columns:1fr;}
+  .modal{padding:22px;max-width:92vw;}
+  .consolidado-table{font-size:.7rem;}
+  .consolidado-table th,.consolidado-table td{padding:7px 8px;}
+}
+
+/* ══ RESPONSIVE: MÓVILES PEQUEÑOS (≤480px) ══ */
+@media (max-width: 480px){
+  .login-box{padding:28px 22px;}
+  .login-logo h1{font-size:1.3rem;}
+  .kpi{min-width:104px;}
+  .kpi .lbl{font-size:.58rem;}
+  .kpi .val{font-size:.85rem;}
+  td.sticky{min-width:118px;max-width:130px;}
+  th:first-child{min-width:118px;}
+  .actions{flex-direction:column;align-items:stretch;}
+  .actions button.btn{width:100%;}
+}
+
+/* ══ EVITAR ZOOM AUTOMÁTICO EN INPUTS (iOS Safari) ══ */
+@media (max-width: 768px){
+  input[type=number],input[type=text],input[type=password]{font-size:16px!important;}
+  /* Para los inputs de la tabla, compensamos el tamaño con padding reducido para que no se vean gigantes */
+  td.val input[type=number]{font-size:13px!important;}
+}
+
+/* ══ MEJORA DE ÁREA TÁCTIL EN BOTONES PEQUEÑOS (toda resolución táctil) ══ */
+@media (hover: none) and (pointer: coarse){
+  .btn-logout,.tab,button.btn{min-height:38px;}
+  select{min-height:38px;}
+}
 </style>
 </head>
 <body>
@@ -128,6 +197,7 @@ footer{text-align:center;padding:10px;font-size:.65rem;color:var(--muted);border
     <div class="login-logo">
       <div class="icon">📊</div>
       <h1>CV — Costo de Ventas</h1>
+
       <p>Ingresa tu código de acceso</p>
     </div>
     <div class="form-group">
@@ -150,7 +220,8 @@ footer{text-align:center;padding:10px;font-size:.65rem;color:var(--muted);border
     <div class="header-right">
       <div class="badge"><div class="dot" id="syncDot"></div><span id="syncLabel">Conectando…</span></div>
       <span id="lastSaved" style="font-size:.62rem;color:var(--muted)"></span>
-      <select id="monthSel" onchange="changeMonth()"></select>
+      <select id="yearSel" onchange="changeMonth()" style="min-width:78px"></select>
+      <select id="monthSel" onchange="changeMonth()" style="min-width:110px"></select>
       <button class="btn-logout" onclick="doLogout()">Cerrar sesión</button>
     </div>
   </header>
@@ -217,11 +288,15 @@ const fbApp = initializeApp(firebaseConfig);
 const db = getDatabase(fbApp);
 
 const PIN_ADMIN = "PJ2026";
-const MESES = [
-  ["2026-06","Junio 2026"],["2026-07","Julio 2026"],["2026-08","Agosto 2026"],
-  ["2026-09","Septiembre 2026"],["2026-10","Octubre 2026"],
-  ["2026-11","Noviembre 2026"],["2026-12","Diciembre 2026"],
-];
+const NOMBRES_MESES = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+const ANIO_MIN = 2024, ANIO_MAX = 2030;
+const MESES = [];
+for(let y=ANIO_MIN; y<=ANIO_MAX; y++){
+  for(let m=1; m<=12; m++){
+    const ym = y+"-"+String(m).padStart(2,"0");
+    MESES.push([ym, NOMBRES_MESES[m-1]+" "+y]);
+  }
+}
 const INDICATORS = [
   {key:"venta",label:"VENTA",isCost:false},
   {key:"receta",label:"RECETA ( 951 )",isCost:true},
@@ -292,9 +367,7 @@ window.doLogout=function(){
 function startApp(){
   document.getElementById("loginScreen").style.display="none";
   document.getElementById("appScreen").style.display="block";
-  const sel=document.getElementById("monthSel");
-  sel.innerHTML=MESES.map(([v,l])=>`<option value="${v}">${l}</option>`).join("");
-  sel.value=currentYM;
+  poblarSelectoresFecha();
   if(session.role==="admin"){
     document.getElementById("headerTitle").textContent="Administrador";
     document.getElementById("headerSub").textContent="Acceso completo a todas las tiendas";
@@ -307,6 +380,21 @@ function startApp(){
     document.getElementById("adminTabs").style.display="none";
     subscribeData(session.tiendaId);
   }
+}
+
+function poblarSelectoresFecha(){
+  const [curY,curM]=currentYM.split("-");
+  const yearSel=document.getElementById("yearSel");
+  const monthSel=document.getElementById("monthSel");
+  let yearsHtml="";
+  for(let y=ANIO_MIN;y<=ANIO_MAX;y++) yearsHtml+=`<option value="${y}">${y}</option>`;
+  yearSel.innerHTML=yearsHtml;
+  yearSel.value=curY;
+  monthSel.innerHTML=NOMBRES_MESES.map((nombre,i)=>{
+    const mm=String(i+1).padStart(2,"0");
+    return `<option value="${mm}">${nombre}</option>`;
+  }).join("");
+  monthSel.value=curM;
 }
 
 window.switchTab=function(tab){
@@ -464,6 +552,7 @@ function renderTablaEditable(container,tiendaId){
 
   // Tabla
   let tbl=`<div class="section-title">Indicadores diarios</div>
+    <div class="swipe-hint">↔ Desliza horizontalmente para ver todos los días</div>
     <div class="table-wrap"><table id="mainTable"><thead><tr><th>INDICADORES</th>`;
   labels.forEach(l=>{tbl+=`<th class="${l.num===today?"today-h":""}">${l.dow}<br>${l.num}</th>`;});
   tbl+=`<th class="total-h">TOTAL MES</th></tr></thead><tbody>`;
@@ -495,11 +584,11 @@ window.handleInput=function(el,tiendaId){
   if(!localData[key])localData[key]=Array(daysIn(currentYM)).fill("");
   localData[key][day]=val;
   partialUpdate();renderKPIs_tienda();
-  setSynced(false); // muestra "Guardando..." inmediatamente
-  clearTimeout(saveTimer);saveTimer=setTimeout(()=>saveNow(tiendaId),250);
+  // NO guarda mientras escribes — solo actualiza la vista local.
+  // El guardado real ocurre al salir de la celda (ver handleBlur).
 };
 window.handleBlur=function(el,tiendaId){
-  // Al salir del campo, guarda de inmediato sin esperar el debounce
+  // Al salir del campo (Tab, clic en otra celda, etc.) se guarda de inmediato.
   clearTimeout(saveTimer);
   saveNow(tiendaId);
 };
@@ -532,7 +621,9 @@ async function saveNow(tiendaId){
 }
 
 window.changeMonth=function(){
-  currentYM=document.getElementById("monthSel").value;
+  const y=document.getElementById("yearSel").value;
+  const m=document.getElementById("monthSel").value;
+  currentYM=y+"-"+m;
   localData=emptyData(currentYM);
   if(session.role==="tienda"){subscribeData(session.tiendaId);}
   else{if(currentTab==="resumen")renderResumen();else if(currentTab==="datos")subscribeData(adminVerTienda,true);}
