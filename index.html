@@ -5,511 +5,602 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CV — Costo de Ventas</title>
 <style>
-  :root {
-    --bg: #0f1117; --surface: #181c27; --surface2: #1e2435;
-    --border: #2a3048; --accent: #3b82f6; --accent2: #6366f1;
-    --red: #ef4444; --green: #22c55e; --yellow: #f59e0b;
-    --text: #e2e8f0; --muted: #64748b;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+:root {
+  --bg:#0f1117; --surface:#181c27; --surface2:#1e2435;
+  --border:#2a3048; --accent:#3b82f6; --accent2:#6366f1;
+  --red:#ef4444; --green:#22c55e; --yellow:#f59e0b;
+  --text:#e2e8f0; --muted:#64748b;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
-  /* Header */
-  header {
-    background: linear-gradient(135deg, #0d1b3e 0%, #1a2a6c 60%, #1e3a8a 100%);
-    padding: 16px 24px; border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
-  }
-  header h1 { font-size: 1.25rem; font-weight: 700; color: #fff; }
-  header p  { font-size: .72rem; color: #93c5fd; margin-top: 2px; }
-  .header-right { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+/* LOGIN */
+#loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;background:linear-gradient(135deg,#0a0f1e 0%,#0d1b3e 50%,#0f1117 100%);}
+.login-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:36px 32px;width:100%;max-width:380px;box-shadow:0 25px 60px rgba(0,0,0,.5);}
+.login-logo{text-align:center;margin-bottom:28px;}
+.login-logo h1{font-size:1.6rem;font-weight:800;color:#fff;}
+.login-logo p{font-size:.8rem;color:var(--muted);margin-top:4px;}
+.login-logo .icon{font-size:2.5rem;margin-bottom:8px;}
+.form-group{margin-bottom:16px;}
+.form-group label{font-size:.75rem;color:var(--muted);display:block;margin-bottom:6px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;}
+.form-group input{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:11px 14px;border-radius:8px;font-size:.95rem;outline:none;transition:border .2s;letter-spacing:.12em;font-weight:600;}
+.form-group input:focus{border-color:var(--accent);}
+.btn-login{width:100%;background:linear-gradient(135deg,#1d4ed8,#4338ca);color:#fff;border:none;padding:12px;border-radius:8px;font-size:.9rem;font-weight:700;cursor:pointer;margin-top:8px;transition:opacity .2s;}
+.btn-login:hover{opacity:.9;}
+.login-error{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#fca5a5;border-radius:7px;padding:9px 12px;font-size:.78rem;margin-top:12px;display:none;text-align:center;}
 
-  .badge {
-    background: #1e3a8a; border: 1px solid var(--accent);
-    border-radius: 6px; padding: 4px 10px; font-size: .7rem;
-    color: #93c5fd; display: flex; align-items: center; gap: 6px;
-  }
-  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); transition: background .3s; }
-  .dot.on  { background: var(--green); box-shadow: 0 0 6px var(--green); }
-  .dot.err { background: var(--red);   box-shadow: 0 0 6px var(--red); }
+/* HEADER */
+header{background:linear-gradient(135deg,#0d1b3e,#1a2a6c,#1e3a8a);padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+header h1{font-size:1.1rem;font-weight:700;color:#fff;}
+header p{font-size:.68rem;color:#93c5fd;margin-top:1px;}
+.header-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.badge{background:#1e3a8a;border:1px solid var(--accent);border-radius:6px;padding:3px 9px;font-size:.68rem;color:#93c5fd;display:flex;align-items:center;gap:5px;}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--muted);transition:background .3s;}
+.dot.on{background:var(--green);box-shadow:0 0 6px var(--green);}
+.dot.err{background:var(--red);}
+.btn-logout{background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:6px;font-size:.72rem;cursor:pointer;}
+.btn-logout:hover{color:var(--red);border-color:var(--red);}
+select{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:5px 9px;border-radius:6px;font-size:.78rem;}
 
-  select {
-    background: var(--surface2); border: 1px solid var(--border);
-    color: var(--text); padding: 6px 10px; border-radius: 6px; font-size: .82rem;
-  }
+/* KPI */
+.kpi-strip{display:flex;gap:10px;padding:10px 20px;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;}
+.kpi{min-width:130px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:9px 13px;flex:1;}
+.kpi .lbl{font-size:.63rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
+.kpi .val{font-size:1.05rem;font-weight:700;margin-top:3px;font-variant-numeric:tabular-nums;}
+.kpi .sub{font-size:.63rem;color:var(--muted);margin-top:1px;}
 
-  /* KPI */
-  .kpi-strip {
-    display: flex; gap: 10px; padding: 12px 24px;
-    background: var(--surface); border-bottom: 1px solid var(--border); overflow-x: auto;
-  }
-  .kpi { min-width: 145px; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; flex: 1; }
-  .kpi .lbl { font-size: .67rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
-  .kpi .val { font-size: 1.15rem; font-weight: 700; margin-top: 4px; font-variant-numeric: tabular-nums; }
-  .kpi .sub { font-size: .68rem; color: var(--muted); margin-top: 2px; }
+/* TABS */
+.tabs{display:flex;gap:0;border-bottom:2px solid var(--border);padding:0 20px;background:var(--surface);}
+.tab{padding:10px 18px;font-size:.78rem;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:color .2s;}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab:hover:not(.active){color:var(--text);}
 
-  /* Main */
-  main { padding: 16px 24px; }
-  .section-title { font-size: .7rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; font-weight: 600; margin-bottom: 8px; }
-  .actions { display: flex; gap: 8px; justify-content: flex-end; align-items: center; margin-bottom: 12px; }
-  .sync-msg { font-size: .7rem; color: var(--muted); display: flex; align-items: center; gap: 5px; }
+/* MAIN */
+main{padding:14px 20px;}
+.section-title{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:8px;}
+.actions{display:flex;gap:8px;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;}
+.sync-msg{font-size:.68rem;color:var(--muted);display:flex;align-items:center;gap:5px;}
+button.btn{border:none;border-radius:7px;padding:6px 13px;font-size:.73rem;font-weight:600;cursor:pointer;transition:opacity .15s;}
+button.btn:hover{opacity:.85;}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-danger{background:#7f1d1d;color:#fca5a5;border:1px solid var(--red);}
+.btn-ghost{background:var(--surface2);color:var(--text);border:1px solid var(--border);}
 
-  button {
-    border: none; border-radius: 7px; padding: 7px 14px;
-    font-size: .75rem; font-weight: 600; cursor: pointer; transition: opacity .15s;
-  }
-  button:hover { opacity: .85; }
-  .btn-danger { background: #7f1d1d; color: #fca5a5; border: 1px solid var(--red); }
+/* CHART */
+.chart-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:18px;}
+.bar{border-radius:3px 3px 0 0;width:8px;}
+.bar-v{background:linear-gradient(180deg,#3b82f6,#1d4ed8);}
+.bar-c{background:linear-gradient(180deg,#f59e0b,#d97706);}
 
-  /* Chart */
-  .chart-box {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 12px; padding: 16px 14px; margin-bottom: 20px;
-  }
-  #chartBars { display: flex; align-items: flex-end; gap: 4px; height: 110px; margin-bottom: 6px; }
-  .bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; min-width: 14px; }
-  .bar-inner { width: 100%; display: flex; align-items: flex-end; gap: 2px; }
-  .bar { border-radius: 3px 3px 0 0; min-height: 0; transition: height .3s; }
-  .bar-v { background: linear-gradient(180deg, #3b82f6, #1d4ed8); }
-  .bar-c { background: linear-gradient(180deg, #f59e0b, #d97706); }
-  .bar-lbl { font-size: .55rem; color: var(--muted); margin-top: 3px; }
+/* TABLE */
+.table-wrap{overflow-x:auto;border-radius:9px;border:1px solid var(--border);background:var(--surface);margin-bottom:18px;}
+table{border-collapse:collapse;width:100%;font-size:.73rem;}
+th{background:#0d1b3e;color:#93c5fd;padding:6px 7px;font-size:.63rem;font-weight:600;letter-spacing:.04em;border-right:1px solid var(--border);border-bottom:2px solid var(--accent2);position:sticky;top:0;z-index:3;white-space:nowrap;text-align:center;}
+th:first-child{text-align:left;position:sticky;left:0;z-index:5;min-width:170px;}
+th.today-h{background:#1e1b4b;color:#a5b4fc;}
+th.total-h{border-left:2px solid var(--accent2);min-width:86px;}
+td{border-right:1px solid var(--border);border-bottom:1px solid var(--border);white-space:nowrap;}
+td.sticky{position:sticky;left:0;z-index:2;background:var(--surface);padding:5px 9px;font-weight:700;font-size:.7rem;min-width:170px;max-width:200px;white-space:normal;}
+td.sticky.pct-lbl{font-weight:400;font-size:.63rem;color:var(--muted);font-style:italic;padding-left:18px;background:var(--surface2);}
+td.sticky.cv-lbl{color:var(--yellow);font-weight:800;background:#1a1a0a;}
+td.val{text-align:right;padding:3px 5px;min-width:68px;}
+td.pct{text-align:right;padding:2px 7px;font-size:.62rem;color:#94a3b8;min-width:68px;font-variant-numeric:tabular-nums;background:var(--surface2);}
+td.cv{text-align:right;padding:5px 7px;font-size:.68rem;font-weight:700;color:var(--yellow);min-width:68px;font-variant-numeric:tabular-nums;background:#1a1a0a;}
+td.total-td{background:#0d1b3e;color:#93c5fd;font-weight:700;border-left:2px solid var(--accent2);}
+td.today-td{background:rgba(99,102,241,.08)!important;}
+input[type=number]{background:transparent;border:none;text-align:right;width:100%;font-size:.73rem;font-family:inherit;font-variant-numeric:tabular-nums;outline:none;padding:0;color:var(--text);-moz-appearance:textfield;}
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;}
+input[type=number]:focus{background:rgba(59,130,246,.1);border-radius:3px;}
 
-  /* Table */
-  .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); margin-bottom: 20px; }
-  table { border-collapse: collapse; width: 100%; font-size: .75rem; }
-  th { background: #0d1b3e; color: #93c5fd; padding: 7px 8px; font-size: .67rem; font-weight: 600; letter-spacing: .04em; border-right: 1px solid var(--border); border-bottom: 2px solid var(--accent2); position: sticky; top: 0; z-index: 3; white-space: nowrap; text-align: center; }
-  th:first-child { text-align: left; position: sticky; left: 0; z-index: 5; min-width: 175px; }
-  th.today-h { background: #1e1b4b; color: #a5b4fc; }
-  th.total-h { border-left: 2px solid var(--accent2); min-width: 88px; }
+/* TIENDAS GRID */
+.stores-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:20px;}
+.store-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;}
+.store-card h3{font-size:.9rem;font-weight:700;margin-bottom:4px;}
+.store-card .pin-show{font-size:.72rem;color:var(--muted);margin-bottom:10px;font-family:monospace;letter-spacing:.08em;}
+.store-card .store-actions{display:flex;gap:7px;}
 
-  td { border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); white-space: nowrap; }
-  td.sticky { position: sticky; left: 0; z-index: 2; background: var(--surface); padding: 6px 10px; font-weight: 700; font-size: .73rem; min-width: 175px; max-width: 200px; white-space: normal; }
-  td.sticky.pct-label { font-weight: 400; font-size: .67rem; color: var(--muted); font-style: italic; padding-left: 20px; background: var(--surface2); }
-  td.sticky.cv-label  { color: var(--yellow); font-weight: 800; background: #1a1a0a; }
+/* CONSOLIDADO */
+.consolidado-table{width:100%;border-collapse:collapse;font-size:.78rem;}
+.consolidado-table th{background:#0d1b3e;color:#93c5fd;padding:8px 12px;text-align:left;border-bottom:2px solid var(--accent2);white-space:nowrap;}
+.consolidado-table td{padding:8px 12px;border-bottom:1px solid var(--border);}
+.consolidado-table tr:hover td{background:var(--surface2);}
 
-  td.val  { text-align: right; padding: 4px 6px; min-width: 70px; }
-  td.pct  { text-align: right; padding: 3px 8px; font-size: .66rem; color: #94a3b8; min-width: 70px; font-variant-numeric: tabular-nums; background: var(--surface2); }
-  td.cv   { text-align: right; padding: 6px 8px; font-size: .72rem; font-weight: 700; color: var(--yellow); min-width: 70px; font-variant-numeric: tabular-nums; background: #1a1a0a; }
-  td.total-td { background: #0d1b3e; color: #93c5fd; font-weight: 700; border-left: 2px solid var(--accent2); }
-  td.today-td { background: rgba(99,102,241,.08) !important; }
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:999;padding:16px;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px;width:100%;max-width:360px;box-shadow:0 20px 50px rgba(0,0,0,.6);}
+.modal h2{font-size:1rem;font-weight:700;margin-bottom:20px;}
+.modal .form-group{margin-bottom:14px;}
+.modal .form-group label{font-size:.72rem;color:var(--muted);display:block;margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;}
+.modal .form-group input{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:9px 12px;border-radius:7px;font-size:.88rem;outline:none;}
+.modal .form-group input:focus{border-color:var(--accent);}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:20px;}
+.modal-error{color:#fca5a5;font-size:.73rem;margin-top:8px;display:none;}
 
-  input[type=number] {
-    background: transparent; border: none; text-align: right; width: 100%;
-    font-size: .75rem; font-family: inherit; font-variant-numeric: tabular-nums;
-    outline: none; padding: 0; color: var(--text);
-    -moz-appearance: textfield;
-  }
-  input[type=number]::-webkit-inner-spin-button,
-  input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
-  input[type=number]:focus { background: rgba(59,130,246,.12); border-radius: 3px; }
-
-  /* Overlay de carga */
-  #loadOverlay {
-    position: fixed; inset: 0; background: rgba(15,17,23,.92);
-    display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 999;
-  }
-  #loadOverlay .spinner {
-    width: 40px; height: 40px; border: 3px solid var(--border);
-    border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite;
-  }
-  #loadOverlay p { margin-top: 14px; color: var(--muted); font-size: .85rem; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  footer { text-align: center; padding: 12px; font-size: .68rem; color: var(--muted); border-top: 1px solid var(--border); }
+/* OVERLAY */
+#loadOverlay{position:fixed;inset:0;background:rgba(15,17,23,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;}
+#loadOverlay .spinner{width:38px;height:38px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;}
+#loadOverlay p{margin-top:12px;color:var(--muted);font-size:.82rem;}
+@keyframes spin{to{transform:rotate(360deg);}}
+footer{text-align:center;padding:10px;font-size:.65rem;color:var(--muted);border-top:1px solid var(--border);}
 </style>
 </head>
 <body>
 
-<!-- Overlay carga -->
-<div id="loadOverlay">
-  <div class="spinner"></div>
-  <p>Conectando con Firebase…</p>
+<div id="loadOverlay"><div class="spinner"></div><p id="loadMsg">Iniciando…</p></div>
+
+<!-- LOGIN -->
+<div id="loginScreen" style="display:none;">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="icon">📊</div>
+      <h1>CV — Costo de Ventas</h1>
+      <p>Ingresa tu código de acceso</p>
+    </div>
+    <div class="form-group">
+      <label>Código / PIN de acceso</label>
+      <input type="password" id="pinInput" placeholder="••••••" maxlength="20"
+        onkeydown="if(event.key==='Enter') doLogin()">
+    </div>
+    <button class="btn-login" onclick="doLogin()">Ingresar →</button>
+    <div class="login-error" id="loginError">PIN incorrecto. Intenta de nuevo.</div>
+  </div>
 </div>
 
-<!-- Header -->
-<header>
-  <div>
-    <h1>📊 Costo de Ventas (CV)</h1>
-    <p>Colaborativo en tiempo real · cualquier usuario puede editar</p>
-  </div>
-  <div class="header-right">
-    <div class="badge">
-      <div class="dot" id="syncDot"></div>
-      <span id="syncLabel">Conectando…</span>
+<!-- APP -->
+<div id="appScreen" style="display:none;">
+  <header>
+    <div>
+      <h1>📊 <span id="headerTitle">Costo de Ventas</span></h1>
+      <p id="headerSub"></p>
     </div>
-    <span id="lastSaved" style="font-size:.65rem;color:var(--muted)"></span>
-    <select id="monthSel" onchange="changeMonth()">
-      <option value="2026-06">Junio 2026</option>
-      <option value="2026-07">Julio 2026</option>
-      <option value="2026-08">Agosto 2026</option>
-      <option value="2026-09">Septiembre 2026</option>
-      <option value="2026-10">Octubre 2026</option>
-      <option value="2026-11">Noviembre 2026</option>
-      <option value="2026-12">Diciembre 2026</option>
-    </select>
-  </div>
-</header>
-
-<!-- KPIs -->
-<div class="kpi-strip" id="kpiStrip"></div>
-
-<main>
-  <div class="actions">
-    <div class="sync-msg">
-      <div class="dot" id="syncDot2"></div>
-      <span id="syncMsg">Los cambios se sincronizan automáticamente</span>
+    <div class="header-right">
+      <div class="badge"><div class="dot" id="syncDot"></div><span id="syncLabel">Conectando…</span></div>
+      <span id="lastSaved" style="font-size:.62rem;color:var(--muted)"></span>
+      <select id="monthSel" onchange="changeMonth()"></select>
+      <button class="btn-logout" onclick="doLogout()">Cerrar sesión</button>
     </div>
-    <button class="btn-danger" onclick="clearMonth()">🗑 Limpiar mes</button>
+  </header>
+  <div class="tabs" id="adminTabs" style="display:none;">
+    <div class="tab active" onclick="switchTab('resumen')">📈 Resumen consolidado</div>
+    <div class="tab" onclick="switchTab('tiendas')">🏪 Gestión de tiendas</div>
+    <div class="tab" onclick="switchTab('datos')">📋 Ver tienda</div>
   </div>
+  <div class="kpi-strip" id="kpiStrip"></div>
+  <main id="mainContent"></main>
+  <footer>CV Dashboard · Firebase Realtime Database · GitHub Pages</footer>
+</div>
 
-  <!-- Chart -->
-  <div class="section-title">Venta diaria</div>
-  <div class="chart-box">
-    <div id="chartBars"></div>
+<!-- MODAL NUEVA TIENDA -->
+<div class="modal-overlay" id="modalNuevaTienda" style="display:none;">
+  <div class="modal">
+    <h2>➕ Nueva Tienda</h2>
+    <div class="form-group">
+      <label>Nombre de la tienda</label>
+      <input type="text" id="newStoreName" placeholder="Ej: Tienda Centro" maxlength="40">
+    </div>
+    <div class="form-group">
+      <label>PIN de acceso</label>
+      <input type="text" id="newStorePIN" placeholder="Ej: CENTRO01" maxlength="20"
+        style="text-transform:uppercase;letter-spacing:.08em;font-family:monospace;">
+    </div>
+    <div class="modal-error" id="modalError"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="crearTienda()">Crear tienda</button>
+    </div>
   </div>
+</div>
 
-  <!-- Table -->
-  <div class="section-title">Tabla de indicadores diarios</div>
-  <div class="table-wrap">
-    <table id="mainTable"></table>
+<!-- MODAL ELIMINAR -->
+<div class="modal-overlay" id="modalEliminar" style="display:none;">
+  <div class="modal">
+    <h2>⚠️ Eliminar tienda</h2>
+    <p style="color:var(--muted);font-size:.82rem;margin-bottom:16px;">
+      ¿Estás seguro que deseas eliminar <strong id="deleteStoreName" style="color:var(--red)"></strong>?
+      <br><br>Se eliminarán <strong>todos sus datos</strong> de todos los meses. Esta acción no se puede deshacer.
+    </p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-danger" onclick="confirmarEliminar()">Sí, eliminar</button>
+    </div>
   </div>
+</div>
 
-  <p style="text-align:center;font-size:.68rem;color:var(--muted);margin-top:4px">
-    Datos guardados en Firebase · Actualización en tiempo real
-  </p>
-</main>
-
-<footer>CV Dashboard © 2026 · Powered by Firebase + GitHub Pages</footer>
-
-<!-- Firebase SDK -->
 <script type="module">
-import { initializeApp }         from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, set, onValue, get }
-                                  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-// ── Firebase config ──────────────────────────────────────────────────────────
 const firebaseConfig = {
-  apiKey:            "AIzaSyCM-AaRyHROJBi7KSO9w8dXMsMgufDeqeo",
-  authDomain:        "cv-ventas.firebaseapp.com",
-  databaseURL:       "https://cv-ventas-default-rtdb.firebaseio.com",
-  projectId:         "cv-ventas",
-  storageBucket:     "cv-ventas.firebasestorage.app",
-  messagingSenderId: "454027199753",
-  appId:             "1:454027199753:web:b364daa97e89c18b6a7fd8"
+  apiKey:"AIzaSyCM-AaRyHROJBi7KSO9w8dXMsMgufDeqeo",
+  authDomain:"cv-ventas.firebaseapp.com",
+  databaseURL:"https://cv-ventas-default-rtdb.firebaseio.com",
+  projectId:"cv-ventas",
+  storageBucket:"cv-ventas.firebasestorage.app",
+  messagingSenderId:"454027199753",
+  appId:"1:454027199753:web:b364daa97e89c18b6a7fd8"
 };
+const fbApp = initializeApp(firebaseConfig);
+const db = getDatabase(fbApp);
 
-const app = initializeApp(firebaseConfig);
-const db  = getDatabase(app);
-
-// ── Indicadores ───────────────────────────────────────────────────────────────
+const PIN_ADMIN = "PJ2026";
+const MESES = [
+  ["2026-06","Junio 2026"],["2026-07","Julio 2026"],["2026-08","Agosto 2026"],
+  ["2026-09","Septiembre 2026"],["2026-10","Octubre 2026"],
+  ["2026-11","Noviembre 2026"],["2026-12","Diciembre 2026"],
+];
 const INDICATORS = [
-  { key:"venta",      label:"VENTA",               isCost:false },
-  { key:"receta",     label:"RECETA ( 951 )",       isCost:true  },
-  { key:"merma",      label:"MERMA ( 957, 958 )",   isCost:true  },
-  { key:"refrigerio", label:"REFRIGERIO (967,968)", isCost:true  },
-  { key:"ci",         label:"CI ( 975, 976 )",      isCost:true  },
-  { key:"ajuste",     label:"AJUSTE ( 701,702 )",   isCost:true  },
-  { key:"aej",        label:"AEJ ( 955,956 )",      isCost:true  },
+  {key:"venta",label:"VENTA",isCost:false},
+  {key:"receta",label:"RECETA ( 951 )",isCost:true},
+  {key:"merma",label:"MERMA ( 957, 958 )",isCost:true},
+  {key:"refrigerio",label:"REFRIGERIO (967,968)",isCost:true},
+  {key:"ci",label:"CI ( 975, 976 )",isCost:true},
+  {key:"ajuste",label:"AJUSTE ( 701,702 )",isCost:true},
+  {key:"aej",label:"AEJ ( 955,956 )",isCost:true},
+];
+const DEMO = [
+  {id:"tienda-demo-01",nombre:"Tienda Centro",pin:"CENTRO01"},
+  {id:"tienda-demo-02",nombre:"Tienda Norte",pin:"NORTE02"},
+  {id:"tienda-demo-03",nombre:"Tienda Sur",pin:"SUR03"},
 ];
 
-const SEED = {
-  "2026-06": {
-    venta:      [6673.19,6287,6337.04,6552.15,8250.69,10941.54,11651.53,7458.53,6415.59],
-    receta:     [-2244.4,-2054.13,-1953.21,-2051.39,-2543.86,-3301.67,-3591.3,-2373.11,-2042.18],
-    merma:      [-9.78,-8.92,-18.54,-11.9,-6.05,-28.2,-16.14,-1.32,-171.69],
-    refrigerio: [-20.82,-13.78,-24.74,-17.71,-17.74,-17.28,-19.12,-24.53,-15.2],
-    ci:         [-6.02,-6.02,-6.08,-5.92,-5.92,0,0,-6.14,-6.14],
-    ajuste:     [-4.27,5.15,6.97,4.21,7.63,0.14,-47.17,28.68,35.49],
-    aej:        [8.66,3.66,4.39,4.8,6.43,8.41,31.4,23.35,17.2],
-  }
+let session=null, currentYM="2026-06", localData={}, tiendas={};
+let currentTab="resumen", adminVerTienda=null, saveTimer=null, dbListener=null, deleteTarget=null;
+
+const parseF=v=>{if(v===""||v===null||v===undefined)return null;const n=parseFloat(v);return isNaN(n)?null:n;};
+const fmt=v=>v===null||v===""?"":parseFloat(v).toLocaleString("es-PE",{minimumFractionDigits:2,maximumFractionDigits:2});
+const fmtPct=v=>v===null||v===undefined?"":( v*100).toFixed(2)+"%";
+const fmtPctV=v=>v===null||v===undefined?"—":(v*100).toFixed(2)+"%";
+
+function daysIn(ym){const[y,m]=ym.split("-").map(Number);return new Date(y,m,0).getDate();}
+function dayLabels(ym){const[y,m]=ym.split("-").map(Number);const n=["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];return Array.from({length:daysIn(ym)},(_,i)=>{const d=new Date(y,m-1,i+1);return{num:i+1,dow:n[d.getDay()]};});}
+function todayDay(ym){const now=new Date(),[y,m]=ym.split("-").map(Number);return(now.getFullYear()===y&&(now.getMonth()+1)===m)?now.getDate():-1;}
+function emptyData(ym){const n=daysIn(ym),o={};INDICATORS.forEach(i=>{o[i.key]=Array(n).fill("");});return o;}
+function totalFor(d,k){return(d[k]||[]).reduce((a,v)=>a+(parseF(v)||0),0);}
+function pctFor(d,k,i){const v=parseF((d.venta||[])[i]),c=parseF((d[k]||[])[i]);return(!v||c===null)?null:c/v;}
+function totalPctFor(d,k){const tv=totalFor(d,"venta");return tv?totalFor(d,k)/tv:null;}
+function calcCV(d,i){const v=parseF((d.venta||[])[i]);if(!v)return null;return["receta","merma","refrigerio","ci","ajuste","aej"].reduce((a,k)=>a+(parseF((d[k]||[])[i])/v||0),0);}
+function totalCV(d){const tv=totalFor(d,"venta");if(!tv)return null;return["receta","merma","refrigerio","ci","ajuste","aej"].reduce((a,k)=>a+(totalFor(d,k)/tv||0),0);}
+function genId(){return"tienda-"+Date.now().toString(36);}
+function setSynced(ok,err=false){
+  const dot=document.getElementById("syncDot");
+  if(dot)dot.className="dot"+(ok?" on":err?" err":"");
+  const lbl=document.getElementById("syncLabel");
+  if(lbl)lbl.textContent=ok?"Sincronizado":err?"Sin conexión":"Guardando…";
+}
+
+async function initTiendas(){
+  const snap=await get(ref(db,"config/tiendas"));
+  if(!snap.exists()){
+    const obj={};DEMO.forEach(t=>{obj[t.id]={nombre:t.nombre,pin:t.pin};});
+    await set(ref(db,"config/tiendas"),obj);tiendas=obj;
+  } else {tiendas=snap.val();}
+}
+
+window.doLogin=function(){
+  const pin=document.getElementById("pinInput").value.trim().toUpperCase();
+  const err=document.getElementById("loginError");
+  err.style.display="none";
+  if(pin===PIN_ADMIN){session={role:"admin"};startApp();return;}
+  const found=Object.entries(tiendas).find(([id,t])=>t.pin.toUpperCase()===pin);
+  if(found){session={role:"tienda",tiendaId:found[0],tiendaNombre:found[1].nombre};startApp();return;}
+  err.style.display="block";
+  document.getElementById("pinInput").value="";
 };
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
-const parseF = v => { if(v===""||v===null||v===undefined) return null; const n=parseFloat(v); return isNaN(n)?null:n; };
-const fmt    = v => v===null||v===""?"": parseFloat(v).toLocaleString("es-PE",{minimumFractionDigits:2,maximumFractionDigits:2});
-const fmtPct = v => v===null||v===null?"": (v*100).toFixed(2)+"%";
+window.doLogout=function(){
+  session=null;localData={};currentTab="resumen";
+  if(dbListener){dbListener();dbListener=null;}
+  document.getElementById("appScreen").style.display="none";
+  document.getElementById("loginScreen").style.display="flex";
+  document.getElementById("pinInput").value="";
+};
 
-function daysIn(ym) { const [y,m]=ym.split("-").map(Number); return new Date(y,m,0).getDate(); }
-function dayLabels(ym) {
-  const [y,m]=ym.split("-").map(Number);
-  const names=["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
-  return Array.from({length:daysIn(ym)},(_,i)=>{ const d=new Date(y,m-1,i+1); return {num:i+1,dow:names[d.getDay()]}; });
-}
-function todayDay(ym) {
-  const now=new Date(), [y,m]=ym.split("-").map(Number);
-  return (now.getFullYear()===y&&(now.getMonth()+1)===m) ? now.getDate() : -1;
-}
-function emptyData(ym) {
-  const n=daysIn(ym), obj={};
-  INDICATORS.forEach(ind=>{ obj[ind.key]=Array(n).fill(""); });
-  return obj;
-}
-function applySeed(ym, obj) {
-  if(!SEED[ym]) return;
-  INDICATORS.forEach(ind=>{
-    (SEED[ym][ind.key]||[]).forEach((v,i)=>{ if(obj[ind.key][i]==="") obj[ind.key][i]=v; });
-  });
-}
-
-function totalFor(data,key)   { return (data[key]||[]).reduce((a,v)=>a+(parseF(v)||0),0); }
-function pctFor(data,key,d)   { const v=parseF((data.venta||[])[d]),c=parseF((data[key]||[])[d]); return (!v||c===null)?null:c/v; }
-function totalPctFor(data,key){ const tv=totalFor(data,"venta"); return tv?totalFor(data,key)/tv:null; }
-function calcCV(data,d)       { const v=parseF((data.venta||[])[d]); if(!v) return null; return ["receta","merma","refrigerio","ci","ajuste","aej"].reduce((a,k)=>a+(parseF((data[k]||[])[d])/v||0),0); }
-function totalCV(data)        { const tv=totalFor(data,"venta"); if(!tv) return null; return ["receta","merma","refrigerio","ci","ajuste","aej"].reduce((a,k)=>a+(totalFor(data,k)/tv||0),0); }
-
-// ── Estado ────────────────────────────────────────────────────────────────────
-let currentYM   = "2026-06";
-let localData   = emptyData(currentYM);
-let saveTimer   = null;
-let ignoreNext  = false; // evitar loop: yo guardo → llega evento → no redibujo
-
-// ── Firebase listeners ────────────────────────────────────────────────────────
-let currentListener = null;
-
-function subscribe(ym) {
-  if (currentListener) currentListener(); // unsubscribe anterior
-  const dbRef = ref(db, `cv/${ym}`);
-  currentListener = onValue(dbRef, snapshot => {
-    if (ignoreNext) { ignoreNext = false; return; }
-    const val = snapshot.val();
-    if (val) {
-      localData = val;
-    } else {
-      // Primera vez: subir seed
-      localData = emptyData(ym);
-      applySeed(ym, localData);
-      saveNow(ym, localData);
-    }
-    renderAll();
-    setSynced(true);
-    document.getElementById("loadOverlay").style.display = "none";
-  }, err => {
-    console.error(err);
-    setSynced(false, true);
-    document.getElementById("loadOverlay").style.display = "none";
-  });
-}
-
-async function saveNow(ym, data) {
-  ignoreNext = true;
-  try {
-    await set(ref(db, `cv/${ym}`), data);
-    document.getElementById("lastSaved").textContent =
-      "Guardado: " + new Date().toLocaleTimeString("es-PE");
-    setSynced(true);
-  } catch(e) {
-    setSynced(false, true);
+function startApp(){
+  document.getElementById("loginScreen").style.display="none";
+  document.getElementById("appScreen").style.display="block";
+  const sel=document.getElementById("monthSel");
+  sel.innerHTML=MESES.map(([v,l])=>`<option value="${v}">${l}</option>`).join("");
+  sel.value=currentYM;
+  if(session.role==="admin"){
+    document.getElementById("headerTitle").textContent="Administrador";
+    document.getElementById("headerSub").textContent="Acceso completo a todas las tiendas";
+    document.getElementById("adminTabs").style.display="flex";
+    adminVerTienda=Object.keys(tiendas)[0]||null;
+    renderAdminTab();
+  } else {
+    document.getElementById("headerTitle").textContent=session.tiendaNombre;
+    document.getElementById("headerSub").textContent="Ingreso de datos — solo tu tienda";
+    document.getElementById("adminTabs").style.display="none";
+    subscribeData(session.tiendaId);
   }
 }
 
-function triggerSave() {
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(() => saveNow(currentYM, localData), 800);
+window.switchTab=function(tab){
+  currentTab=tab;
+  document.querySelectorAll(".tab").forEach((t,i)=>{t.className="tab"+(["resumen","tiendas","datos"][i]===tab?" active":"");});
+  if(dbListener){dbListener();dbListener=null;}
+  renderAdminTab();
+};
+
+function renderAdminTab(){
+  if(currentTab==="resumen")renderResumen();
+  else if(currentTab==="tiendas")renderGestionTiendas();
+  else renderAdminDatos();
 }
 
-// ── Sync indicator ────────────────────────────────────────────────────────────
-function setSynced(ok, err=false) {
-  ["syncDot","syncDot2"].forEach(id=>{
-    const d = document.getElementById(id);
-    d.className = "dot" + (ok?" on": err?" err":"");
+async function renderResumen(){
+  document.getElementById("kpiStrip").innerHTML="";
+  document.getElementById("mainContent").innerHTML=`<div style="text-align:center;padding:30px;color:var(--muted)">Cargando consolidado…</div>`;
+  const ids=Object.keys(tiendas);
+  if(!ids.length){document.getElementById("mainContent").innerHTML=`<div style="padding:20px;color:var(--muted)">No hay tiendas registradas.</div>`;return;}
+  const snaps=await Promise.all(ids.map(id=>get(ref(db,`cv/${id}/${currentYM}`))));
+  const allData={};ids.forEach((id,i)=>{allData[id]=snaps[i].exists()?snaps[i].val():emptyData(currentYM);});
+  const cons=emptyData(currentYM);
+  const n=daysIn(currentYM);
+  INDICATORS.forEach(ind=>{for(let d=0;d<n;d++){let s=0;ids.forEach(id=>{s+=(parseF((allData[id][ind.key]||[])[d])||0);});cons[ind.key][d]=s||"";}});
+  const tv=totalFor(cons,"venta");const tcv=totalCV(cons);
+  document.getElementById("kpiStrip").innerHTML=`
+    <div class="kpi"><div class="lbl">Venta Total Consolidada</div><div class="val" style="color:#3b82f6">S/ ${tv?fmt(tv):"—"}</div><div class="sub">${ids.length} tiendas activas</div></div>
+    <div class="kpi"><div class="lbl">Receta Total</div><div class="val" style="color:#ef4444">${fmt(totalFor(cons,"receta"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(cons,"receta"))} de venta</div></div>
+    <div class="kpi"><div class="lbl">Merma Total</div><div class="val" style="color:#ef4444">${fmt(totalFor(cons,"merma"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(cons,"merma"))} de venta</div></div>
+    <div class="kpi"><div class="lbl">CV Consolidado</div><div class="val" style="color:#f59e0b">${tcv!==null?fmtPct(tcv):"—"}</div><div class="sub">% sobre venta total</div></div>`;
+  let tbl=`<div class="section-title">Detalle por tienda · ${MESES.find(m=>m[0]===currentYM)?.[1]||currentYM}</div>
+    <div class="table-wrap"><table class="consolidado-table"><thead><tr>
+      <th>Tienda</th><th>Venta Total</th><th>Receta</th><th>Receta%</th>
+      <th>Merma</th><th>Merma%</th><th>Refrigerio</th><th>CI</th><th>Ajuste</th><th>AEJ</th><th>CV%</th>
+    </tr></thead><tbody>`;
+  ids.forEach(id=>{
+    const d=allData[id];const cv2=totalCV(d);
+    tbl+=`<tr>
+      <td style="font-weight:700">🏪 ${tiendas[id]?.nombre||id}</td>
+      <td style="color:#3b82f6;font-weight:700">${fmt(totalFor(d,"venta"))||"—"}</td>
+      <td style="color:#f87171">${fmt(totalFor(d,"receta"))||"—"}</td>
+      <td style="color:#94a3b8">${fmtPctV(totalPctFor(d,"receta"))}</td>
+      <td style="color:#f87171">${fmt(totalFor(d,"merma"))||"—"}</td>
+      <td style="color:#94a3b8">${fmtPctV(totalPctFor(d,"merma"))}</td>
+      <td>${fmt(totalFor(d,"refrigerio"))||"—"}</td>
+      <td>${fmt(totalFor(d,"ci"))||"—"}</td>
+      <td>${fmt(totalFor(d,"ajuste"))||"—"}</td>
+      <td style="color:#86efac">${fmt(totalFor(d,"aej"))||"—"}</td>
+      <td style="color:#fbbf24;font-weight:700">${cv2!==null?fmtPct(cv2):"—"}</td>
+    </tr>`;
   });
-  document.getElementById("syncLabel").textContent = ok?"Sincronizado": err?"Error de conexión":"Guardando…";
-  document.getElementById("syncMsg").textContent   = ok?"Cambios sincronizados en tiempo real": err?"Sin conexión — reintentando…":"Guardando…";
+  tbl+=`<tr style="background:#0d1b3e;font-weight:700">
+    <td style="color:#93c5fd">▶ TOTAL CONSOLIDADO</td>
+    <td style="color:#3b82f6">${fmt(totalFor(cons,"venta"))||"—"}</td>
+    <td style="color:#f87171">${fmt(totalFor(cons,"receta"))||"—"}</td>
+    <td style="color:#94a3b8">${fmtPctV(totalPctFor(cons,"receta"))}</td>
+    <td style="color:#f87171">${fmt(totalFor(cons,"merma"))||"—"}</td>
+    <td style="color:#94a3b8">${fmtPctV(totalPctFor(cons,"merma"))}</td>
+    <td>${fmt(totalFor(cons,"refrigerio"))||"—"}</td>
+    <td>${fmt(totalFor(cons,"ci"))||"—"}</td>
+    <td>${fmt(totalFor(cons,"ajuste"))||"—"}</td>
+    <td style="color:#86efac">${fmt(totalFor(cons,"aej"))||"—"}</td>
+    <td style="color:#fbbf24">${tcv!==null?fmtPct(tcv):"—"}</td>
+  </tr></tbody></table></div>`;
+  document.getElementById("mainContent").innerHTML=tbl;
 }
 
-// ── Render ────────────────────────────────────────────────────────────────────
-function renderAll() {
-  renderKPIs();
-  renderTable();
-  renderChart();
-}
-
-function renderKPIs() {
-  const tv  = totalFor(localData,"venta");
-  const tcv = totalCV(localData);
-  const entered = (localData.venta||[]).filter(v=>v!=="").length;
-  document.getElementById("kpiStrip").innerHTML = `
-    <div class="kpi"><div class="lbl">Venta Total Mes</div><div class="val" style="color:#3b82f6">S/ ${tv?fmt(tv):"—"}</div><div class="sub">${entered} días ingresados</div></div>
-    <div class="kpi"><div class="lbl">Receta Total</div><div class="val" style="color:#ef4444">${fmt(totalFor(localData,"receta"))||"—"}</div><div class="sub">${fmtPct(totalPctFor(localData,"receta"))||"—"} de venta</div></div>
-    <div class="kpi"><div class="lbl">Merma Total</div><div class="val" style="color:#ef4444">${fmt(totalFor(localData,"merma"))||"—"}</div><div class="sub">${fmtPct(totalPctFor(localData,"merma"))||"—"} de venta</div></div>
-    <div class="kpi"><div class="lbl">AEJ Total</div><div class="val" style="color:#22c55e">${fmt(totalFor(localData,"aej"))||"—"}</div><div class="sub">${fmtPct(totalPctFor(localData,"aej"))||"—"} de venta</div></div>
-    <div class="kpi"><div class="lbl">CV Total Mes</div><div class="val" style="color:#f59e0b">${tcv!==null?fmtPct(tcv):"—"}</div><div class="sub">% sobre venta total</div></div>
-  `;
-}
-
-function renderTable() {
-  const labels = dayLabels(currentYM);
-  const n      = labels.length;
-  const today  = todayDay(currentYM);
-  let html = "<thead><tr>";
-  html += `<th>INDICADORES</th>`;
-  labels.forEach(l => html += `<th class="${l.num===today?"today-h":""}">${l.dow}<br>${l.num}</th>`);
-  html += `<th class="total-h">TOTAL MES</th></tr></thead><tbody>`;
-
-  INDICATORS.forEach(ind => {
-    const tot     = totalFor(localData, ind.key);
-    const hasData = (localData[ind.key]||[]).some(v=>v!=="");
-    // Fila de valores
-    html += `<tr>`;
-    html += `<td class="sticky">${ind.label}</td>`;
-    for(let d=0;d<n;d++){
-      const v   = (localData[ind.key]||[])[d];
-      const pv  = parseF(v);
-      const col = pv!==null&&pv<0?"#f87171": pv!==null&&pv>0&&ind.isCost?"#86efac":"#e2e8f0";
-      html += `<td class="val${(d+1)===today?" today-td":""}">
-        <input type="number" step="0.01" value="${v!==null&&v!==""?v:""}"
-          style="color:${col}"
-          data-key="${ind.key}" data-day="${d}" oninput="handleInput(this)">
-      </td>`;
-    }
-    html += `<td class="val total-td" style="color:${tot<0?"#f87171":tot>0&&ind.isCost?"#86efac":"#93c5fd"}">${hasData?fmt(tot):""}</td>`;
-    html += `</tr>`;
-
-    // Fila de porcentaje (solo costos)
-    if(ind.isCost){
-      html += `<tr>`;
-      html += `<td class="sticky pct-label">${ind.key.toUpperCase()} %</td>`;
-      for(let d=0;d<n;d++){
-        const p = pctFor(localData,ind.key,d);
-        html += `<td class="pct${(d+1)===today?" today-td":""}">${p!==null?fmtPct(p):""}</td>`;
-      }
-      html += `<td class="pct total-td">${fmtPct(totalPctFor(localData,ind.key))}</td>`;
-      html += `</tr>`;
-    }
-  });
-
-  // Fila CV
-  const tcv = totalCV(localData);
-  html += `<tr>`;
-  html += `<td class="sticky cv-label">CV</td>`;
-  for(let d=0;d<n;d++){
-    const cv = calcCV(localData,d);
-    html += `<td class="cv${(d+1)===today?" today-td":""}">${cv!==null?fmtPct(cv):""}</td>`;
-  }
-  html += `<td class="cv total-td" style="color:#fbbf24;border-left:2px solid #6366f1">${tcv!==null?fmtPct(tcv):""}</td>`;
-  html += `</tr></tbody>`;
-  document.getElementById("mainTable").innerHTML = html;
-}
-
-function renderChart() {
-  const labels = dayLabels(currentYM);
-  const today  = todayDay(currentYM);
-  const ventas = (localData.venta||[]).map(v=>parseF(v)||0);
-  const maxV   = Math.max(...ventas,1);
-  const maxH   = 100;
-  let html = "";
-  labels.forEach((l,i)=>{
-    const hv  = ventas[i] ? Math.round((ventas[i]/maxV)*maxH) : 0;
-    const cv  = calcCV(localData,i);
-    const cvH = cv!==null ? Math.min(Math.round(Math.abs(cv)*100*2), maxH) : 0;
-    const tod = l.num===today;
-    html += `<div class="bar-group">
-      <div class="bar-inner" style="height:${maxH}px">
-        <div class="bar bar-v" style="height:${hv}px;width:8px;${tod?"box-shadow:0 0 8px #6366f1;background:linear-gradient(180deg,#818cf8,#4338ca)":""}" title="Venta día ${l.num}: S/ ${fmt(ventas[i])}"></div>
-        <div class="bar bar-c" style="height:${cvH}px;width:8px" title="CV día ${l.num}: ${cv!==null?fmtPct(cv):''}"></div>
+function renderGestionTiendas(){
+  document.getElementById("kpiStrip").innerHTML="";
+  const ids=Object.keys(tiendas);
+  let html=`<div class="actions"><div class="section-title" style="margin:0">${ids.length} tiendas registradas</div>
+    <button class="btn btn-primary" onclick="abrirModalNuevaTienda()">➕ Nueva tienda</button></div>
+    <div class="stores-grid">`;
+  if(!ids.length)html+=`<div style="color:var(--muted);font-size:.82rem;padding:20px">Sin tiendas. Crea la primera.</div>`;
+  ids.forEach(id=>{
+    const t=tiendas[id];
+    html+=`<div class="store-card">
+      <h3>🏪 ${t.nombre}</h3>
+      <div class="pin-show">PIN de acceso: <strong>${t.pin}</strong></div>
+      <div class="store-actions">
+        <button class="btn btn-ghost" onclick="verDatosTienda('${id}')">📋 Ver datos</button>
+        <button class="btn btn-danger" onclick="pedirEliminar('${id}','${t.nombre.replace(/'/g,"\\'").replace(/"/g,"&quot;")}')">🗑 Eliminar</button>
       </div>
-      <div class="bar-lbl" style="color:${tod?"#a5b4fc":"#475569"}">${l.num}</div>
     </div>`;
   });
-  document.getElementById("chartBars").innerHTML = html;
+  html+=`</div>`;
+  document.getElementById("mainContent").innerHTML=html;
 }
 
-// ── Interacción ───────────────────────────────────────────────────────────────
-window.handleInput = function(el) {
-  const key = el.dataset.key;
-  const day = parseInt(el.dataset.day);
-  const val = el.value===""?"": parseFloat(el.value);
-  if(!localData[key]) localData[key] = Array(daysIn(currentYM)).fill("");
-  localData[key][day] = val;
-  // Actualizar solo celdas derivadas (sin redibujar la tabla entera)
-  updateDerivedCells();
-  renderKPIs();
-  renderChart();
-  triggerSave();
+window.verDatosTienda=function(id){
+  adminVerTienda=id;
+  document.querySelectorAll(".tab").forEach((t,i)=>{t.className="tab"+(i===2?" active":"");});
+  currentTab="datos";
+  if(dbListener){dbListener();dbListener=null;}
+  renderAdminDatos();
 };
 
-function updateDerivedCells() {
-  const n = daysIn(currentYM);
-  // recalcular % y CV para cada día
-  for(let d=0;d<n;d++){
-    INDICATORS.forEach(ind=>{
-      if(!ind.isCost) return;
-      const cell = document.querySelector(`td.pct[data-pkey="${ind.key}-${d}"]`);
-      // las celdas pct no tienen data attrs, usamos posición: row index
-    });
-  }
-  // Más simple: solo re-renderizar tabla si no hay focus
-  const active = document.activeElement;
-  if(!active || active.tagName!=="INPUT") {
-    renderTable();
-  } else {
-    // Re-render solo filas pct y cv sin tocar inputs
-    partialUpdate();
-  }
+function renderAdminDatos(){
+  const ids=Object.keys(tiendas);
+  if(!ids.length){document.getElementById("mainContent").innerHTML=`<div style="padding:20px;color:var(--muted)">No hay tiendas.</div>`;return;}
+  if(!adminVerTienda||!tiendas[adminVerTienda])adminVerTienda=ids[0];
+  document.getElementById("mainContent").innerHTML=`
+    <div class="actions">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-size:.75rem;color:var(--muted)">Tienda:</span>
+        <select id="adminTiendaSel" onchange="cambiarTiendaAdmin()" style="font-size:.8rem;">
+          ${ids.map(id=>`<option value="${id}"${id===adminVerTienda?" selected":""}>${tiendas[id].nombre}</option>`).join("")}
+        </select>
+      </div>
+      <button class="btn btn-danger" onclick="clearMonthAdmin()">🗑 Limpiar mes</button>
+    </div>
+    <div id="tablaDatos"></div>`;
+  subscribeData(adminVerTienda,true);
 }
 
-function partialUpdate() {
-  const n      = daysIn(currentYM);
-  const today  = todayDay(currentYM);
-  const rows   = document.querySelectorAll("tbody tr");
-  let rowIdx   = 0;
-  INDICATORS.forEach(ind => {
-    rowIdx++; // fila de valores — no tocar inputs
-    if(ind.isCost){
-      const pctRow = rows[rowIdx];
-      if(pctRow){
-        const cells = pctRow.querySelectorAll("td.pct");
-        for(let d=0;d<n;d++){
-          const p = pctFor(localData,ind.key,d);
-          if(cells[d]) cells[d].textContent = p!==null?fmtPct(p):"";
-        }
-        const totCell = pctRow.querySelector("td.total-td");
-        if(totCell) totCell.textContent = fmtPct(totalPctFor(localData,ind.key));
-      }
-      rowIdx++;
+window.cambiarTiendaAdmin=function(){
+  adminVerTienda=document.getElementById("adminTiendaSel").value;
+  if(dbListener){dbListener();dbListener=null;}
+  subscribeData(adminVerTienda,true);
+};
+window.clearMonthAdmin=function(){
+  if(!confirm(`¿Limpiar datos de "${tiendas[adminVerTienda]?.nombre}" para este mes?`))return;
+  localData=emptyData(currentYM);
+  saveNow(adminVerTienda);
+  const cont=document.getElementById("tablaDatos");
+  if(cont)renderTablaEditable(cont,adminVerTienda);
+};
+
+function subscribeData(tiendaId,isAdmin=false){
+  if(dbListener){dbListener();dbListener=null;}
+  dbListener=onValue(ref(db,`cv/${tiendaId}/${currentYM}`),snap=>{
+    localData=snap.exists()?snap.val():emptyData(currentYM);
+    renderKPIs_tienda();
+    const target=isAdmin?document.getElementById("tablaDatos"):document.getElementById("mainContent");
+    if(target)renderTablaEditable(target,tiendaId);
+    setSynced(true);
+    document.getElementById("loadOverlay").style.display="none";
+  },()=>{setSynced(false,true);document.getElementById("loadOverlay").style.display="none";});
+}
+
+function renderKPIs_tienda(){
+  const tv=totalFor(localData,"venta");const tcv=totalCV(localData);
+  const entered=(localData.venta||[]).filter(v=>v!=="").length;
+  document.getElementById("kpiStrip").innerHTML=`
+    <div class="kpi"><div class="lbl">Venta Total Mes</div><div class="val" style="color:#3b82f6">S/ ${tv?fmt(tv):"—"}</div><div class="sub">${entered} días ingresados</div></div>
+    <div class="kpi"><div class="lbl">Receta</div><div class="val" style="color:#ef4444">${fmt(totalFor(localData,"receta"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(localData,"receta"))}</div></div>
+    <div class="kpi"><div class="lbl">Merma</div><div class="val" style="color:#ef4444">${fmt(totalFor(localData,"merma"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(localData,"merma"))}</div></div>
+    <div class="kpi"><div class="lbl">AEJ</div><div class="val" style="color:#22c55e">${fmt(totalFor(localData,"aej"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(localData,"aej"))}</div></div>
+    <div class="kpi"><div class="lbl">CV Total Mes</div><div class="val" style="color:#f59e0b">${tcv!==null?fmtPct(tcv):"—"}</div><div class="sub">% sobre venta</div></div>`;
+}
+
+function renderTablaEditable(container,tiendaId){
+  const labels=dayLabels(currentYM);const n=labels.length;const today=todayDay(currentYM);
+  // Chart
+  const ventas=(localData.venta||[]).map(v=>parseF(v)||0);const maxV=Math.max(...ventas,1);
+  let chartHtml=`<div class="section-title">Venta diaria</div><div class="chart-box">
+    <div style="display:flex;align-items:flex-end;gap:3px;height:90px;margin-bottom:4px">`;
+  labels.forEach((l,i)=>{
+    const hv=ventas[i]?Math.round((ventas[i]/maxV)*85):0;
+    const cv=calcCV(localData,i);const cvH=cv!==null?Math.min(Math.round(Math.abs(cv)*100*1.5),85):0;
+    const tod=l.num===today;
+    chartHtml+=`<div style="flex:1;display:flex;flex-direction:column;align-items:center;min-width:12px">
+      <div style="display:flex;align-items:flex-end;gap:2px;height:85px">
+        <div class="bar bar-v" style="height:${hv}px;${tod?"box-shadow:0 0 7px #6366f1;background:linear-gradient(180deg,#818cf8,#4338ca)":""}" title="S/ ${fmt(ventas[i])}"></div>
+        <div class="bar bar-c" style="height:${cvH}px" title="${cv!==null?fmtPct(cv):""}"></div>
+      </div>
+      <div style="font-size:.5rem;color:${tod?"#a5b4fc":"#475569"};margin-top:2px">${l.num}</div>
+    </div>`;
+  });
+  chartHtml+=`</div></div>`;
+
+  // Tabla
+  let tbl=`<div class="section-title">Indicadores diarios</div>
+    <div class="table-wrap"><table id="mainTable"><thead><tr><th>INDICADORES</th>`;
+  labels.forEach(l=>{tbl+=`<th class="${l.num===today?"today-h":""}">${l.dow}<br>${l.num}</th>`;});
+  tbl+=`<th class="total-h">TOTAL MES</th></tr></thead><tbody>`;
+  INDICATORS.forEach(ind=>{
+    const tot=totalFor(localData,ind.key);const hasData=(localData[ind.key]||[]).some(v=>v!=="");
+    tbl+=`<tr><td class="sticky">${ind.label}</td>`;
+    for(let d=0;d<n;d++){
+      const v=(localData[ind.key]||[])[d];const pv=parseF(v);
+      const col=pv!==null&&pv<0?"#f87171":pv!==null&&pv>0&&ind.isCost?"#86efac":"#e2e8f0";
+      tbl+=`<td class="val${(d+1)===today?" today-td":""}"><input type="number" step="0.01" value="${v!==null&&v!==""?v:""}" style="color:${col}" data-key="${ind.key}" data-day="${d}" oninput="handleInput(this,'${tiendaId}')"></td>`;
     }
-    // Total de la fila de valores
-    const valRow = rows[rowIdx-1-(ind.isCost?1:0)];
-    if(valRow){
-      const totCell = valRow.querySelector("td.total-td");
-      if(totCell){
-        const tot = totalFor(localData,ind.key);
-        const hasData = (localData[ind.key]||[]).some(v=>v!=="");
-        totCell.textContent = hasData?fmt(tot):"";
-        totCell.style.color = tot<0?"#f87171": tot>0&&ind.isCost?"#86efac":"#93c5fd";
-      }
+    tbl+=`<td class="val total-td" style="color:${tot<0?"#f87171":tot>0&&ind.isCost?"#86efac":"#93c5fd"}">${hasData?fmt(tot):""}</td></tr>`;
+    if(ind.isCost){
+      tbl+=`<tr><td class="sticky pct-lbl">${ind.key.toUpperCase()} %</td>`;
+      for(let d=0;d<n;d++){const p=pctFor(localData,ind.key,d);tbl+=`<td class="pct${(d+1)===today?" today-td":""}">${p!==null?fmtPct(p):""}</td>`;}
+      tbl+=`<td class="pct total-td">${fmtPct(totalPctFor(localData,ind.key))}</td></tr>`;
     }
   });
-  // Fila CV
-  const cvRow = rows[rowIdx];
-  if(cvRow){
-    const cells = cvRow.querySelectorAll("td.cv");
-    for(let d=0;d<n;d++){
-      const cv = calcCV(localData,d);
-      if(cells[d]) cells[d].textContent = cv!==null?fmtPct(cv):"";
-    }
-    const totCell = cvRow.querySelector("td.total-td");
-    const tcv = totalCV(localData);
-    if(totCell) totCell.textContent = tcv!==null?fmtPct(tcv):"";
-  }
+  const tcv=totalCV(localData);
+  tbl+=`<tr><td class="sticky cv-lbl">CV</td>`;
+  for(let d=0;d<n;d++){const cv=calcCV(localData,d);tbl+=`<td class="cv${(d+1)===today?" today-td":""}">${cv!==null?fmtPct(cv):""}</td>`;}
+  tbl+=`<td class="cv total-td" style="color:#fbbf24">${tcv!==null?fmtPct(tcv):""}</td></tr></tbody></table></div>`;
+  if(container)container.innerHTML=chartHtml+tbl;
 }
 
-window.changeMonth = function() {
-  currentYM = document.getElementById("monthSel").value;
-  localData = emptyData(currentYM);
-  document.getElementById("loadOverlay").style.display = "flex";
-  subscribe(currentYM);
+window.handleInput=function(el,tiendaId){
+  const key=el.dataset.key,day=parseInt(el.dataset.day);
+  const val=el.value===""?"":parseFloat(el.value);
+  if(!localData[key])localData[key]=Array(daysIn(currentYM)).fill("");
+  localData[key][day]=val;
+  partialUpdate();renderKPIs_tienda();
+  clearTimeout(saveTimer);saveTimer=setTimeout(()=>saveNow(tiendaId),800);
 };
 
-window.clearMonth = function() {
-  if(!confirm("¿Limpiar todos los datos de este mes?")) return;
-  localData = emptyData(currentYM);
-  saveNow(currentYM, localData);
-  renderAll();
+function partialUpdate(){
+  const n=daysIn(currentYM);
+  const rows=document.querySelectorAll("#mainTable tbody tr");
+  let ri=0;
+  INDICATORS.forEach(ind=>{
+    ri++;
+    if(ind.isCost){
+      const pr=rows[ri];
+      if(pr){const cells=pr.querySelectorAll("td.pct");for(let d=0;d<n;d++){const p=pctFor(localData,ind.key,d);if(cells[d])cells[d].textContent=p!==null?fmtPct(p):"";}const tot=pr.querySelector("td.total-td");if(tot)tot.textContent=fmtPct(totalPctFor(localData,ind.key));}
+      ri++;
+    }
+    const vr=rows[ri-1-(ind.isCost?1:0)];
+    if(vr){const tot=vr.querySelector("td.total-td");if(tot){const tv=totalFor(localData,ind.key);const has=(localData[ind.key]||[]).some(v=>v!=="");tot.textContent=has?fmt(tv):"";tot.style.color=tv<0?"#f87171":tv>0&&ind.isCost?"#86efac":"#93c5fd";}}
+  });
+  const cvr=rows[ri];
+  if(cvr){const cells=cvr.querySelectorAll("td.cv");for(let d=0;d<n;d++){const cv=calcCV(localData,d);if(cells[d])cells[d].textContent=cv!==null?fmtPct(cv):"";}const tot=cvr.querySelector("td.total-td");const tcv=totalCV(localData);if(tot)tot.textContent=tcv!==null?fmtPct(tcv):"";}
+}
+
+async function saveNow(tiendaId){
+  setSynced(false);
+  try{
+    await set(ref(db,`cv/${tiendaId}/${currentYM}`),localData);
+    document.getElementById("lastSaved").textContent="Guardado: "+new Date().toLocaleTimeString("es-PE");
+    setSynced(true);
+  }catch(e){setSynced(false,true);}
+}
+
+window.changeMonth=function(){
+  currentYM=document.getElementById("monthSel").value;
+  localData=emptyData(currentYM);
+  if(session.role==="tienda"){subscribeData(session.tiendaId);}
+  else{if(currentTab==="resumen")renderResumen();else if(currentTab==="datos")subscribeData(adminVerTienda,true);}
 };
 
-// ── Arranque ──────────────────────────────────────────────────────────────────
-subscribe(currentYM);
+window.abrirModalNuevaTienda=function(){
+  document.getElementById("newStoreName").value="";
+  document.getElementById("newStorePIN").value="";
+  document.getElementById("modalError").style.display="none";
+  document.getElementById("modalNuevaTienda").style.display="flex";
+};
+window.closeModal=function(){
+  document.getElementById("modalNuevaTienda").style.display="none";
+  document.getElementById("modalEliminar").style.display="none";
+};
+window.crearTienda=async function(){
+  const nombre=document.getElementById("newStoreName").value.trim();
+  const pin=document.getElementById("newStorePIN").value.trim().toUpperCase();
+  const errEl=document.getElementById("modalError");errEl.style.display="none";
+  if(!nombre){errEl.textContent="Ingresa el nombre de la tienda.";errEl.style.display="block";return;}
+  if(!pin||pin.length<3){errEl.textContent="El PIN debe tener al menos 3 caracteres.";errEl.style.display="block";return;}
+  if(pin===PIN_ADMIN){errEl.textContent="Ese PIN está reservado para el administrador.";errEl.style.display="block";return;}
+  const dup=Object.values(tiendas).find(t=>t.pin===pin);
+  if(dup){errEl.textContent=`PIN "${pin}" ya en uso por "${dup.nombre}".`;errEl.style.display="block";return;}
+  const id=genId();tiendas[id]={nombre,pin};
+  await set(ref(db,`config/tiendas/${id}`),{nombre,pin});
+  closeModal();renderGestionTiendas();
+};
+
+window.pedirEliminar=function(id,nombre){
+  deleteTarget=id;
+  document.getElementById("deleteStoreName").textContent=nombre;
+  document.getElementById("modalEliminar").style.display="flex";
+};
+window.confirmarEliminar=async function(){
+  if(!deleteTarget)return;
+  const id=deleteTarget;deleteTarget=null;
+  delete tiendas[id];
+  await remove(ref(db,`config/tiendas/${id}`));
+  await remove(ref(db,`cv/${id}`));
+  closeModal();
+  if(adminVerTienda===id)adminVerTienda=Object.keys(tiendas)[0]||null;
+  renderGestionTiendas();
+};
+
+async function init(){
+  document.getElementById("loadMsg").textContent="Conectando con Firebase…";
+  try{await initTiendas();document.getElementById("loadOverlay").style.display="none";document.getElementById("loginScreen").style.display="flex";}
+  catch(e){document.getElementById("loadMsg").textContent="Error de conexión. Recarga la página.";}
+}
+init();
 </script>
 </body>
 </html>
