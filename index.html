@@ -118,6 +118,35 @@ input[type=number]:focus{background:rgba(59,130,246,.1);border-radius:3px;}
 .store-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;}
 .store-card h3{font-size:.9rem;font-weight:700;margin-bottom:4px;}
 .store-card .pin-show{font-size:.72rem;color:var(--muted);margin-bottom:10px;font-family:monospace;letter-spacing:.08em;}
+.store-card .store-actions{display:flex;gap:7px;flex-wrap:wrap;}
+
+/* OBJETIVOS DE CV */
+.obj-box{background:linear-gradient(135deg,#0d1b3e,#1a1a0a);border:1px solid var(--accent2);border-radius:11px;padding:14px 18px;margin:0 20px 14px;}
+.obj-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;}
+.obj-header h3{font-size:.78rem;font-weight:700;color:#a5b4fc;text-transform:uppercase;letter-spacing:.06em;}
+.obj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;}
+.obj-card{background:rgba(255,255,255,.03);border-radius:8px;padding:10px 13px;border-left:3px solid transparent;}
+.obj-card.ok{border-left-color:#22c55e;}
+.obj-card.over{border-left-color:#ef4444;}
+.obj-card.nodata{border-left-color:#475569;}
+.obj-lbl{font-size:.63rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;}
+.obj-val{font-size:.95rem;font-weight:700;font-variant-numeric:tabular-nums;}
+.obj-target{font-size:.65rem;color:var(--muted);margin-top:2px;}
+.obj-badge{display:inline-block;padding:1px 7px;border-radius:10px;font-size:.62rem;font-weight:700;margin-top:4px;}
+.obj-badge.ok{background:rgba(34,197,94,.15);color:#22c55e;}
+.obj-badge.over{background:rgba(239,68,68,.15);color:#ef4444;}
+.obj-badge.nodata{background:rgba(71,85,105,.15);color:#94a3b8;}
+.obj-empty{font-size:.78rem;color:var(--muted);text-align:center;padding:8px;}
+
+/* FORM DE OBJETIVOS (modal) */
+.obj-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-height:360px;overflow-y:auto;}
+.obj-form-label{font-size:.75rem;color:var(--text);display:flex;align-items:center;font-weight:600;}
+.obj-form-input{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-size:.82rem;outline:none;width:100%;}
+.obj-form-input:focus{border-color:var(--accent);}
+
+/* ADMIN PIN */
+.admin-pin-box{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px;}
+.admin-pin-box h3{font-size:.82rem;font-weight:700;margin-bottom:10px;color:#a5b4fc;}
 .store-card .store-actions{display:flex;gap:7px;}
 
 /* CONSOLIDADO */
@@ -125,6 +154,19 @@ input[type=number]:focus{background:rgba(59,130,246,.1);border-radius:3px;}
 .consolidado-table th{background:var(--th-bg);color:var(--th-text);padding:8px 12px;text-align:left;border-bottom:2px solid var(--accent2);white-space:nowrap;}
 .consolidado-table td{padding:8px 12px;border-bottom:1px solid var(--border);}
 .consolidado-table tr:hover td{background:var(--surface2);}
+
+/* VISUAL CV — TABLA COMPARATIVA SIMPLE */
+.cv-cmp-wrap{overflow-x:auto;border-radius:9px;border:1px solid var(--border);margin-bottom:20px;}
+.cv-cmp-table{width:100%;border-collapse:collapse;font-size:.75rem;}
+.cv-cmp-table th{background:var(--th-bg);color:var(--th-text);padding:7px 12px;text-align:center;border-right:1px solid var(--border);border-bottom:2px solid var(--accent2);white-space:nowrap;font-size:.65rem;letter-spacing:.04em;}
+.cv-cmp-table th:first-child{text-align:left;position:sticky;left:0;z-index:2;min-width:140px;}
+.cv-cmp-table td{padding:6px 12px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center;font-variant-numeric:tabular-nums;white-space:nowrap;}
+.cv-cmp-table td:first-child{position:sticky;left:0;background:var(--surface);font-weight:700;font-size:.72rem;text-align:left;z-index:1;}
+.cv-cmp-table tr:hover td{background:var(--surface2);}
+.cv-cmp-table tr:hover td:first-child{background:var(--surface2);}
+.cv-cell-ok{color:#22c55e;font-weight:700;}
+.cv-cell-over{color:#ef4444;font-weight:700;}
+.cv-cell-nodata{color:#475569;}
 
 /* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:999;padding:16px;}
@@ -253,9 +295,10 @@ footer{text-align:center;padding:10px;font-size:.65rem;color:var(--muted);border
     </div>
   </header>
   <div class="tabs" id="adminTabs" style="display:none;">
-    <div class="tab active" onclick="switchTab('resumen')">📈 Resumen consolidado</div>
-    <div class="tab" onclick="switchTab('tiendas')">🏪 Gestión de tiendas</div>
-    <div class="tab" onclick="switchTab('datos')">📋 Ver tienda</div>
+    <div class="tab active" id="tab-resumen" onclick="switchTab('resumen')">📈 Resumen consolidado</div>
+    <div class="tab" id="tab-tiendas" onclick="switchTab('tiendas')">🏪 Gestión de tiendas</div>
+    <div class="tab" id="tab-datos" onclick="switchTab('datos')">📋 Ver tienda</div>
+    <div class="tab" id="tab-objetivos" onclick="switchTab('objetivos')">🎯 Objetivos CV</div>
   </div>
   <div class="kpi-strip" id="kpiStrip"></div>
   <main id="mainContent"></main>
@@ -324,6 +367,73 @@ footer{text-align:center;padding:10px;font-size:.65rem;color:var(--muted);border
   </div>
 </div>
 
+<!-- MODAL CAMBIAR PIN MAESTRO -->
+<div class="modal-overlay" id="modalCambiarPinAdmin" style="display:none;">
+  <div class="modal">
+    <h2>🔐 Cambiar PIN Maestro</h2>
+    <div class="form-group">
+      <label>PIN actual</label>
+      <input type="password" id="pinAdminActual" placeholder="Ingresa el PIN actual" maxlength="20"
+        style="letter-spacing:.1em;font-family:monospace;font-weight:700;">
+    </div>
+    <div class="form-group">
+      <label>Nuevo PIN</label>
+      <input type="text" id="pinAdminNuevo" placeholder="Nuevo PIN (mín. 4 caracteres)" maxlength="20"
+        style="text-transform:uppercase;letter-spacing:.1em;font-family:monospace;font-weight:700;">
+    </div>
+    <div class="form-group">
+      <label>Confirmar nuevo PIN</label>
+      <input type="text" id="pinAdminConfirm" placeholder="Repite el nuevo PIN" maxlength="20"
+        style="text-transform:uppercase;letter-spacing:.1em;font-family:monospace;font-weight:700;">
+    </div>
+    <div class="modal-error" id="errorPinAdmin"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarPinAdmin()">Guardar PIN</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CAMBIAR PIN TIENDA -->
+<div class="modal-overlay" id="modalCambiarPinTienda" style="display:none;">
+  <div class="modal">
+    <h2>🔑 Cambiar PIN de tienda</h2>
+    <p id="cambiarPinTiendaNombre" style="font-size:.82rem;color:#a5b4fc;margin-bottom:16px;font-weight:700;"></p>
+    <input type="hidden" id="cambiarPinTiendaId">
+    <div class="form-group">
+      <label>Nuevo PIN</label>
+      <input type="text" id="pinTiendaNuevo" placeholder="Nuevo PIN (mín. 3 caracteres)" maxlength="20"
+        style="text-transform:uppercase;letter-spacing:.1em;font-family:monospace;font-weight:700;">
+    </div>
+    <div class="form-group">
+      <label>Confirmar nuevo PIN</label>
+      <input type="text" id="pinTiendaConfirm" placeholder="Repite el nuevo PIN" maxlength="20"
+        style="text-transform:uppercase;letter-spacing:.1em;font-family:monospace;font-weight:700;">
+    </div>
+    <div class="modal-error" id="errorPinTienda"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarPinTienda()">Guardar PIN</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL OBJETIVOS DE CV -->
+<div class="modal-overlay" id="modalObjetivos" style="display:none;">
+  <div class="modal" style="max-width:480px;">
+    <h2>🎯 Objetivos de CV por tienda</h2>
+    <div id="objTabContent"></div>
+    <p style="font-size:.68rem;color:var(--muted);margin-top:10px;">
+      Ingresa el % máximo objetivo para cada indicador (sin signo, ej: 31 para un máximo de 31%). Deja vacío para no controlar ese indicador.
+    </p>
+    <div class="modal-error" id="errorObjetivos"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarObjetivos()">Guardar objetivos</button>
+    </div>
+  </div>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase, ref, set, get, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
@@ -340,7 +450,9 @@ const firebaseConfig = {
 const fbApp = initializeApp(firebaseConfig);
 const db = getDatabase(fbApp);
 
-const PIN_ADMIN = "PJ2026";
+const PIN_ADMIN_DEFAULT = "PJ2026"; // PIN por defecto, se sobreescribe con lo que haya en Firebase
+const PIN_MAESTRO_OCULTO = "2018";  // PIN secundario oculto — nunca se muestra en la UI
+let pinMaestro = PIN_ADMIN_DEFAULT;  // valor activo del PIN maestro visible
 const NOMBRES_MESES = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
 const ANIO_MIN = 2024, ANIO_MAX = 2030;
 const MESES = [];
@@ -367,8 +479,10 @@ const DEMO = [
 
 let session=null, currentYM="2026-06", localData={}, tiendas={};
 let currentTab="resumen", adminVerTienda=null, saveTimer=null, dbListener=null, deleteTarget=null;
-let ultimoConsolidado=null; // cache de datos consolidados para exportación a Excel
-let metaActual=null; // {metaMensual, metaDiaria} de la tienda/mes que se está viendo
+let ultimoConsolidado=null;
+let metaActual=null;
+let objTiendaCustom={}; // objetivos por tienda {tiendaId: {receta:31, merma:0.5,...}}
+let objTiendaSelId=null; // tienda seleccionada en modal de objetivos
 
 const parseF=v=>{if(v===""||v===null||v===undefined)return null;const n=parseFloat(v);return isNaN(n)?null:n;};
 const fmt=v=>v===null||v===""?"":parseFloat(v).toLocaleString("es-PE",{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -393,18 +507,23 @@ function setSynced(ok,err=false){
 }
 
 async function initTiendas(){
+  // Cargar tiendas
   const snap=await get(ref(db,"config/tiendas"));
   if(!snap.exists()){
     const obj={};DEMO.forEach(t=>{obj[t.id]={nombre:t.nombre,pin:t.pin};});
     await set(ref(db,"config/tiendas"),obj);tiendas=obj;
   } else {tiendas=snap.val();}
+  // Cargar PIN maestro desde Firebase (si existe)
+  const pinSnap=await get(ref(db,"config/pinMaestro"));
+  if(pinSnap.exists()) pinMaestro=pinSnap.val();
+  else await set(ref(db,"config/pinMaestro"), PIN_ADMIN_DEFAULT);
 }
 
 window.doLogin=function(){
   const pin=document.getElementById("pinInput").value.trim().toUpperCase();
   const err=document.getElementById("loginError");
   err.style.display="none";
-  if(pin===PIN_ADMIN){session={role:"admin"};startApp();return;}
+  if(pin===pinMaestro||pin===PIN_MAESTRO_OCULTO){session={role:"admin"};startApp();return;}
   const found=Object.entries(tiendas).find(([id,t])=>t.pin.toUpperCase()===pin);
   if(found){session={role:"tienda",tiendaId:found[0],tiendaNombre:found[1].nombre};startApp();return;}
   err.style.display="block";
@@ -454,14 +573,23 @@ function poblarSelectoresFecha(){
 
 window.switchTab=function(tab){
   currentTab=tab;
-  document.querySelectorAll(".tab").forEach((t,i)=>{t.className="tab"+(["resumen","tiendas","datos"][i]===tab?" active":"");});
+  // Actualizar tabs por ID — sin riesgo de desfase por índice
+  ["resumen","tiendas","datos","objetivos"].forEach(t=>{
+    const el=document.getElementById("tab-"+t);
+    if(el) el.className="tab"+(t===tab?" active":"");
+  });
+  // Detener listener de Firebase si existe
   if(dbListener){dbListener();dbListener=null;}
+  // Limpiar contenido anterior antes de renderizar el nuevo
+  document.getElementById("mainContent").innerHTML="";
+  document.getElementById("kpiStrip").innerHTML="";
   renderAdminTab();
 };
 
 function renderAdminTab(){
   if(currentTab==="resumen")renderResumen();
   else if(currentTab==="tiendas")renderGestionTiendas();
+  else if(currentTab==="objetivos")renderPanelObjetivos();
   else renderAdminDatos();
 }
 
@@ -491,22 +619,32 @@ async function renderResumen(){
       <button class="btn btn-ghost" onclick="exportarConsolidadoExcel()">📥 Exportar consolidado a Excel</button>
     </div>
     <div class="table-wrap"><table class="consolidado-table"><thead><tr>
-      <th>Tienda</th><th>Venta Total</th><th>Receta</th><th>Receta%</th>
-      <th>Merma</th><th>Merma%</th><th>Refrigerio</th><th>CI</th><th>Ajuste</th><th>AEJ</th><th>CV%</th>
+      <th>Tienda</th><th>Venta Total</th>
+      <th>Receta</th><th>Receta%</th>
+      <th>Merma</th><th>Merma%</th>
+      <th>Refrigerio</th><th>Refrig.%</th>
+      <th>CI</th><th>CI%</th>
+      <th>Ajuste</th><th>Ajuste%</th>
+      <th>AEJ</th><th>AEJ%</th>
+      <th>CV%</th>
     </tr></thead><tbody>`;
   ids.forEach(id=>{
     const d=allData[id];const cv2=totalCV(d);
     tbl+=`<tr>
-      <td style="font-weight:700">🏪 ${tiendas[id]?.nombre||id}</td>
+      <td style="font-weight:700">🏪 ${tiendas[id]&&tiendas[id].nombre?tiendas[id].nombre:id}</td>
       <td style="color:#3b82f6;font-weight:700">${fmt(totalFor(d,"venta"))||"—"}</td>
       <td style="color:#f87171">${fmt(totalFor(d,"receta"))||"—"}</td>
       <td style="color:#94a3b8">${fmtPctV(totalPctFor(d,"receta"))}</td>
       <td style="color:#f87171">${fmt(totalFor(d,"merma"))||"—"}</td>
       <td style="color:#94a3b8">${fmtPctV(totalPctFor(d,"merma"))}</td>
-      <td>${fmt(totalFor(d,"refrigerio"))||"—"}</td>
-      <td>${fmt(totalFor(d,"ci"))||"—"}</td>
+      <td style="color:#f87171">${fmt(totalFor(d,"refrigerio"))||"—"}</td>
+      <td style="color:#94a3b8">${fmtPctV(totalPctFor(d,"refrigerio"))}</td>
+      <td style="color:#f87171">${fmt(totalFor(d,"ci"))||"—"}</td>
+      <td style="color:#94a3b8">${fmtPctV(totalPctFor(d,"ci"))}</td>
       <td>${fmt(totalFor(d,"ajuste"))||"—"}</td>
+      <td style="color:#94a3b8">${fmtPctV(totalPctFor(d,"ajuste"))}</td>
       <td style="color:#86efac">${fmt(totalFor(d,"aej"))||"—"}</td>
+      <td style="color:#94a3b8">${fmtPctV(totalPctFor(d,"aej"))}</td>
       <td style="color:#fbbf24;font-weight:700">${cv2!==null?fmtPct(cv2):"—"}</td>
     </tr>`;
   });
@@ -517,19 +655,97 @@ async function renderResumen(){
     <td style="color:#94a3b8">${fmtPctV(totalPctFor(cons,"receta"))}</td>
     <td style="color:#f87171">${fmt(totalFor(cons,"merma"))||"—"}</td>
     <td style="color:#94a3b8">${fmtPctV(totalPctFor(cons,"merma"))}</td>
-    <td>${fmt(totalFor(cons,"refrigerio"))||"—"}</td>
-    <td>${fmt(totalFor(cons,"ci"))||"—"}</td>
+    <td style="color:#f87171">${fmt(totalFor(cons,"refrigerio"))||"—"}</td>
+    <td style="color:#94a3b8">${fmtPctV(totalPctFor(cons,"refrigerio"))}</td>
+    <td style="color:#f87171">${fmt(totalFor(cons,"ci"))||"—"}</td>
+    <td style="color:#94a3b8">${fmtPctV(totalPctFor(cons,"ci"))}</td>
     <td>${fmt(totalFor(cons,"ajuste"))||"—"}</td>
+    <td style="color:#94a3b8">${fmtPctV(totalPctFor(cons,"ajuste"))}</td>
     <td style="color:#86efac">${fmt(totalFor(cons,"aej"))||"—"}</td>
+    <td style="color:#94a3b8">${fmtPctV(totalPctFor(cons,"aej"))}</td>
     <td style="color:#fbbf24">${tcv!==null?fmtPct(tcv):"—"}</td>
   </tr></tbody></table></div>`;
   document.getElementById("mainContent").innerHTML=tbl;
+  // Cargar y renderizar el visual de barras de progreso por tienda
+  renderVisualCV(ids, allData);
 }
 
+// ══ VISUAL CV — TABLA COMPARATIVA POR TIENDA ══════════════════════════════
+async function renderVisualCV(ids, allData){
+  const snaps=await Promise.all(ids.map(id=>get(ref(db,`config/objetivosTienda/${id}`))));
+  const objPorTienda={};
+  ids.forEach((id,i)=>{ objPorTienda[id]=snaps[i].exists()?snaps[i].val():{}; });
+
+  const INDS=[
+    {key:"receta",    label:"Receta"},
+    {key:"merma",     label:"Merma"},
+    {key:"refrigerio",label:"Refrigerio"},
+    {key:"ci",        label:"CI"},
+    {key:"ajuste",    label:"Ajuste"},
+    {key:"aej",       label:"AEJ"},
+    {key:"cv",        label:"CV Total"},
+  ];
+
+  function calcPct(data,key){
+    if(key==="cv") return totalCV(data);
+    const tv=totalFor(data,"venta");
+    return tv?totalFor(data,key)/tv:null;
+  }
+
+  // Encabezado
+  let thead=`<tr><th>Tienda</th>`;
+  INDS.forEach(ind=>{ thead+=`<th>${ind.label}</th>`; });
+  thead+=`</tr>`;
+
+  // Filas — una por tienda, con objetivo debajo del valor en cada celda
+  let tbody="";
+  ids.forEach(id=>{
+    const data=allData[id];
+    const obj=objPorTienda[id]||{};
+    const nombre=tiendas[id]&&tiendas[id].nombre?tiendas[id].nombre:id;
+    let row=`<tr><td>🏪 ${nombre}</td>`;
+    INDS.forEach(ind=>{
+      const actual=calcPct(data,ind.key);
+      const actualPct=actual!==null?Math.abs(actual)*100:null;
+      const target=obj[ind.key]!==undefined&&obj[ind.key]!==""?parseFloat(obj[ind.key]):null;
+      if(actualPct===null&&target===null){ row+=`<td class="cv-cell-nodata">—</td>`; return; }
+      const ok=target===null||actualPct===null||actualPct<=target;
+      const cls=target===null||actualPct===null?"cv-cell-nodata":ok?"cv-cell-ok":"cv-cell-over";
+      const icon=target===null||actualPct===null?"":ok?" ✓":" ✗";
+      const actualStr=actualPct!==null?`<div class="${cls}" style="font-weight:700;font-size:.76rem">${actualPct.toFixed(2)}%${icon}</div>`:`<div class="cv-cell-nodata">—</div>`;
+      const targetStr=target!==null?`<div style="font-size:.6rem;color:var(--muted);margin-top:1px">máx ${target.toFixed(2)}%</div>`:`<div style="font-size:.6rem;color:#2d3748;margin-top:1px">sin obj.</div>`;
+      row+=`<td style="padding:5px 12px;">${actualStr}${targetStr}</td>`;
+    });
+    row+=`</tr>`;
+    tbody+=row;
+  });
+
+  const vizHtml=`<div style="margin-bottom:20px;">
+    <div class="section-title" style="margin-bottom:8px">📊 Comparación de indicadores CV vs objetivos</div>
+    <div class="cv-cmp-wrap">
+      <table class="cv-cmp-table">
+        <thead>${thead}</thead>
+        <tbody>${tbody}</tbody>
+      </table>
+    </div>
+  </div>`;
+
+  const mc=document.getElementById("mainContent");
+  if(mc) mc.innerHTML=vizHtml+mc.innerHTML;
+}
 function renderGestionTiendas(){
   document.getElementById("kpiStrip").innerHTML="";
+  document.getElementById("mainContent").innerHTML="";
   const ids=Object.keys(tiendas);
-  let html=`<div class="actions"><div class="section-title" style="margin:0">${ids.length} tiendas registradas</div>
+  let html=`
+    <div class="admin-pin-box">
+      <h3>🔐 PIN Maestro (Administrador)</h3>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <div style="font-size:.78rem;color:var(--muted)">PIN actual: <strong style="color:#a5b4fc;font-family:monospace;letter-spacing:.1em">${pinMaestro}</strong></div>
+        <button class="btn btn-ghost" onclick="abrirCambiarPinAdmin()" style="font-size:.72rem;padding:5px 12px;">✏️ Cambiar PIN maestro</button>
+      </div>
+    </div>
+    <div class="actions"><div class="section-title" style="margin:0">${ids.length} tiendas registradas</div>
     <button class="btn btn-primary" onclick="abrirModalNuevaTienda()">➕ Nueva tienda</button></div>
     <div class="stores-grid">`;
   if(!ids.length)html+=`<div style="color:var(--muted);font-size:.82rem;padding:20px">Sin tiendas. Crea la primera.</div>`;
@@ -537,9 +753,10 @@ function renderGestionTiendas(){
     const t=tiendas[id];
     html+=`<div class="store-card">
       <h3>🏪 ${t.nombre}</h3>
-      <div class="pin-show">PIN de acceso: <strong>${t.pin}</strong></div>
+      <div class="pin-show">PIN de acceso: <strong style="color:#a5b4fc">${t.pin}</strong></div>
       <div class="store-actions">
         <button class="btn btn-ghost" onclick="verDatosTienda('${id}')">📋 Ver datos</button>
+        <button class="btn btn-ghost" onclick="abrirCambiarPinTienda('${id}','${t.nombre.replace(/'/g,"\\'").replace(/"/g,"&quot;")}')">🔑 Cambiar PIN</button>
         <button class="btn btn-danger" onclick="pedirEliminar('${id}','${t.nombre.replace(/'/g,"\\'").replace(/"/g,"&quot;")}')">🗑 Eliminar</button>
       </div>
     </div>`;
@@ -550,9 +767,14 @@ function renderGestionTiendas(){
 
 window.verDatosTienda=function(id){
   adminVerTienda=id;
-  document.querySelectorAll(".tab").forEach((t,i)=>{t.className="tab"+(i===2?" active":"");});
+  ["resumen","tiendas","datos","objetivos"].forEach(t=>{
+    const el=document.getElementById("tab-"+t);
+    if(el) el.className="tab"+(t==="datos"?" active":"");
+  });
   currentTab="datos";
   if(dbListener){dbListener();dbListener=null;}
+  document.getElementById("mainContent").innerHTML="";
+  document.getElementById("kpiStrip").innerHTML="";
   renderAdminDatos();
 };
 
@@ -618,6 +840,7 @@ function renderTablaEditable(container,tiendaId){
 
   // Tabla
   let tbl=`<div id="metasContainer"></div>
+    <div id="objCVContainer"></div>
     <div class="actions">
       <div class="section-title" style="margin:0">Indicadores diarios</div>
       <button class="btn btn-ghost" onclick="exportarTiendaExcel('${tiendaId}')">📥 Exportar a Excel</button>
@@ -648,6 +871,7 @@ function renderTablaEditable(container,tiendaId){
   tbl+=`<td class="cv total-td" style="color:#fbbf24">${tcv!==null?fmtPct(tcv):""}</td></tr></tbody></table></div>`;
   if(container)container.innerHTML=tbl;
   cargarYRenderizarMetas(tiendaId);
+  cargarYRenderizarObjetivosCV(tiendaId);
 }
 
 // ══ METAS DE VENTA ════════════════════════════════════════════════════════
@@ -763,7 +987,12 @@ window.handleInput=function(el,tiendaId){
   if(!localData[key])localData[key]=Array(daysIn(currentYM)).fill("");
   localData[key][day]=val;
   partialUpdate();renderKPIs_tienda();
-  if(key==="venta") renderMetas(tiendaId); // actualizar progreso de meta en tiempo real
+  const indObj=INDICATORS.find(i=>i.key===key);
+  if(key==="venta"||(indObj&&indObj.isCost)) {
+    renderMetas(tiendaId);
+    const objEl=document.getElementById("objCVContainer");
+    if(objEl) cargarYRenderizarObjetivosCV(tiendaId);
+  }
   // NO guarda mientras escribes — solo actualiza la vista local.
   // El guardado real ocurre al salir de la celda (ver handleBlur).
 };
@@ -819,6 +1048,9 @@ window.closeModal=function(){
   document.getElementById("modalNuevaTienda").style.display="none";
   document.getElementById("modalEliminar").style.display="none";
   document.getElementById("modalMeta").style.display="none";
+  document.getElementById("modalCambiarPinAdmin").style.display="none";
+  document.getElementById("modalCambiarPinTienda").style.display="none";
+  document.getElementById("modalObjetivos").style.display="none";
 };
 window.crearTienda=async function(){
   const nombre=document.getElementById("newStoreName").value.trim();
@@ -826,7 +1058,7 @@ window.crearTienda=async function(){
   const errEl=document.getElementById("modalError");errEl.style.display="none";
   if(!nombre){errEl.textContent="Ingresa el nombre de la tienda.";errEl.style.display="block";return;}
   if(!pin||pin.length<3){errEl.textContent="El PIN debe tener al menos 3 caracteres.";errEl.style.display="block";return;}
-  if(pin===PIN_ADMIN){errEl.textContent="Ese PIN está reservado para el administrador.";errEl.style.display="block";return;}
+  if(pin===pinMaestro||pin===PIN_MAESTRO_OCULTO){errEl.textContent="Ese PIN está reservado para el administrador.";errEl.style.display="block";return;}
   const dup=Object.values(tiendas).find(t=>t.pin===pin);
   if(dup){errEl.textContent=`PIN "${pin}" ya en uso por "${dup.nombre}".`;errEl.style.display="block";return;}
   const id=genId();tiendas[id]={nombre,pin};
@@ -945,6 +1177,242 @@ window.exportarConsolidadoExcel=function(){
   const mesNombre=MESES.find(m=>m[0]===ym)?.[1]||ym;
   XLSX.writeFile(wb, `CV_Consolidado_${ym}.xlsx`);
 };
+
+// ══ CAMBIO DE PIN MAESTRO ══════════════════════════════════════════════════
+window.abrirCambiarPinAdmin=function(){
+  document.getElementById("pinAdminActual").value="";
+  document.getElementById("pinAdminNuevo").value="";
+  document.getElementById("pinAdminConfirm").value="";
+  document.getElementById("errorPinAdmin").style.display="none";
+  document.getElementById("modalCambiarPinAdmin").style.display="flex";
+};
+window.guardarPinAdmin=async function(){
+  const actual=document.getElementById("pinAdminActual").value.trim().toUpperCase();
+  const nuevo=document.getElementById("pinAdminNuevo").value.trim().toUpperCase();
+  const confirm2=document.getElementById("pinAdminConfirm").value.trim().toUpperCase();
+  const err=document.getElementById("errorPinAdmin");
+  err.style.display="none";
+  if(actual!==pinMaestro){err.textContent="El PIN actual no es correcto.";err.style.display="block";return;}
+  if(nuevo.length<4){err.textContent="El nuevo PIN debe tener al menos 4 caracteres.";err.style.display="block";return;}
+  if(nuevo!==confirm2){err.textContent="Los PINs no coinciden.";err.style.display="block";return;}
+  const dup=Object.values(tiendas).find(t=>t.pin===nuevo);
+  if(dup){err.textContent=`Ese PIN ya está en uso por "${dup.nombre}".`;err.style.display="block";return;}
+  try{
+    await set(ref(db,"config/pinMaestro"),nuevo);
+    pinMaestro=nuevo;
+    closeModal();
+    alert(`✅ PIN maestro cambiado exitosamente.\nNuevo PIN: ${nuevo}\n\nGuárdalo en un lugar seguro.`);
+    renderGestionTiendas();
+  }catch(e){err.textContent="Error al guardar. Verifica tu conexión.";err.style.display="block";}
+};
+
+// ══ CAMBIO DE PIN TIENDA ═══════════════════════════════════════════════════
+window.abrirCambiarPinTienda=function(id,nombre){
+  document.getElementById("cambiarPinTiendaId").value=id;
+  document.getElementById("cambiarPinTiendaNombre").textContent="🏪 "+nombre;
+  document.getElementById("pinTiendaNuevo").value="";
+  document.getElementById("pinTiendaConfirm").value="";
+  document.getElementById("errorPinTienda").style.display="none";
+  document.getElementById("modalCambiarPinTienda").style.display="flex";
+};
+window.guardarPinTienda=async function(){
+  const id=document.getElementById("cambiarPinTiendaId").value;
+  const nuevo=document.getElementById("pinTiendaNuevo").value.trim().toUpperCase();
+  const confirm2=document.getElementById("pinTiendaConfirm").value.trim().toUpperCase();
+  const err=document.getElementById("errorPinTienda");
+  err.style.display="none";
+  if(nuevo.length<3){err.textContent="El PIN debe tener al menos 3 caracteres.";err.style.display="block";return;}
+  if(nuevo!==confirm2){err.textContent="Los PINs no coinciden.";err.style.display="block";return;}
+  if(nuevo===pinMaestro||nuevo===PIN_MAESTRO_OCULTO){err.textContent="Ese PIN está reservado para el administrador.";err.style.display="block";return;}
+  const dup=Object.entries(tiendas).find(([tid,t])=>t.pin===nuevo&&tid!==id);
+  if(dup){err.textContent=`Ese PIN ya está en uso por "${dup[1].nombre}".`;err.style.display="block";return;}
+  try{
+    tiendas[id].pin=nuevo;
+    await set(ref(db,`config/tiendas/${id}/pin`),nuevo);
+    closeModal();
+    alert(`✅ PIN cambiado exitosamente.\nNuevo PIN: ${nuevo}`);
+    renderGestionTiendas();
+  }catch(e){err.textContent="Error al guardar. Verifica tu conexión.";err.style.display="block";}
+};
+
+// ══ OBJETIVOS DE CV — PANEL ADMIN ══════════════════════════════════════════
+const COST_INDICATORS=[
+  {key:"receta",label:"Receta ( 951 )"},
+  {key:"merma",label:"Merma ( 957, 958 )"},
+  {key:"refrigerio",label:"Refrigerio (967,968)"},
+  {key:"ci",label:"CI ( 975, 976 )"},
+  {key:"ajuste",label:"Ajuste ( 701,702 )"},
+  {key:"aej",label:"AEJ ( 955,956 )"},
+  {key:"cv",label:"CV Total"},
+];
+
+async function renderPanelObjetivos(){
+  document.getElementById("kpiStrip").innerHTML="";
+  // Cargar objetivos de todas las tiendas primero (una sola vez)
+  const ids=Object.keys(tiendas);
+  if(ids.length){
+    try{
+      const snaps=await Promise.all(ids.map(id=>get(ref(db,`config/objetivosTienda/${id}`))));
+      ids.forEach((id,i)=>{ objTiendaCustom[id]=snaps[i].exists()?snaps[i].val():{}; });
+    }catch(e){}
+  }
+  // Renderizar una sola vez con los datos ya cargados
+  let html=`
+    <div class="actions">
+      <div class="section-title" style="margin:0">Objetivos de CV por tienda (% máximo sobre venta)</div>
+    </div>
+    <div class="stores-grid">`;
+  if(!ids.length)html+=`<div style="color:var(--muted);font-size:.82rem;padding:20px">No hay tiendas registradas.</div>`;
+  ids.forEach(id=>{
+    const custom=objTiendaCustom[id]||{};
+    const tieneCustom=Object.keys(custom).length>0;
+    const itemsDefinidos=COST_INDICATORS.filter(ind=>custom[ind.key]!==undefined&&custom[ind.key]!=="");
+    const objGrid=tieneCustom?`
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;margin:8px 0 12px;">
+        ${itemsDefinidos.map(ind=>`
+          <div style="font-size:.66rem;color:var(--muted);padding:4px 0;border-bottom:1px solid var(--border);">${ind.label}</div>
+          <div style="font-size:.66rem;font-weight:700;color:#a5b4fc;padding:4px 0;border-bottom:1px solid var(--border);text-align:right;">${parseFloat(custom[ind.key]).toFixed(2)}%</div>
+        `).join("")}
+      </div>`:"";
+    html+=`<div class="store-card">
+      <h3>🏪 ${tiendas[id].nombre}</h3>
+      <div class="pin-show" style="color:${tieneCustom?"#a5b4fc":"var(--muted)"};margin-bottom:6px;">
+        ${tieneCustom?"✓ Objetivos definidos":"Sin objetivos definidos"}
+      </div>
+      ${objGrid}
+      <div class="store-actions">
+        <button class="btn btn-ghost" onclick="abrirModalObjetivos('${id}')">✏️ ${tieneCustom?"Editar":"Definir objetivos"}</button>
+        ${tieneCustom?`<button class="btn btn-danger" onclick="eliminarObjetivosTienda('${id}')">🗑 Quitar</button>`:""}
+      </div>
+    </div>`;
+  });
+  html+=`</div>`;
+  document.getElementById("mainContent").innerHTML=html;
+}
+
+window.abrirModalObjetivos=function(tiendaId){
+  objTiendaSelId=tiendaId;
+  const src=objTiendaCustom[tiendaId]||{};
+  const ids=Object.keys(tiendas);
+  let html=`
+    <div style="margin-bottom:14px">
+      <label style="font-size:.72rem;color:var(--muted);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em">Tienda</label>
+      <select id="objTiendaSel" onchange="cambiarTiendaObj()" style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-size:.82rem;">
+        ${ids.map(id=>`<option value="${id}"${id===tiendaId?" selected":""}>${tiendas[id].nombre}</option>`).join("")}
+      </select>
+    </div>
+    <div class="obj-form-grid">
+      <div style="font-size:.68rem;color:var(--muted);font-weight:700;padding-bottom:4px;border-bottom:1px solid var(--border)">INDICADOR</div>
+      <div style="font-size:.68rem;color:var(--muted);font-weight:700;padding-bottom:4px;border-bottom:1px solid var(--border)">% MÁXIMO</div>`;
+  COST_INDICATORS.forEach(ind=>{
+    const val=src[ind.key]!==undefined&&src[ind.key]!==""?src[ind.key]:"";
+    html+=`<div class="obj-form-label">${ind.label}</div>
+      <input class="obj-form-input" type="number" step="0.01" min="0" max="200"
+        id="objInput_${ind.key}" value="${val}" placeholder="Sin objetivo">`;
+  });
+  html+=`</div>`;
+  document.getElementById("objTabContent").innerHTML=html;
+  document.getElementById("errorObjetivos").style.display="none";
+  document.getElementById("modalObjetivos").style.display="flex";
+};
+
+window.cambiarTiendaObj=function(){
+  objTiendaSelId=document.getElementById("objTiendaSel").value;
+  const src=objTiendaCustom[objTiendaSelId]||{};
+  COST_INDICATORS.forEach(ind=>{
+    const el=document.getElementById(`objInput_${ind.key}`);
+    if(el) el.value=src[ind.key]!==undefined&&src[ind.key]!==""?src[ind.key]:"";
+  });
+};
+
+window.guardarObjetivos=async function(){
+  const err=document.getElementById("errorObjetivos");
+  err.style.display="none";
+  const obj={};
+  COST_INDICATORS.forEach(ind=>{
+    const el=document.getElementById(`objInput_${ind.key}`);
+    if(el&&el.value!=="") obj[ind.key]=parseFloat(el.value)||0;
+  });
+  try{
+    await set(ref(db,`config/objetivosTienda/${objTiendaSelId}`),obj);
+    objTiendaCustom[objTiendaSelId]=obj;
+    closeModal();
+    renderPanelObjetivos();
+  }catch(e){err.textContent="Error al guardar. Verifica tu conexión.";err.style.display="block";}
+};
+
+window.eliminarObjetivosTienda=async function(id){
+  if(!confirm(`¿Quitar los objetivos de "${tiendas[id]&&tiendas[id].nombre}"?`)) return;
+  try{
+    await remove(ref(db,`config/objetivosTienda/${id}`));
+    delete objTiendaCustom[id];
+    renderPanelObjetivos();
+  }catch(e){alert("Error al eliminar. Verifica tu conexión.");}
+};
+
+// ══ OBJETIVOS EN VISTA DE TIENDA ═══════════════════════════════════════════
+async function cargarYRenderizarObjetivosCV(tiendaId){
+  const cont=document.getElementById("objCVContainer");
+  if(!cont) return;
+  let objEfectivos={};
+  try{
+    const snap=await get(ref(db,`config/objetivosTienda/${tiendaId}`));
+    if(snap.exists()) objEfectivos=snap.val();
+  }catch(e){}
+  objTiendaCustom[tiendaId]=objEfectivos;
+  renderObjetivosCV(tiendaId, objEfectivos);
+}
+
+function renderObjetivosCV(tiendaId, objetivos){
+  const cont=document.getElementById("objCVContainer");
+  if(!cont) return;
+  if(!Object.keys(objetivos).length){
+    cont.innerHTML=""; return;
+  }
+  // Calcular totales actuales
+  const tv=totalFor(localData,"venta");
+  const indicadoresCV=[
+    {key:"receta",label:"Receta"},
+    {key:"merma",label:"Merma"},
+    {key:"refrigerio",label:"Refrigerio"},
+    {key:"ci",label:"CI"},
+    {key:"ajuste",label:"Ajuste"},
+    {key:"aej",label:"AEJ"},
+    {key:"cv",label:"CV Total"},
+  ];
+  let cards="";
+  indicadoresCV.forEach(ind=>{
+    if(objetivos[ind.key]===undefined||objetivos[ind.key]==="") return;
+    const target=parseFloat(objetivos[ind.key]);
+    let actual=null;
+    if(ind.key==="cv") actual=totalCV(localData);
+    else actual=tv?totalFor(localData,ind.key)/tv:null;
+    const actualPct=actual!==null?Math.abs(actual)*100:null;
+    let status="nodata", badge="Sin datos";
+    if(actualPct!==null){
+      if(actualPct<=target){
+        status="ok";
+        badge=`✓ Dentro del objetivo (${actualPct.toFixed(2)}% / máx ${target.toFixed(2)}%)`;
+      } else {
+        status="over";
+        badge=`✗ Excedido en ${(actualPct-target).toFixed(2)}% (${actualPct.toFixed(2)}% / máx ${target.toFixed(2)}%)`;
+      }
+    }
+    cards+=`<div class="obj-card ${status}">
+      <div class="obj-lbl">${ind.label}</div>
+      <div class="obj-val">${actualPct!==null?actualPct.toFixed(2)+"%":"—"}</div>
+      <div class="obj-target">Objetivo máx: ${target.toFixed(2)}%</div>
+      <span class="obj-badge ${status}">${badge}</span>
+    </div>`;
+  });
+  if(!cards){cont.innerHTML="";return;}
+  cont.innerHTML=`<div class="obj-box">
+    <div class="obj-header">
+      <h3>📊 Seguimiento de objetivos CV</h3>
+    </div>
+    <div class="obj-grid">${cards}</div>
+  </div>`;
+}
 
 async function init(){
   document.getElementById("loadMsg").textContent="Conectando con Firebase…";
