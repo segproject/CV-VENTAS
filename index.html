@@ -15,12 +15,10 @@
   --login-grad:linear-gradient(135deg,#0a0f1e 0%,#0d1b3e 50%,#0f1117 100%);
   --th-bg:#0d1b3e; --th-text:#93c5fd;
   --today-bg:#1e1b4b; --today-text:#a5b4fc;
-  --cv-bg:#1a1a0a;
-  --total-bg:#0d1b3e; --total-text:#93c5fd;
-  --badge-bg:#1e3a8a;
+  --cv-bg:#1a1a0a; --total-bg:#0d1b3e; --total-text:#93c5fd; --badge-bg:#1e3a8a;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .25s,color .25s;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
 /* LOGIN */
 #loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;background:var(--login-grad);}
@@ -31,18 +29,17 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .login-logo .icon{font-size:2.5rem;margin-bottom:8px;}
 .form-group{margin-bottom:16px;}
 .form-group label{font-size:.75rem;color:var(--muted);display:block;margin-bottom:6px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;}
-.form-group input{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:11px 14px;border-radius:8px;font-size:.95rem;outline:none;transition:border .2s;letter-spacing:.12em;font-weight:600;}
+.form-group input{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:11px 14px;border-radius:8px;font-size:16px;outline:none;transition:border .2s;letter-spacing:.12em;font-weight:600;}
 .form-group input:focus{border-color:var(--accent);}
-.btn-login{width:100%;background:linear-gradient(135deg,#1d4ed8,#4338ca);color:#fff;border:none;padding:12px;border-radius:8px;font-size:.9rem;font-weight:700;cursor:pointer;margin-top:8px;transition:opacity .2s;}
-.btn-login:hover{opacity:.9;}
+.btn-login{width:100%;background:linear-gradient(135deg,#1d4ed8,#4338ca);color:#fff;border:none;padding:12px;border-radius:8px;font-size:.9rem;font-weight:700;cursor:pointer;margin-top:8px;}
 .login-error{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#fca5a5;border-radius:7px;padding:9px 12px;font-size:.78rem;margin-top:12px;display:none;text-align:center;}
 
 /* HEADER */
 header{background:var(--header-grad);padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
 header h1{font-size:1.1rem;font-weight:700;color:#fff;}
-header p{font-size:.68rem;color:var(--th-text);margin-top:1px;}
+header p{font-size:.68rem;color:#93c5fd;margin-top:1px;}
 .header-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
-.badge{background:var(--badge-bg);border:1px solid var(--accent);border-radius:6px;padding:3px 9px;font-size:.68rem;color:var(--th-text);display:flex;align-items:center;gap:5px;}
+.badge{background:var(--badge-bg);border:1px solid var(--accent);border-radius:6px;padding:3px 9px;font-size:.68rem;color:#93c5fd;display:flex;align-items:center;gap:5px;}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--muted);transition:background .3s;}
 .dot.on{background:var(--green);box-shadow:0 0 6px var(--green);}
 .dot.err{background:var(--red);}
@@ -51,14 +48,30 @@ header p{font-size:.68rem;color:var(--th-text);margin-top:1px;}
 select{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:5px 9px;border-radius:6px;font-size:.78rem;}
 
 /* KPI */
-.kpi-strip{display:flex;gap:10px;padding:10px 20px;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;}
+.kpi-strip{display:flex;gap:10px;padding:10px 20px;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch;}
 .kpi{min-width:130px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:9px 13px;flex:1;}
 .kpi .lbl{font-size:.63rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
 .kpi .val{font-size:1.05rem;font-weight:700;margin-top:3px;font-variant-numeric:tabular-nums;}
 .kpi .sub{font-size:.63rem;color:var(--muted);margin-top:1px;}
 
-/* METAS DE VENTA */
-.metas-box{background:linear-gradient(135deg,#0d1b3e,#16213e);border:1px solid var(--accent2);border-radius:11px;padding:14px 18px;margin:0 20px 14px;}
+/* TABS */
+.tabs{display:flex;gap:0;border-bottom:2px solid var(--border);padding:0 20px;background:var(--surface);overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.tab{padding:10px 18px;font-size:.78rem;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab:hover:not(.active){color:var(--text);}
+
+/* MAIN */
+main{padding:14px 20px;}
+.section-title{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:8px;}
+.actions{display:flex;gap:8px;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;}
+button.btn{border:none;border-radius:7px;padding:6px 13px;font-size:.73rem;font-weight:600;cursor:pointer;transition:opacity .15s;min-height:36px;}
+button.btn:hover{opacity:.85;}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-danger{background:#7f1d1d;color:#fca5a5;border:1px solid var(--red);}
+.btn-ghost{background:var(--surface2);color:var(--text);border:1px solid var(--border);}
+
+/* METAS */
+.metas-box{background:linear-gradient(135deg,#0d1b3e,#16213e);border:1px solid var(--accent2);border-radius:11px;padding:14px 18px;margin-bottom:14px;}
 .metas-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;}
 .metas-header h3{font-size:.78rem;font-weight:700;color:#a5b4fc;text-transform:uppercase;letter-spacing:.06em;}
 .metas-edit-btn{background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:4px 11px;border-radius:6px;font-size:.7rem;cursor:pointer;}
@@ -72,56 +85,10 @@ select{background:var(--surface2);border:1px solid var(--border);color:var(--tex
 .meta-bar-fill{height:100%;border-radius:5px;transition:width .4s ease;}
 .meta-faltante{color:#fbbf24;font-weight:700;}
 .meta-cumplida{color:#22c55e;font-weight:700;}
-.metas-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:4px;}
-.metas-form .form-group{margin-bottom:0;}
 .metas-empty{font-size:.78rem;color:var(--muted);text-align:center;padding:8px;}
 
-/* TABS */
-.tabs{display:flex;gap:0;border-bottom:2px solid var(--border);padding:0 20px;background:var(--surface);}
-.tab{padding:10px 18px;font-size:.78rem;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:color .2s;}
-.tab.active{color:var(--accent);border-bottom-color:var(--accent);}
-.tab:hover:not(.active){color:var(--text);}
-
-/* MAIN */
-main{padding:14px 20px;}
-.section-title{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:8px;}
-.actions{display:flex;gap:8px;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;}
-.sync-msg{font-size:.68rem;color:var(--muted);display:flex;align-items:center;gap:5px;}
-button.btn{border:none;border-radius:7px;padding:6px 13px;font-size:.73rem;font-weight:600;cursor:pointer;transition:opacity .15s;}
-button.btn:hover{opacity:.85;}
-.btn-primary{background:var(--accent);color:#fff;}
-.btn-danger{background:#7f1d1d;color:#fca5a5;border:1px solid var(--red);}
-.btn-ghost{background:var(--surface2);color:var(--text);border:1px solid var(--border);}
-
-/* TABLE */
-.table-wrap{overflow-x:auto;border-radius:9px;border:1px solid var(--border);background:var(--surface);margin-bottom:18px;}
-table{border-collapse:collapse;width:100%;font-size:.73rem;}
-th{background:var(--th-bg);color:var(--th-text);padding:6px 7px;font-size:.63rem;font-weight:600;letter-spacing:.04em;border-right:1px solid var(--border);border-bottom:2px solid var(--accent2);position:sticky;top:0;z-index:3;white-space:nowrap;text-align:center;}
-th:first-child{text-align:left;position:sticky;left:0;z-index:5;min-width:170px;}
-th.today-h{background:var(--today-bg);color:var(--today-text);}
-th.total-h{border-left:2px solid var(--accent2);min-width:86px;}
-td{border-right:1px solid var(--border);border-bottom:1px solid var(--border);white-space:nowrap;}
-td.sticky{position:sticky;left:0;z-index:2;background:var(--surface);padding:5px 9px;font-weight:700;font-size:.7rem;min-width:170px;max-width:200px;white-space:normal;}
-td.sticky.pct-lbl{font-weight:400;font-size:.63rem;color:var(--muted);font-style:italic;padding-left:18px;background:var(--surface2);}
-td.sticky.cv-lbl{color:var(--yellow);font-weight:800;background:var(--cv-bg);}
-td.val{text-align:right;padding:3px 5px;min-width:68px;}
-td.pct{text-align:right;padding:2px 7px;font-size:.62rem;color:var(--muted);min-width:68px;font-variant-numeric:tabular-nums;background:var(--surface2);}
-td.cv{text-align:right;padding:5px 7px;font-size:.68rem;font-weight:700;color:var(--yellow);min-width:68px;font-variant-numeric:tabular-nums;background:var(--cv-bg);}
-td.total-td{background:var(--total-bg);color:var(--total-text);font-weight:700;border-left:2px solid var(--accent2);}
-td.today-td{background:rgba(99,102,241,.08)!important;}
-input[type=number]{background:transparent;border:none;text-align:right;width:100%;font-size:.73rem;font-family:inherit;font-variant-numeric:tabular-nums;outline:none;padding:0;color:var(--text);-moz-appearance:textfield;}
-input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;}
-input[type=number]:focus{background:rgba(59,130,246,.1);border-radius:3px;}
-
-/* TIENDAS GRID */
-.stores-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:20px;}
-.store-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;}
-.store-card h3{font-size:.9rem;font-weight:700;margin-bottom:4px;}
-.store-card .pin-show{font-size:.72rem;color:var(--muted);margin-bottom:10px;font-family:monospace;letter-spacing:.08em;}
-.store-card .store-actions{display:flex;gap:7px;flex-wrap:wrap;}
-
-/* OBJETIVOS DE CV */
-.obj-box{background:linear-gradient(135deg,#0d1b3e,#1a1a0a);border:1px solid var(--accent2);border-radius:11px;padding:14px 18px;margin:0 20px 14px;}
+/* OBJETIVOS CV */
+.obj-box{background:linear-gradient(135deg,#0d1b3e,#1a1a0a);border:1px solid var(--accent2);border-radius:11px;padding:14px 18px;margin-bottom:14px;}
 .obj-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;}
 .obj-header h3{font-size:.78rem;font-weight:700;color:#a5b4fc;text-transform:uppercase;letter-spacing:.06em;}
 .obj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;}
@@ -136,31 +103,54 @@ input[type=number]:focus{background:rgba(59,130,246,.1);border-radius:3px;}
 .obj-badge.ok{background:rgba(34,197,94,.15);color:#22c55e;}
 .obj-badge.over{background:rgba(239,68,68,.15);color:#ef4444;}
 .obj-badge.nodata{background:rgba(71,85,105,.15);color:#94a3b8;}
-.obj-empty{font-size:.78rem;color:var(--muted);text-align:center;padding:8px;}
-
-/* FORM DE OBJETIVOS (modal) */
 .obj-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-height:360px;overflow-y:auto;}
 .obj-form-label{font-size:.75rem;color:var(--text);display:flex;align-items:center;font-weight:600;}
 .obj-form-input{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-size:.82rem;outline:none;width:100%;}
 .obj-form-input:focus{border-color:var(--accent);}
 
-/* ADMIN PIN */
-.admin-pin-box{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px;}
-.admin-pin-box h3{font-size:.82rem;font-weight:700;margin-bottom:10px;color:#a5b4fc;}
-.store-card .store-actions{display:flex;gap:7px;}
+/* TABLE */
+.table-wrap{overflow-x:auto;border-radius:9px;border:1px solid var(--border);background:var(--surface);margin-bottom:18px;-webkit-overflow-scrolling:touch;}
+table{border-collapse:collapse;width:100%;font-size:.73rem;}
+th{background:var(--th-bg);color:var(--th-text);padding:6px 7px;font-size:.63rem;font-weight:600;letter-spacing:.04em;border-right:1px solid var(--border);border-bottom:2px solid var(--accent2);position:sticky;top:0;z-index:3;white-space:nowrap;text-align:center;}
+th:first-child{text-align:left;position:sticky;left:0;z-index:5;min-width:170px;}
+th.today-h{background:var(--today-bg);color:var(--today-text);}
+th.total-h{border-left:2px solid var(--accent2);min-width:86px;}
+td{border-right:1px solid var(--border);border-bottom:1px solid var(--border);white-space:nowrap;}
+td.sticky{position:sticky;left:0;z-index:2;background:var(--surface);padding:5px 9px;font-weight:700;font-size:.7rem;min-width:170px;max-width:200px;white-space:normal;}
+td.sticky.pct-lbl{font-weight:400;font-size:.63rem;color:var(--muted);font-style:italic;padding-left:18px;background:var(--surface2);}
+td.sticky.cv-lbl{color:var(--yellow);font-weight:800;background:var(--cv-bg);}
+td.val{text-align:right;padding:3px 5px;min-width:68px;}
+td.pct{text-align:right;padding:2px 7px;font-size:.62rem;color:#94a3b8;min-width:68px;font-variant-numeric:tabular-nums;background:var(--surface2);}
+td.cv{text-align:right;padding:5px 7px;font-size:.68rem;font-weight:700;color:var(--yellow);min-width:68px;font-variant-numeric:tabular-nums;background:var(--cv-bg);}
+td.total-td{background:var(--total-bg);color:var(--total-text);font-weight:700;border-left:2px solid var(--accent2);}
+td.today-td{background:rgba(99,102,241,.08)!important;}
+input[type=number]{background:transparent;border:none;text-align:right;width:100%;font-size:.73rem;font-family:inherit;font-variant-numeric:tabular-nums;outline:none;padding:0;color:var(--text);-moz-appearance:textfield;}
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;}
+input[type=number]:focus{background:rgba(59,130,246,.1);border-radius:3px;}
+.swipe-hint{display:none;font-size:.68rem;color:var(--muted);text-align:center;padding:5px 0;background:var(--surface2);border-radius:6px;margin-bottom:6px;}
+
+/* GRIDS DE TARJETAS */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:20px;}
+.card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;}
+.card h3{font-size:.9rem;font-weight:700;margin-bottom:4px;}
+.card .card-sub{font-size:.72rem;color:var(--muted);margin-bottom:10px;font-family:monospace;letter-spacing:.06em;}
+.card .card-actions{display:flex;gap:7px;flex-wrap:wrap;}
+.card .card-obj-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px 10px;margin:8px 0 12px;}
+.card .card-obj-row-label{font-size:.62rem;color:var(--muted);padding:3px 0;border-bottom:1px solid var(--border);}
+.card .card-obj-row-val{font-size:.62rem;font-weight:700;color:#a5b4fc;padding:3px 0;border-bottom:1px solid var(--border);text-align:right;}
 
 /* CONSOLIDADO */
-.consolidado-table{width:100%;border-collapse:collapse;font-size:.78rem;}
-.consolidado-table th{background:var(--th-bg);color:var(--th-text);padding:8px 12px;text-align:left;border-bottom:2px solid var(--accent2);white-space:nowrap;}
-.consolidado-table td{padding:8px 12px;border-bottom:1px solid var(--border);}
+.consolidado-table{width:100%;border-collapse:collapse;font-size:.75rem;}
+.consolidado-table th{background:var(--th-bg);color:var(--th-text);padding:7px 10px;text-align:left;border-bottom:2px solid var(--accent2);white-space:nowrap;border-right:1px solid var(--border);}
+.consolidado-table td{padding:6px 10px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);white-space:nowrap;}
 .consolidado-table tr:hover td{background:var(--surface2);}
 
-/* VISUAL CV — TABLA COMPARATIVA SIMPLE */
-.cv-cmp-wrap{overflow-x:auto;border-radius:9px;border:1px solid var(--border);margin-bottom:20px;}
-.cv-cmp-table{width:100%;border-collapse:collapse;font-size:.75rem;}
-.cv-cmp-table th{background:var(--th-bg);color:var(--th-text);padding:7px 12px;text-align:center;border-right:1px solid var(--border);border-bottom:2px solid var(--accent2);white-space:nowrap;font-size:.65rem;letter-spacing:.04em;}
+/* CV COMPARATIVO */
+.cv-cmp-wrap{overflow-x:auto;border-radius:9px;border:1px solid var(--border);margin-bottom:20px;-webkit-overflow-scrolling:touch;}
+.cv-cmp-table{width:100%;border-collapse:collapse;font-size:.73rem;}
+.cv-cmp-table th{background:var(--th-bg);color:var(--th-text);padding:7px 10px;text-align:center;border-right:1px solid var(--border);border-bottom:2px solid var(--accent2);white-space:nowrap;font-size:.63rem;}
 .cv-cmp-table th:first-child{text-align:left;position:sticky;left:0;z-index:2;min-width:140px;}
-.cv-cmp-table td{padding:6px 12px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center;font-variant-numeric:tabular-nums;white-space:nowrap;}
+.cv-cmp-table td{padding:5px 10px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center;font-variant-numeric:tabular-nums;}
 .cv-cmp-table td:first-child{position:sticky;left:0;background:var(--surface);font-weight:700;font-size:.72rem;text-align:left;z-index:1;}
 .cv-cmp-table tr:hover td{background:var(--surface2);}
 .cv-cmp-table tr:hover td:first-child{background:var(--surface2);}
@@ -168,89 +158,51 @@ input[type=number]:focus{background:rgba(59,130,246,.1);border-radius:3px;}
 .cv-cell-over{color:#ef4444;font-weight:700;}
 .cv-cell-nodata{color:#475569;}
 
+/* ADMIN PIN BOX */
+.admin-pin-box{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px;}
+.admin-pin-box h3{font-size:.82rem;font-weight:700;margin-bottom:10px;color:#a5b4fc;}
+
+/* ZONAS — SUPER ADMIN */
+.zona-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:18px;position:relative;}
+.zona-card h3{font-size:1rem;font-weight:700;margin-bottom:4px;color:#e2e8f0;}
+.zona-card .zona-pin{font-size:.72rem;color:var(--muted);margin-bottom:6px;font-family:monospace;}
+.zona-card .zona-tiendas{font-size:.72rem;color:#a5b4fc;margin-bottom:12px;}
+.zona-card .zona-actions{display:flex;gap:8px;flex-wrap:wrap;}
+
 /* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:999;padding:16px;}
-.modal{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px;width:100%;max-width:360px;box-shadow:0 20px 50px rgba(0,0,0,.6);}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px;width:100%;max-width:400px;box-shadow:0 20px 50px rgba(0,0,0,.6);}
 .modal h2{font-size:1rem;font-weight:700;margin-bottom:20px;}
 .modal .form-group{margin-bottom:14px;}
 .modal .form-group label{font-size:.72rem;color:var(--muted);display:block;margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;}
-.modal .form-group input{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:9px 12px;border-radius:7px;font-size:.88rem;outline:none;}
+.modal .form-group input{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:9px 12px;border-radius:7px;font-size:16px;outline:none;}
 .modal .form-group input:focus{border-color:var(--accent);}
 .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:20px;}
 .modal-error{color:#fca5a5;font-size:.73rem;margin-top:8px;display:none;}
 
 /* OVERLAY */
 #loadOverlay{position:fixed;inset:0;background:rgba(15,17,23,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;}
-#loadOverlay .spinner{width:38px;height:38px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;}
-#loadOverlay p{margin-top:12px;color:var(--muted);font-size:.82rem;}
+.spinner{width:38px;height:38px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 footer{text-align:center;padding:10px;font-size:.65rem;color:var(--muted);border-top:1px solid var(--border);}
 
-/* ══ SCROLL TÁCTIL SUAVE EN TABLAS (iOS/Android) ══ */
-.table-wrap{-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
-.swipe-hint{display:none;font-size:.68rem;color:var(--muted);text-align:center;padding:5px 0;background:var(--surface2);border-radius:6px;margin-bottom:6px;}
-
-/* ══ RESPONSIVE: TABLETS Y MÓVILES GRANDES (≤768px) ══ */
-@media (max-width: 768px){
+/* RESPONSIVE */
+.table-wrap{-webkit-overflow-scrolling:touch;}
+@media(max-width:768px){
   header{padding:10px 14px;}
   .swipe-hint{display:block;}
-  header h1{font-size:1rem;}
-  .header-right{width:100%;justify-content:space-between;gap:6px;}
-  .badge{order:1;}
-  #lastSaved{display:none;} /* ocupa espacio innecesario en pantallas chicas */
-  select{padding:7px 8px;font-size:.8rem;}
-  #yearSel{min-width:64px!important;}
-  #monthSel{min-width:92px!important;}
-  .btn-logout{padding:7px 10px;font-size:.7rem;}
-
-  .kpi-strip{padding:8px 12px;gap:8px;}
-  .kpi{min-width:118px;padding:8px 11px;}
-  .kpi .val{font-size:.95rem;}
-
-  .tabs{padding:0 10px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
-  .tab{padding:9px 13px;font-size:.72rem;white-space:nowrap;}
-
+  .header-right{width:100%;justify-content:space-between;}
+  #lastSaved{display:none;}
+  .kpi{min-width:118px;}
   main{padding:10px 12px;}
-  .actions{gap:8px;}
-  button.btn{padding:8px 14px;font-size:.76rem;min-height:36px;} /* objetivo táctil ≥36px */
-
-  /* Tabla: celdas e inputs más cómodos al tacto */
-  table{font-size:.72rem;}
-  td.sticky{min-width:140px;max-width:160px;font-size:.68rem;padding:7px 8px;}
-  td.val{padding:7px 4px;min-width:58px;}
-  td.pct,td.cv{min-width:58px;}
-  input[type=number]{font-size:.78rem;padding:4px 2px;} /* ≥16px evita zoom en iOS si se usa rem base 1=16px; .78rem≈12.5px, ver nota abajo */
-  th{padding:7px 5px;font-size:.6rem;}
-  th:first-child{min-width:140px;}
-
-  .stores-grid{grid-template-columns:1fr;}
-  .modal{padding:22px;max-width:92vw;}
-  .consolidado-table{font-size:.7rem;}
-  .consolidado-table th,.consolidado-table td{padding:7px 8px;}
+  .modal{max-width:92vw;padding:22px;}
 }
-
-/* ══ RESPONSIVE: MÓVILES PEQUEÑOS (≤480px) ══ */
-@media (max-width: 480px){
-  .login-box{padding:28px 22px;}
-  .login-logo h1{font-size:1.3rem;}
-  .kpi{min-width:104px;}
-  .kpi .lbl{font-size:.58rem;}
-  .kpi .val{font-size:.85rem;}
-  td.sticky{min-width:118px;max-width:130px;}
-  th:first-child{min-width:118px;}
+@media(max-width:480px){
+  .cards-grid{grid-template-columns:1fr;}
   .actions{flex-direction:column;align-items:stretch;}
   .actions button.btn{width:100%;}
 }
-
-/* ══ EVITAR ZOOM AUTOMÁTICO EN INPUTS (iOS Safari) ══ */
-@media (max-width: 768px){
-  input[type=number],input[type=text],input[type=password]{font-size:16px!important;}
-  /* Para los inputs de la tabla, compensamos el tamaño con padding reducido para que no se vean gigantes */
-  td.val input[type=number]{font-size:13px!important;}
-}
-
-/* ══ MEJORA DE ÁREA TÁCTIL EN BOTONES PEQUEÑOS (toda resolución táctil) ══ */
-@media (hover: none) and (pointer: coarse){
+@media(hover:none) and (pointer:coarse){
   .btn-logout,.tab,button.btn{min-height:38px;}
   select{min-height:38px;}
 }
@@ -258,7 +210,7 @@ footer{text-align:center;padding:10px;font-size:.65rem;color:var(--muted);border
 </head>
 <body>
 
-<div id="loadOverlay"><div class="spinner"></div><p id="loadMsg">Iniciando…</p></div>
+<div id="loadOverlay"><div class="spinner"></div><p id="loadMsg" style="margin-top:12px;color:var(--muted);font-size:.82rem">Iniciando…</p></div>
 
 <!-- LOGIN -->
 <div id="loginScreen" style="display:none;">
@@ -266,13 +218,11 @@ footer{text-align:center;padding:10px;font-size:.65rem;color:var(--muted);border
     <div class="login-logo">
       <div class="icon">📊</div>
       <h1>CV — Costo de Ventas</h1>
-
       <p>Ingresa tu código de acceso</p>
     </div>
     <div class="form-group">
       <label>Código / PIN de acceso</label>
-      <input type="password" id="pinInput" placeholder="••••••" maxlength="20"
-        onkeydown="if(event.key==='Enter') doLogin()">
+      <input type="password" id="pinInput" placeholder="••••••" maxlength="20" onkeydown="if(event.key==='Enter') doLogin()">
     </div>
     <button class="btn-login" onclick="doLogin()">Ingresar →</button>
     <div class="login-error" id="loginError">PIN incorrecto. Intenta de nuevo.</div>
@@ -283,7 +233,7 @@ footer{text-align:center;padding:10px;font-size:.65rem;color:var(--muted);border
 <div id="appScreen" style="display:none;">
   <header>
     <div>
-      <h1>📊 <span id="headerTitle">Costo de Ventas</span></h1>
+      <h1>📊 <span id="headerTitle">CV</span></h1>
       <p id="headerSub"></p>
     </div>
     <div class="header-right">
@@ -294,175 +244,118 @@ footer{text-align:center;padding:10px;font-size:.65rem;color:var(--muted);border
       <button class="btn-logout" onclick="doLogout()">Cerrar sesión</button>
     </div>
   </header>
-  <div class="tabs" id="adminTabs" style="display:none;">
-    <div class="tab active" id="tab-resumen" onclick="switchTab('resumen')">📈 Resumen consolidado</div>
-    <div class="tab" id="tab-tiendas" onclick="switchTab('tiendas')">🏪 Gestión de tiendas</div>
-    <div class="tab" id="tab-datos" onclick="switchTab('datos')">📋 Ver tienda</div>
-    <div class="tab" id="tab-objetivos" onclick="switchTab('objetivos')">🎯 Objetivos CV</div>
-  </div>
+  <div class="tabs" id="appTabs" style="display:none;"></div>
   <div class="kpi-strip" id="kpiStrip"></div>
   <main id="mainContent"></main>
-  <footer>CV Dashboard · Firebase Realtime Database · GitHub Pages</footer>
+  <footer>CV Dashboard · Firebase · GitHub Pages</footer>
 </div>
 
-<!-- MODAL NUEVA TIENDA -->
-<div class="modal-overlay" id="modalNuevaTienda" style="display:none;">
+<!-- MODALES -->
+<div class="modal-overlay" id="modalZona" style="display:none;">
   <div class="modal">
-    <h2>➕ Nueva Tienda</h2>
-    <div class="form-group">
-      <label>Nombre de la tienda</label>
-      <input type="text" id="newStoreName" placeholder="Ej: Tienda Centro" maxlength="40">
-    </div>
-    <div class="form-group">
-      <label>PIN de acceso</label>
-      <input type="text" id="newStorePIN" placeholder="Ej: CENTRO01" maxlength="20"
-        style="text-transform:uppercase;letter-spacing:.08em;font-family:monospace;">
-    </div>
-    <div class="modal-error" id="modalError"></div>
+    <h2 id="modalZonaTitle">➕ Nueva Zona</h2>
+    <input type="hidden" id="zonaEditId">
+    <div class="form-group"><label>Nombre de la zona</label><input type="text" id="zonaNombre" placeholder="Ej: Zona Franklin" maxlength="40"></div>
+    <div class="form-group"><label>PIN del administrador de zona</label><input type="text" id="zonaPin" placeholder="Ej: FRANKLIN01" maxlength="20" style="text-transform:uppercase;font-family:monospace;font-weight:700;letter-spacing:.1em;"></div>
+    <div class="modal-error" id="errorZona"></div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-primary" onclick="crearTienda()">Crear tienda</button>
+      <button class="btn btn-primary" onclick="guardarZona()">Guardar</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL ELIMINAR -->
+<div class="modal-overlay" id="modalTienda" style="display:none;">
+  <div class="modal">
+    <h2 id="modalTiendaTitle">➕ Nueva Tienda</h2>
+    <input type="hidden" id="tiendaEditId">
+    <div class="form-group"><label>Nombre de la tienda</label><input type="text" id="tiendaNombre" placeholder="Ej: Real Plaza Chiclayo" maxlength="40"></div>
+    <div class="form-group"><label>PIN de acceso</label><input type="text" id="tiendaPin" placeholder="Ej: CHICLAYO01" maxlength="20" style="text-transform:uppercase;font-family:monospace;font-weight:700;letter-spacing:.1em;"></div>
+    <div class="modal-error" id="errorTienda"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarTienda()">Guardar</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="modalEliminar" style="display:none;">
   <div class="modal">
-    <h2>⚠️ Eliminar tienda</h2>
-    <p style="color:var(--muted);font-size:.82rem;margin-bottom:16px;">
-      ¿Estás seguro que deseas eliminar <strong id="deleteStoreName" style="color:var(--red)"></strong>?
-      <br><br>Se eliminarán <strong>todos sus datos</strong> de todos los meses. Esta acción no se puede deshacer.
-    </p>
+    <h2>⚠️ Confirmar eliminación</h2>
+    <p id="eliminarMsg" style="color:var(--muted);font-size:.82rem;margin-bottom:16px;"></p>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-danger" onclick="confirmarEliminar()">Sí, eliminar</button>
+      <button class="btn btn-danger" id="eliminarConfirmBtn">Sí, eliminar</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL META DE VENTAS -->
+<div class="modal-overlay" id="modalCambiarPin" style="display:none;">
+  <div class="modal">
+    <h2 id="modalCambiarPinTitle">🔑 Cambiar PIN</h2>
+    <input type="hidden" id="cambiarPinTarget">
+    <div class="form-group" id="pinActualGroup">
+      <label>PIN actual</label>
+      <input type="password" id="pinActual" placeholder="Ingresa el PIN actual" maxlength="20" style="font-family:monospace;font-weight:700;letter-spacing:.1em;">
+    </div>
+    <div class="form-group"><label>Nuevo PIN</label><input type="text" id="pinNuevo" placeholder="Nuevo PIN (mín. 4 caracteres)" maxlength="20" style="text-transform:uppercase;font-family:monospace;font-weight:700;letter-spacing:.1em;"></div>
+    <div class="form-group"><label>Confirmar nuevo PIN</label><input type="text" id="pinNuevoConfirm" placeholder="Repite el nuevo PIN" maxlength="20" style="text-transform:uppercase;font-family:monospace;font-weight:700;letter-spacing:.1em;"></div>
+    <div class="modal-error" id="errorCambiarPin"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="ejecutarCambioPin()">Guardar PIN</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="modalMeta" style="display:none;">
   <div class="modal">
     <h2>🎯 Meta de ventas del mes</h2>
-    <input type="hidden" id="metaTiendaIdHidden">
-    <div class="form-group">
-      <label>Meta mensual (S/)</label>
-      <input type="number" step="0.01" id="metaMensualInput" placeholder="Ej: 250000">
-    </div>
-    <div class="form-group">
-      <label>Meta diaria (S/) — opcional</label>
-      <input type="number" step="0.01" id="metaDiariaInput" placeholder="Se calcula automático si lo dejas vacío">
-    </div>
-    <p style="font-size:.7rem;color:var(--muted);margin-top:-6px;">
-      Si no defines una meta diaria, se calculará dividiendo la meta mensual entre los días del mes.
-    </p>
+    <input type="hidden" id="metaTiendaId">
+    <div class="form-group"><label>Meta mensual (S/)</label><input type="number" step="0.01" id="metaMensualInput" placeholder="Ej: 250000"></div>
+    <div class="form-group"><label>Meta diaria (S/) — opcional</label><input type="number" step="0.01" id="metaDiariaInput" placeholder="Se calcula automático si lo dejas vacío"></div>
+    <p style="font-size:.7rem;color:var(--muted);margin-top:-6px;">Si no defines una meta diaria, se divide la meta mensual entre los días del mes.</p>
     <div class="modal-actions" style="justify-content:space-between;">
-      <button class="btn btn-danger" onclick="eliminarMeta()">🗑 Eliminar meta</button>
+      <button class="btn btn-danger" onclick="eliminarMeta()">🗑 Eliminar</button>
       <div style="display:flex;gap:8px;">
         <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
-        <button class="btn btn-primary" onclick="guardarMeta()">Guardar meta</button>
+        <button class="btn btn-primary" onclick="guardarMeta()">Guardar</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- MODAL CAMBIAR PIN MAESTRO -->
-<div class="modal-overlay" id="modalCambiarPinAdmin" style="display:none;">
-  <div class="modal">
-    <h2>🔐 Cambiar PIN Maestro</h2>
-    <div class="form-group">
-      <label>PIN actual</label>
-      <input type="password" id="pinAdminActual" placeholder="Ingresa el PIN actual" maxlength="20"
-        style="letter-spacing:.1em;font-family:monospace;font-weight:700;">
-    </div>
-    <div class="form-group">
-      <label>Nuevo PIN</label>
-      <input type="text" id="pinAdminNuevo" placeholder="Nuevo PIN (mín. 4 caracteres)" maxlength="20"
-        style="text-transform:uppercase;letter-spacing:.1em;font-family:monospace;font-weight:700;">
-    </div>
-    <div class="form-group">
-      <label>Confirmar nuevo PIN</label>
-      <input type="text" id="pinAdminConfirm" placeholder="Repite el nuevo PIN" maxlength="20"
-        style="text-transform:uppercase;letter-spacing:.1em;font-family:monospace;font-weight:700;">
-    </div>
-    <div class="modal-error" id="errorPinAdmin"></div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-primary" onclick="guardarPinAdmin()">Guardar PIN</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL CAMBIAR PIN TIENDA -->
-<div class="modal-overlay" id="modalCambiarPinTienda" style="display:none;">
-  <div class="modal">
-    <h2>🔑 Cambiar PIN de tienda</h2>
-    <p id="cambiarPinTiendaNombre" style="font-size:.82rem;color:#a5b4fc;margin-bottom:16px;font-weight:700;"></p>
-    <input type="hidden" id="cambiarPinTiendaId">
-    <div class="form-group">
-      <label>Nuevo PIN</label>
-      <input type="text" id="pinTiendaNuevo" placeholder="Nuevo PIN (mín. 3 caracteres)" maxlength="20"
-        style="text-transform:uppercase;letter-spacing:.1em;font-family:monospace;font-weight:700;">
-    </div>
-    <div class="form-group">
-      <label>Confirmar nuevo PIN</label>
-      <input type="text" id="pinTiendaConfirm" placeholder="Repite el nuevo PIN" maxlength="20"
-        style="text-transform:uppercase;letter-spacing:.1em;font-family:monospace;font-weight:700;">
-    </div>
-    <div class="modal-error" id="errorPinTienda"></div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-primary" onclick="guardarPinTienda()">Guardar PIN</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL OBJETIVOS DE CV -->
 <div class="modal-overlay" id="modalObjetivos" style="display:none;">
   <div class="modal" style="max-width:480px;">
-    <h2>🎯 Objetivos de CV por tienda</h2>
-    <div id="objTabContent"></div>
-    <p style="font-size:.68rem;color:var(--muted);margin-top:10px;">
-      Ingresa el % máximo objetivo para cada indicador (sin signo, ej: 31 para un máximo de 31%). Deja vacío para no controlar ese indicador.
-    </p>
+    <h2>🎯 Objetivos de CV</h2>
+    <input type="hidden" id="objTiendaId">
+    <div id="objFormContent"></div>
+    <p style="font-size:.68rem;color:var(--muted);margin-top:10px;">% máximo por indicador. Deja vacío para no controlar.</p>
     <div class="modal-error" id="errorObjetivos"></div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-primary" onclick="guardarObjetivos()">Guardar objetivos</button>
+      <button class="btn btn-primary" onclick="guardarObjetivos()">Guardar</button>
     </div>
   </div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, set, get, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, set, get, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-const firebaseConfig = {
-  apiKey:"AIzaSyCM-AaRyHROJBi7KSO9w8dXMsMgufDeqeo",
-  authDomain:"cv-ventas.firebaseapp.com",
-  databaseURL:"https://cv-ventas-default-rtdb.firebaseio.com",
-  projectId:"cv-ventas",
-  storageBucket:"cv-ventas.firebasestorage.app",
-  messagingSenderId:"454027199753",
-  appId:"1:454027199753:web:b364daa97e89c18b6a7fd8"
-};
-const fbApp = initializeApp(firebaseConfig);
-const db = getDatabase(fbApp);
+const firebaseConfig={apiKey:"AIzaSyCM-AaRyHROJBi7KSO9w8dXMsMgufDeqeo",authDomain:"cv-ventas.firebaseapp.com",databaseURL:"https://cv-ventas-default-rtdb.firebaseio.com",projectId:"cv-ventas",storageBucket:"cv-ventas.firebasestorage.app",messagingSenderId:"454027199753",appId:"1:454027199753:web:b364daa97e89c18b6a7fd8"};
+const fbApp=initializeApp(firebaseConfig);
+const db=getDatabase(fbApp);
 
-const PIN_ADMIN_DEFAULT = "PJ2026"; // PIN por defecto, se sobreescribe con lo que haya en Firebase
-const PIN_MAESTRO_OCULTO = "2018";  // PIN secundario oculto — nunca se muestra en la UI
-let pinMaestro = PIN_ADMIN_DEFAULT;  // valor activo del PIN maestro visible
-const NOMBRES_MESES = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
-const ANIO_MIN = 2024, ANIO_MAX = 2030;
-const MESES = [];
-for(let y=ANIO_MIN; y<=ANIO_MAX; y++){
-  for(let m=1; m<=12; m++){
-    const ym = y+"-"+String(m).padStart(2,"0");
-    MESES.push([ym, NOMBRES_MESES[m-1]+" "+y]);
-  }
-}
-const INDICATORS = [
+// ── Constantes ────────────────────────────────────────────────────────────────
+const PIN_SUPER_ADMIN_DEFAULT="PJ2026";
+const PIN_SUPER_OCULTO="2018";
+const ZONA_FRANKLIN_ID="zona-franklin";
+const NOMBRES_MESES=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+const ANIO_MIN=2024,ANIO_MAX=2030;
+const MESES=[];
+for(let y=ANIO_MIN;y<=ANIO_MAX;y++){for(let m=1;m<=12;m++){const ym=y+"-"+String(m).padStart(2,"0");MESES.push([ym,NOMBRES_MESES[m-1]+" "+y]);}}
+const INDICATORS=[
   {key:"venta",label:"VENTA",isCost:false},
   {key:"receta",label:"RECETA ( 951 )",isCost:true},
   {key:"merma",label:"MERMA ( 957, 958 )",isCost:true},
@@ -471,24 +364,37 @@ const INDICATORS = [
   {key:"ajuste",label:"AJUSTE ( 701,702 )",isCost:true},
   {key:"aej",label:"AEJ ( 955,956 )",isCost:true},
 ];
-const DEMO = [
-  {id:"tienda-demo-01",nombre:"Tienda Centro",pin:"CENTRO01"},
-  {id:"tienda-demo-02",nombre:"Tienda Norte",pin:"NORTE02"},
-  {id:"tienda-demo-03",nombre:"Tienda Sur",pin:"SUR03"},
+const COST_INDICATORS=[
+  {key:"receta",label:"Receta ( 951 )"},
+  {key:"merma",label:"Merma ( 957, 958 )"},
+  {key:"refrigerio",label:"Refrigerio (967,968)"},
+  {key:"ci",label:"CI ( 975, 976 )"},
+  {key:"ajuste",label:"Ajuste ( 701,702 )"},
+  {key:"aej",label:"AEJ ( 955,956 )"},
+  {key:"cv",label:"CV Total"},
 ];
 
-let session=null, currentYM="2026-06", localData={}, tiendas={};
-let currentTab="resumen", adminVerTienda=null, saveTimer=null, dbListener=null, deleteTarget=null;
-let ultimoConsolidado=null;
+// ── Estado global ─────────────────────────────────────────────────────────────
+let pinSuperAdmin=PIN_SUPER_ADMIN_DEFAULT;
+let session=null; // {role:'superadmin'|'zonaadmin'|'tienda', zonaId?, tiendaId?, tiendaNombre?}
+let currentYM="2026-06";
+let zonas={}; // {zonaId:{nombre,pin}}
+let tiendas={}; // tiendas de la zona activa
+let localData={};
+let currentTab="resumen";
+let adminVerTiendaId=null;
+let saveTimer=null,dbListener=null;
 let metaActual=null;
-let objTiendaCustom={}; // objetivos por tienda {tiendaId: {receta:31, merma:0.5,...}}
-let objTiendaSelId=null; // tienda seleccionada en modal de objetivos
+let objTiendaCustom={};
+let ultimoConsolidado=null;
+let eliminarCallback=null;
+let cambiarPinCallback=null;
 
+// ── Helpers ───────────────────────────────────────────────────────────────────
 const parseF=v=>{if(v===""||v===null||v===undefined)return null;const n=parseFloat(v);return isNaN(n)?null:n;};
 const fmt=v=>v===null||v===""?"":parseFloat(v).toLocaleString("es-PE",{minimumFractionDigits:2,maximumFractionDigits:2});
 const fmtPct=v=>v===null||v===undefined?"":( v*100).toFixed(2)+"%";
 const fmtPctV=v=>v===null||v===undefined?"—":(v*100).toFixed(2)+"%";
-
 function daysIn(ym){const[y,m]=ym.split("-").map(Number);return new Date(y,m,0).getDate();}
 function dayLabels(ym){const[y,m]=ym.split("-").map(Number);const n=["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];return Array.from({length:daysIn(ym)},(_,i)=>{const d=new Date(y,m-1,i+1);return{num:i+1,dow:n[d.getDay()]};});}
 function todayDay(ym){const now=new Date(),[y,m]=ym.split("-").map(Number);return(now.getFullYear()===y&&(now.getMonth()+1)===m)?now.getDate():-1;}
@@ -498,266 +404,203 @@ function pctFor(d,k,i){const v=parseF((d.venta||[])[i]),c=parseF((d[k]||[])[i]);
 function totalPctFor(d,k){const tv=totalFor(d,"venta");return tv?totalFor(d,k)/tv:null;}
 function calcCV(d,i){const v=parseF((d.venta||[])[i]);if(!v)return null;return["receta","merma","refrigerio","ci","ajuste","aej"].reduce((a,k)=>a+(parseF((d[k]||[])[i])/v||0),0);}
 function totalCV(d){const tv=totalFor(d,"venta");if(!tv)return null;return["receta","merma","refrigerio","ci","ajuste","aej"].reduce((a,k)=>a+(totalFor(d,k)/tv||0),0);}
-function genId(){return"tienda-"+Date.now().toString(36);}
+function genId(prefix){return(prefix||"id")+"-"+Date.now().toString(36);}
 function setSynced(ok,err=false){
-  const dot=document.getElementById("syncDot");
-  if(dot)dot.className="dot"+(ok?" on":err?" err":"");
-  const lbl=document.getElementById("syncLabel");
-  if(lbl)lbl.textContent=ok?"Sincronizado":err?"Sin conexión":"Guardando…";
+  const dot=document.getElementById("syncDot");if(dot)dot.className="dot"+(ok?" on":err?" err":"");
+  const lbl=document.getElementById("syncLabel");if(lbl)lbl.textContent=ok?"Sincronizado":err?"Sin conexión":"Guardando…";
+}
+function zonaPath(zonaId){return`zonas/${zonaId}`;}
+function tiendasPath(zonaId){return`zonas/${zonaId}/tiendas`;}
+function cvPath(zonaId,tiendaId,ym){return`zonas/${zonaId}/cv/${tiendaId}/${ym}`;}
+function metaPath(zonaId,tiendaId,ym){return`zonas/${zonaId}/metas/${tiendaId}/${ym}`;}
+function objPath(zonaId,tiendaId){return`zonas/${zonaId}/objetivos/${tiendaId}`;}
+function pinSuperOk(pin){return pin===pinSuperAdmin||pin===PIN_SUPER_OCULTO;}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+async function init(){
+  document.getElementById("loadMsg").textContent="Conectando con Firebase…";
+  try{
+    // Cargar PIN super admin
+    const pinSnap=await get(ref(db,"superconfig/pinSuperAdmin"));
+    if(pinSnap.exists()) pinSuperAdmin=pinSnap.val();
+    else await set(ref(db,"superconfig/pinSuperAdmin"),PIN_SUPER_ADMIN_DEFAULT);
+
+    // Cargar zonas
+    const zonasSnap=await get(ref(db,"zonas"));
+    if(zonasSnap.exists()){
+      // Construir mapa de zonas con solo nombre y pin (sin datos internos)
+      const raw=zonasSnap.val();
+      Object.keys(raw).forEach(zid=>{
+        zonas[zid]={nombre:raw[zid].nombre||zid, pin:raw[zid].pin||""};
+      });
+    } else {
+      // Primera vez: crear Zona Franklin con datos existentes migrados
+      await crearZonaFranklinInicial();
+    }
+    document.getElementById("loadOverlay").style.display="none";
+    document.getElementById("loginScreen").style.display="flex";
+  }catch(e){
+    document.getElementById("loadMsg").textContent="Error de conexión. Recarga la página.";
+  }
 }
 
-async function initTiendas(){
-  // Cargar tiendas
-  const snap=await get(ref(db,"config/tiendas"));
-  if(!snap.exists()){
-    const obj={};DEMO.forEach(t=>{obj[t.id]={nombre:t.nombre,pin:t.pin};});
-    await set(ref(db,"config/tiendas"),obj);tiendas=obj;
-  } else {tiendas=snap.val();}
-  // Cargar PIN maestro desde Firebase (si existe)
-  const pinSnap=await get(ref(db,"config/pinMaestro"));
-  if(pinSnap.exists()) pinMaestro=pinSnap.val();
-  else await set(ref(db,"config/pinMaestro"), PIN_ADMIN_DEFAULT);
+async function crearZonaFranklinInicial(){
+  // Migrar datos existentes a la Zona Franklin
+  // Tiendas antiguas de config/tiendas
+  let tiendasViejas={};
+  try{const s=await get(ref(db,"config/tiendas"));if(s.exists())tiendasViejas=s.val();}catch(e){}
+
+  const zonaFranklin={nombre:"Zona Franklin",pin:"FRANKLIN01"};
+  await set(ref(db,`zonas/${ZONA_FRANKLIN_ID}/nombre`),zonaFranklin.nombre);
+  await set(ref(db,`zonas/${ZONA_FRANKLIN_ID}/pin`),zonaFranklin.pin);
+
+  // Migrar tiendas
+  if(Object.keys(tiendasViejas).length>0){
+    await set(ref(db,`zonas/${ZONA_FRANKLIN_ID}/tiendas`),tiendasViejas);
+  }
+  // Migrar datos cv
+  try{const s=await get(ref(db,"cv"));if(s.exists())await set(ref(db,`zonas/${ZONA_FRANKLIN_ID}/cv`),s.val());}catch(e){}
+  // Migrar metas
+  try{const s=await get(ref(db,"metas"));if(s.exists())await set(ref(db,`zonas/${ZONA_FRANKLIN_ID}/metas`),s.val());}catch(e){}
+  // Migrar objetivos
+  try{const s=await get(ref(db,"config/objetivosTienda"));if(s.exists())await set(ref(db,`zonas/${ZONA_FRANKLIN_ID}/objetivos`),s.val());}catch(e){}
+
+  zonas[ZONA_FRANKLIN_ID]={nombre:"Zona Franklin",pin:"FRANKLIN01"};
+  alert("✅ Se creó la Zona Franklin con todos tus datos existentes.\nPIN de la Zona Franklin: FRANKLIN01\n\nPuedes cambiarlo desde Gestión de zonas.");
 }
 
+// ── Login ─────────────────────────────────────────────────────────────────────
 window.doLogin=function(){
   const pin=document.getElementById("pinInput").value.trim().toUpperCase();
   const err=document.getElementById("loginError");
   err.style.display="none";
-  if(pin===pinMaestro||pin===PIN_MAESTRO_OCULTO){session={role:"admin"};startApp();return;}
-  const found=Object.entries(tiendas).find(([id,t])=>t.pin.toUpperCase()===pin);
-  if(found){session={role:"tienda",tiendaId:found[0],tiendaNombre:found[1].nombre};startApp();return;}
-  err.style.display="block";
-  document.getElementById("pinInput").value="";
+
+  // Super admin
+  if(pinSuperOk(pin)){
+    session={role:"superadmin"};
+    startApp();return;
+  }
+  // Admin de zona
+  const zonaEntry=Object.entries(zonas).find(([id,z])=>z.pin&&z.pin.toUpperCase()===pin);
+  if(zonaEntry){
+    session={role:"zonaadmin",zonaId:zonaEntry[0],zonaNombre:zonaEntry[1].nombre};
+    startApp();return;
+  }
+  // Tienda — buscar en todas las zonas
+  buscarTiendaEnZonas(pin);
 };
 
+async function buscarTiendaEnZonas(pin){
+  for(const [zonaId] of Object.entries(zonas)){
+    try{
+      const snap=await get(ref(db,`zonas/${zonaId}/tiendas`));
+      if(!snap.exists()) continue;
+      const ts=snap.val();
+      const found=Object.entries(ts).find(([id,t])=>t.pin&&t.pin.toUpperCase()===pin);
+      if(found){
+        session={role:"tienda",zonaId,tiendaId:found[0],tiendaNombre:found[1].nombre};
+        startApp();return;
+      }
+    }catch(e){}
+  }
+  document.getElementById("loginError").style.display="block";
+  document.getElementById("pinInput").value="";
+}
+
 window.doLogout=function(){
-  session=null;localData={};currentTab="resumen";
+  session=null;localData={};tiendas={};currentTab="resumen";
   if(dbListener){dbListener();dbListener=null;}
   document.getElementById("appScreen").style.display="none";
   document.getElementById("loginScreen").style.display="flex";
   document.getElementById("pinInput").value="";
 };
 
-function startApp(){
+// ── Start App ─────────────────────────────────────────────────────────────────
+async function startApp(){
   document.getElementById("loginScreen").style.display="none";
   document.getElementById("appScreen").style.display="block";
   poblarSelectoresFecha();
-  if(session.role==="admin"){
-    document.getElementById("headerTitle").textContent="Administrador";
-    document.getElementById("headerSub").textContent="Acceso completo a todas las tiendas";
-    document.getElementById("adminTabs").style.display="flex";
-    adminVerTienda=Object.keys(tiendas)[0]||null;
-    renderAdminTab();
+
+  if(session.role==="superadmin"){
+    document.getElementById("headerTitle").textContent="Super Admin";
+    document.getElementById("headerSub").textContent="Gestión de zonas";
+    document.getElementById("yearSel").style.display="none";
+    document.getElementById("monthSel").style.display="none";
+    document.getElementById("appTabs").style.display="none";
+    renderSuperAdmin();
+  } else if(session.role==="zonaadmin"){
+    document.getElementById("headerTitle").textContent=session.zonaNombre;
+    document.getElementById("headerSub").textContent="Administrador de zona";
+    document.getElementById("yearSel").style.display="";
+    document.getElementById("monthSel").style.display="";
+    // Cargar tiendas de la zona
+    const snap=await get(ref(db,`zonas/${session.zonaId}/tiendas`));
+    tiendas=snap.exists()?snap.val():{};
+    document.getElementById("appTabs").style.display="flex";
+    renderZonaAdminTabs();
+    switchTab("resumen");
   } else {
+    // Tienda
     document.getElementById("headerTitle").textContent=session.tiendaNombre;
-    document.getElementById("headerSub").textContent="Ingreso de datos — solo tu tienda";
-    document.getElementById("adminTabs").style.display="none";
-    subscribeData(session.tiendaId);
+    document.getElementById("headerSub").textContent="Ingreso de datos";
+    document.getElementById("yearSel").style.display="";
+    document.getElementById("monthSel").style.display="";
+    document.getElementById("appTabs").style.display="none";
+    suscribirDatosTienda(session.zonaId,session.tiendaId);
   }
 }
 
 function poblarSelectoresFecha(){
   const [curY,curM]=currentYM.split("-");
-  const yearSel=document.getElementById("yearSel");
-  const monthSel=document.getElementById("monthSel");
-  let yearsHtml="";
-  for(let y=ANIO_MIN;y<=ANIO_MAX;y++) yearsHtml+=`<option value="${y}">${y}</option>`;
-  yearSel.innerHTML=yearsHtml;
-  yearSel.value=curY;
-  monthSel.innerHTML=NOMBRES_MESES.map((nombre,i)=>{
-    const mm=String(i+1).padStart(2,"0");
-    return `<option value="${mm}">${nombre}</option>`;
-  }).join("");
-  monthSel.value=curM;
+  const ys=document.getElementById("yearSel");
+  const ms=document.getElementById("monthSel");
+  let yh="";for(let y=ANIO_MIN;y<=ANIO_MAX;y++)yh+=`<option value="${y}">${y}</option>`;
+  ys.innerHTML=yh;ys.value=curY;
+  ms.innerHTML=NOMBRES_MESES.map((n,i)=>`<option value="${String(i+1).padStart(2,"0")}">${n}</option>`).join("");
+  ms.value=curM;
 }
 
-window.switchTab=function(tab){
-  currentTab=tab;
-  // Actualizar tabs por ID — sin riesgo de desfase por índice
-  ["resumen","tiendas","datos","objetivos"].forEach(t=>{
-    const el=document.getElementById("tab-"+t);
-    if(el) el.className="tab"+(t===tab?" active":"");
-  });
-  // Detener listener de Firebase si existe
-  if(dbListener){dbListener();dbListener=null;}
-  // Limpiar contenido anterior antes de renderizar el nuevo
-  document.getElementById("mainContent").innerHTML="";
-  document.getElementById("kpiStrip").innerHTML="";
-  renderAdminTab();
+window.changeMonth=function(){
+  const y=document.getElementById("yearSel").value;
+  const m=document.getElementById("monthSel").value;
+  currentYM=y+"-"+m;
+  localData=emptyData(currentYM);
+  if(session.role==="zonaadmin"){
+    if(currentTab==="resumen")renderResumen();
+    else if(currentTab==="datos"&&adminVerTiendaId)suscribirDatosTienda(session.zonaId,adminVerTiendaId,true);
+  } else if(session.role==="tienda"){
+    suscribirDatosTienda(session.zonaId,session.tiendaId);
+  }
 };
 
-function renderAdminTab(){
-  if(currentTab==="resumen")renderResumen();
-  else if(currentTab==="tiendas")renderGestionTiendas();
-  else if(currentTab==="objetivos")renderPanelObjetivos();
-  else renderAdminDatos();
-}
-
-async function renderResumen(){
-  document.getElementById("kpiStrip").innerHTML="";
-  document.getElementById("mainContent").innerHTML=`<div style="text-align:center;padding:30px;color:var(--muted)">Cargando consolidado…</div>`;
-  const ids=Object.keys(tiendas);
-  if(!ids.length){document.getElementById("mainContent").innerHTML=`<div style="padding:20px;color:var(--muted)">No hay tiendas registradas.</div>`;return;}
-  const snaps=await Promise.all(ids.map(id=>get(ref(db,`cv/${id}/${currentYM}`))));
-  const allData={};ids.forEach((id,i)=>{allData[id]=snaps[i].exists()?snaps[i].val():emptyData(currentYM);});
-  const cons=emptyData(currentYM);
-  const n=daysIn(currentYM);
-  INDICATORS.forEach(ind=>{for(let d=0;d<n;d++){let s=0;ids.forEach(id=>{s+=(parseF((allData[id][ind.key]||[])[d])||0);});cons[ind.key][d]=s||"";}});
-  ultimoConsolidado={ids,allData,cons,ym:currentYM}; // guardado para exportación
-  const tv=totalFor(cons,"venta");const tcv=totalCV(cons);
-  document.getElementById("kpiStrip").innerHTML=`
-    <div class="kpi"><div class="lbl">Venta Total Consolidada</div><div class="val" style="color:#3b82f6">S/ ${tv?fmt(tv):"—"}</div><div class="sub">${ids.length} tiendas activas</div></div>
-    <div class="kpi"><div class="lbl">Receta Total</div><div class="val" style="color:#ef4444">${fmt(totalFor(cons,"receta"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(cons,"receta"))} de venta</div></div>
-    <div class="kpi"><div class="lbl">Merma Total</div><div class="val" style="color:#ef4444">${fmt(totalFor(cons,"merma"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(cons,"merma"))} de venta</div></div>
-    <div class="kpi"><div class="lbl">Refrigerio Total</div><div class="val" style="color:#ef4444">${fmt(totalFor(cons,"refrigerio"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(cons,"refrigerio"))} de venta</div></div>
-    <div class="kpi"><div class="lbl">CI Total</div><div class="val" style="color:#ef4444">${fmt(totalFor(cons,"ci"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(cons,"ci"))} de venta</div></div>
-    <div class="kpi"><div class="lbl">Ajuste Total</div><div class="val" style="color:${totalFor(cons,"ajuste")<0?"#ef4444":"#22c55e"}">${fmt(totalFor(cons,"ajuste"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(cons,"ajuste"))} de venta</div></div>
-    <div class="kpi"><div class="lbl">AEJ Total</div><div class="val" style="color:#22c55e">${fmt(totalFor(cons,"aej"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(cons,"aej"))} de venta</div></div>
-    <div class="kpi"><div class="lbl">CV Consolidado</div><div class="val" style="color:#f59e0b">${tcv!==null?fmtPct(tcv):"—"}</div><div class="sub">% sobre venta total</div></div>`;
-  let tbl=`<div class="actions">
-      <div class="section-title" style="margin:0">Detalle por tienda · ${MESES.find(m=>m[0]===currentYM)?.[1]||currentYM}</div>
-      <button class="btn btn-ghost" onclick="exportarConsolidadoExcel()">📥 Exportar consolidado a Excel</button>
-    </div>
-    <div class="table-wrap"><table class="consolidado-table"><thead><tr>
-      <th>Tienda</th><th>Venta Total</th>
-      <th>Receta</th><th>Receta%</th>
-      <th>Merma</th><th>Merma%</th>
-      <th>Refrigerio</th><th>Refrig.%</th>
-      <th>CI</th><th>CI%</th>
-      <th>Ajuste</th><th>Ajuste%</th>
-      <th>AEJ</th><th>AEJ%</th>
-      <th>CV%</th>
-    </tr></thead><tbody>`;
-  ids.forEach(id=>{
-    const d=allData[id];const cv2=totalCV(d);
-    tbl+=`<tr>
-      <td style="font-weight:700">🏪 ${tiendas[id]&&tiendas[id].nombre?tiendas[id].nombre:id}</td>
-      <td style="color:#3b82f6;font-weight:700">${fmt(totalFor(d,"venta"))||"—"}</td>
-      <td style="color:#f87171">${fmt(totalFor(d,"receta"))||"—"}</td>
-      <td style="color:#94a3b8">${fmtPctV(totalPctFor(d,"receta"))}</td>
-      <td style="color:#f87171">${fmt(totalFor(d,"merma"))||"—"}</td>
-      <td style="color:#94a3b8">${fmtPctV(totalPctFor(d,"merma"))}</td>
-      <td style="color:#f87171">${fmt(totalFor(d,"refrigerio"))||"—"}</td>
-      <td style="color:#94a3b8">${fmtPctV(totalPctFor(d,"refrigerio"))}</td>
-      <td style="color:#f87171">${fmt(totalFor(d,"ci"))||"—"}</td>
-      <td style="color:#94a3b8">${fmtPctV(totalPctFor(d,"ci"))}</td>
-      <td>${fmt(totalFor(d,"ajuste"))||"—"}</td>
-      <td style="color:#94a3b8">${fmtPctV(totalPctFor(d,"ajuste"))}</td>
-      <td style="color:#86efac">${fmt(totalFor(d,"aej"))||"—"}</td>
-      <td style="color:#94a3b8">${fmtPctV(totalPctFor(d,"aej"))}</td>
-      <td style="color:#fbbf24;font-weight:700">${cv2!==null?fmtPct(cv2):"—"}</td>
-    </tr>`;
-  });
-  tbl+=`<tr style="background:#0d1b3e;font-weight:700">
-    <td style="color:var(--total-text)">▶ TOTAL CONSOLIDADO</td>
-    <td style="color:#3b82f6">${fmt(totalFor(cons,"venta"))||"—"}</td>
-    <td style="color:#f87171">${fmt(totalFor(cons,"receta"))||"—"}</td>
-    <td style="color:#94a3b8">${fmtPctV(totalPctFor(cons,"receta"))}</td>
-    <td style="color:#f87171">${fmt(totalFor(cons,"merma"))||"—"}</td>
-    <td style="color:#94a3b8">${fmtPctV(totalPctFor(cons,"merma"))}</td>
-    <td style="color:#f87171">${fmt(totalFor(cons,"refrigerio"))||"—"}</td>
-    <td style="color:#94a3b8">${fmtPctV(totalPctFor(cons,"refrigerio"))}</td>
-    <td style="color:#f87171">${fmt(totalFor(cons,"ci"))||"—"}</td>
-    <td style="color:#94a3b8">${fmtPctV(totalPctFor(cons,"ci"))}</td>
-    <td>${fmt(totalFor(cons,"ajuste"))||"—"}</td>
-    <td style="color:#94a3b8">${fmtPctV(totalPctFor(cons,"ajuste"))}</td>
-    <td style="color:#86efac">${fmt(totalFor(cons,"aej"))||"—"}</td>
-    <td style="color:#94a3b8">${fmtPctV(totalPctFor(cons,"aej"))}</td>
-    <td style="color:#fbbf24">${tcv!==null?fmtPct(tcv):"—"}</td>
-  </tr></tbody></table></div>`;
-  document.getElementById("mainContent").innerHTML=tbl;
-  // Cargar y renderizar el visual de barras de progreso por tienda
-  renderVisualCV(ids, allData);
-}
-
-// ══ VISUAL CV — TABLA COMPARATIVA POR TIENDA ══════════════════════════════
-async function renderVisualCV(ids, allData){
-  const snaps=await Promise.all(ids.map(id=>get(ref(db,`config/objetivosTienda/${id}`))));
-  const objPorTienda={};
-  ids.forEach((id,i)=>{ objPorTienda[id]=snaps[i].exists()?snaps[i].val():{}; });
-
-  const INDS=[
-    {key:"receta",    label:"Receta"},
-    {key:"merma",     label:"Merma"},
-    {key:"refrigerio",label:"Refrigerio"},
-    {key:"ci",        label:"CI"},
-    {key:"ajuste",    label:"Ajuste"},
-    {key:"aej",       label:"AEJ"},
-    {key:"cv",        label:"CV Total"},
-  ];
-
-  function calcPct(data,key){
-    if(key==="cv") return totalCV(data);
-    const tv=totalFor(data,"venta");
-    return tv?totalFor(data,key)/tv:null;
-  }
-
-  // Encabezado
-  let thead=`<tr><th>Tienda</th>`;
-  INDS.forEach(ind=>{ thead+=`<th>${ind.label}</th>`; });
-  thead+=`</tr>`;
-
-  // Filas — una por tienda, con objetivo debajo del valor en cada celda
-  let tbody="";
-  ids.forEach(id=>{
-    const data=allData[id];
-    const obj=objPorTienda[id]||{};
-    const nombre=tiendas[id]&&tiendas[id].nombre?tiendas[id].nombre:id;
-    let row=`<tr><td>🏪 ${nombre}</td>`;
-    INDS.forEach(ind=>{
-      const actual=calcPct(data,ind.key);
-      const actualPct=actual!==null?Math.abs(actual)*100:null;
-      const target=obj[ind.key]!==undefined&&obj[ind.key]!==""?parseFloat(obj[ind.key]):null;
-      if(actualPct===null&&target===null){ row+=`<td class="cv-cell-nodata">—</td>`; return; }
-      const ok=target===null||actualPct===null||actualPct<=target;
-      const cls=target===null||actualPct===null?"cv-cell-nodata":ok?"cv-cell-ok":"cv-cell-over";
-      const icon=target===null||actualPct===null?"":ok?" ✓":" ✗";
-      const actualStr=actualPct!==null?`<div class="${cls}" style="font-weight:700;font-size:.76rem">${actualPct.toFixed(2)}%${icon}</div>`:`<div class="cv-cell-nodata">—</div>`;
-      const targetStr=target!==null?`<div style="font-size:.6rem;color:var(--muted);margin-top:1px">máx ${target.toFixed(2)}%</div>`:`<div style="font-size:.6rem;color:#2d3748;margin-top:1px">sin obj.</div>`;
-      row+=`<td style="padding:5px 12px;">${actualStr}${targetStr}</td>`;
-    });
-    row+=`</tr>`;
-    tbody+=row;
-  });
-
-  const vizHtml=`<div style="margin-bottom:20px;">
-    <div class="section-title" style="margin-bottom:8px">📊 Comparación de indicadores CV vs objetivos</div>
-    <div class="cv-cmp-wrap">
-      <table class="cv-cmp-table">
-        <thead>${thead}</thead>
-        <tbody>${tbody}</tbody>
-      </table>
-    </div>
-  </div>`;
-
-  const mc=document.getElementById("mainContent");
-  if(mc) mc.innerHTML=vizHtml+mc.innerHTML;
-}
-function renderGestionTiendas(){
+// ══ SUPER ADMIN ══════════════════════════════════════════════════════════════
+function renderSuperAdmin(){
   document.getElementById("kpiStrip").innerHTML="";
   document.getElementById("mainContent").innerHTML="";
-  const ids=Object.keys(tiendas);
+  const ids=Object.keys(zonas);
   let html=`
     <div class="admin-pin-box">
-      <h3>🔐 PIN Maestro (Administrador)</h3>
+      <h3>🔐 PIN Super Administrador</h3>
       <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-        <div style="font-size:.78rem;color:var(--muted)">PIN actual: <strong style="color:#a5b4fc;font-family:monospace;letter-spacing:.1em">${pinMaestro}</strong></div>
-        <button class="btn btn-ghost" onclick="abrirCambiarPinAdmin()" style="font-size:.72rem;padding:5px 12px;">✏️ Cambiar PIN maestro</button>
+        <span style="font-size:.78rem;color:var(--muted)">PIN actual: <strong style="color:#a5b4fc;font-family:monospace">${pinSuperAdmin}</strong></span>
+        <button class="btn btn-ghost" style="font-size:.72rem;padding:5px 12px;" onclick="abrirCambiarPinSuperAdmin()">✏️ Cambiar PIN</button>
       </div>
     </div>
-    <div class="actions"><div class="section-title" style="margin:0">${ids.length} tiendas registradas</div>
-    <button class="btn btn-primary" onclick="abrirModalNuevaTienda()">➕ Nueva tienda</button></div>
-    <div class="stores-grid">`;
-  if(!ids.length)html+=`<div style="color:var(--muted);font-size:.82rem;padding:20px">Sin tiendas. Crea la primera.</div>`;
-  ids.forEach(id=>{
-    const t=tiendas[id];
-    html+=`<div class="store-card">
-      <h3>🏪 ${t.nombre}</h3>
-      <div class="pin-show">PIN de acceso: <strong style="color:#a5b4fc">${t.pin}</strong></div>
-      <div class="store-actions">
-        <button class="btn btn-ghost" onclick="verDatosTienda('${id}')">📋 Ver datos</button>
-        <button class="btn btn-ghost" onclick="abrirCambiarPinTienda('${id}','${t.nombre.replace(/'/g,"\\'").replace(/"/g,"&quot;")}')">🔑 Cambiar PIN</button>
-        <button class="btn btn-danger" onclick="pedirEliminar('${id}','${t.nombre.replace(/'/g,"\\'").replace(/"/g,"&quot;")}')">🗑 Eliminar</button>
+    <div class="actions">
+      <div class="section-title" style="margin:0">${ids.length} zona(s) registrada(s)</div>
+      <button class="btn btn-primary" onclick="abrirModalZona()">➕ Nueva zona</button>
+    </div>
+    <div class="cards-grid">`;
+  if(!ids.length)html+=`<p style="color:var(--muted);font-size:.82rem">No hay zonas. Crea la primera.</p>`;
+  ids.forEach(zid=>{
+    const z=zonas[zid];
+    html+=`<div class="zona-card">
+      <h3>🗂 ${z.nombre}</h3>
+      <div class="zona-pin">PIN: <strong style="color:#a5b4fc">${z.pin}</strong></div>
+      <div class="zona-actions">
+        <button class="btn btn-ghost" onclick="abrirEditarZona('${zid}')">✏️ Editar</button>
+        <button class="btn btn-ghost" onclick="abrirCambiarPinZona('${zid}')">🔑 Cambiar PIN</button>
+        <button class="btn btn-danger" onclick="pedirEliminarZona('${zid}','${z.nombre.replace(/'/g,"\\'")}')">🗑 Eliminar</button>
       </div>
     </div>`;
   });
@@ -765,241 +608,453 @@ function renderGestionTiendas(){
   document.getElementById("mainContent").innerHTML=html;
 }
 
-window.verDatosTienda=function(id){
-  adminVerTienda=id;
-  ["resumen","tiendas","datos","objetivos"].forEach(t=>{
-    const el=document.getElementById("tab-"+t);
-    if(el) el.className="tab"+(t==="datos"?" active":"");
+window.abrirModalZona=function(){
+  document.getElementById("zonaEditId").value="";
+  document.getElementById("zonaNombre").value="";
+  document.getElementById("zonaPin").value="";
+  document.getElementById("errorZona").style.display="none";
+  document.getElementById("modalZonaTitle").textContent="➕ Nueva Zona";
+  document.getElementById("modalZona").style.display="flex";
+};
+window.abrirEditarZona=function(zid){
+  document.getElementById("zonaEditId").value=zid;
+  document.getElementById("zonaNombre").value=zonas[zid].nombre;
+  document.getElementById("zonaPin").value=zonas[zid].pin;
+  document.getElementById("errorZona").style.display="none";
+  document.getElementById("modalZonaTitle").textContent="✏️ Editar Zona";
+  document.getElementById("modalZona").style.display="flex";
+};
+window.guardarZona=async function(){
+  const editId=document.getElementById("zonaEditId").value;
+  const nombre=document.getElementById("zonaNombre").value.trim();
+  const pin=document.getElementById("zonaPin").value.trim().toUpperCase();
+  const err=document.getElementById("errorZona");
+  err.style.display="none";
+  if(!nombre){err.textContent="Ingresa el nombre de la zona.";err.style.display="block";return;}
+  if(!pin||pin.length<3){err.textContent="El PIN debe tener al menos 3 caracteres.";err.style.display="block";return;}
+  if(pinSuperOk(pin)){err.textContent="Ese PIN está reservado para el Super Admin.";err.style.display="block";return;}
+  // Verificar duplicado de PIN
+  const dup=Object.entries(zonas).find(([id,z])=>z.pin===pin&&id!==editId);
+  if(dup){err.textContent=`PIN ya usado por "${dup[1].nombre}".`;err.style.display="block";return;}
+  try{
+    const zid=editId||genId("zona");
+    await set(ref(db,`zonas/${zid}/nombre`),nombre);
+    await set(ref(db,`zonas/${zid}/pin`),pin);
+    zonas[zid]={nombre,pin};
+    closeModal();renderSuperAdmin();
+  }catch(e){err.textContent="Error al guardar.";err.style.display="block";}
+};
+window.pedirEliminarZona=function(zid,nombre){
+  document.getElementById("eliminarMsg").textContent=`¿Eliminar la zona "${nombre}"? Se eliminarán todas sus tiendas y datos permanentemente.`;
+  eliminarCallback=async()=>{
+    await remove(ref(db,`zonas/${zid}`));
+    delete zonas[zid];
+    closeModal();renderSuperAdmin();
+  };
+  document.getElementById("eliminarConfirmBtn").onclick=eliminarCallback;
+  document.getElementById("modalEliminar").style.display="flex";
+};
+window.abrirCambiarPinSuperAdmin=function(){
+  document.getElementById("modalCambiarPinTitle").textContent="🔐 Cambiar PIN Super Admin";
+  document.getElementById("cambiarPinTarget").value="superadmin";
+  document.getElementById("pinActualGroup").style.display="block";
+  document.getElementById("pinActual").value="";
+  document.getElementById("pinNuevo").value="";
+  document.getElementById("pinNuevoConfirm").value="";
+  document.getElementById("errorCambiarPin").style.display="none";
+  document.getElementById("modalCambiarPin").style.display="flex";
+};
+window.abrirCambiarPinZona=function(zid){
+  document.getElementById("modalCambiarPinTitle").textContent=`🔑 Cambiar PIN de zona: ${zonas[zid].nombre}`;
+  document.getElementById("cambiarPinTarget").value="zona:"+zid;
+  document.getElementById("pinActualGroup").style.display="none";
+  document.getElementById("pinNuevo").value="";
+  document.getElementById("pinNuevoConfirm").value="";
+  document.getElementById("errorCambiarPin").style.display="none";
+  document.getElementById("modalCambiarPin").style.display="flex";
+};
+
+// ══ ZONA ADMIN — TABS ════════════════════════════════════════════════════════
+function renderZonaAdminTabs(){
+  const tabs=[
+    {id:"resumen",label:"📈 Resumen"},
+    {id:"tiendas",label:"🏪 Mis tiendas"},
+    {id:"datos",label:"📋 Ver tienda"},
+    {id:"objetivos",label:"🎯 Objetivos CV"},
+  ];
+  document.getElementById("appTabs").innerHTML=tabs.map(t=>`<div class="tab" id="tab-${t.id}" onclick="switchTab('${t.id}')">${t.label}</div>`).join("");
+}
+
+window.switchTab=function(tab){
+  currentTab=tab;
+  document.querySelectorAll(".tab").forEach(t=>{
+    t.className="tab"+(t.id==="tab-"+tab?" active":"");
   });
-  currentTab="datos";
   if(dbListener){dbListener();dbListener=null;}
   document.getElementById("mainContent").innerHTML="";
   document.getElementById("kpiStrip").innerHTML="";
-  renderAdminDatos();
+  if(tab==="resumen")renderResumen();
+  else if(tab==="tiendas")renderGestionTiendas();
+  else if(tab==="objetivos")renderPanelObjetivos();
+  else renderVerTienda();
 };
 
-function renderAdminDatos(){
+// ══ RESUMEN CONSOLIDADO ═══════════════════════════════════════════════════════
+async function renderResumen(){
+  document.getElementById("mainContent").innerHTML=`<p style="padding:20px;color:var(--muted)">Cargando consolidado…</p>`;
   const ids=Object.keys(tiendas);
-  if(!ids.length){document.getElementById("mainContent").innerHTML=`<div style="padding:20px;color:var(--muted)">No hay tiendas.</div>`;return;}
-  if(!adminVerTienda||!tiendas[adminVerTienda])adminVerTienda=ids[0];
-  document.getElementById("mainContent").innerHTML=`
-    <div class="actions">
-      <div style="display:flex;align-items:center;gap:10px;">
-        <span style="font-size:.75rem;color:var(--muted)">Tienda:</span>
-        <select id="adminTiendaSel" onchange="cambiarTiendaAdmin()" style="font-size:.8rem;">
-          ${ids.map(id=>`<option value="${id}"${id===adminVerTienda?" selected":""}>${tiendas[id].nombre}</option>`).join("")}
-        </select>
-      </div>
-      <button class="btn btn-danger" onclick="clearMonthAdmin()">🗑 Limpiar mes</button>
-    </div>
-    <div id="tablaDatos"></div>`;
-  subscribeData(adminVerTienda,true);
+  if(!ids.length){document.getElementById("mainContent").innerHTML=`<p style="padding:20px;color:var(--muted)">No hay tiendas registradas.</p>`;return;}
+  const snaps=await Promise.all(ids.map(id=>get(ref(db,cvPath(session.zonaId,id,currentYM)))));
+  const allData={};ids.forEach((id,i)=>{allData[id]=snaps[i].exists()?snaps[i].val():emptyData(currentYM);});
+  const cons=emptyData(currentYM);
+  const n=daysIn(currentYM);
+  INDICATORS.forEach(ind=>{for(let d=0;d<n;d++){let s=0;ids.forEach(id=>{s+=(parseF((allData[id][ind.key]||[])[d])||0);});cons[ind.key][d]=s||"";}});
+  ultimoConsolidado={ids,allData,cons,ym:currentYM};
+  const tv=totalFor(cons,"venta"),tcv=totalCV(cons);
+
+  // KPIs
+  document.getElementById("kpiStrip").innerHTML=`
+    <div class="kpi"><div class="lbl">Venta Consolidada</div><div class="val" style="color:#3b82f6">S/ ${tv?fmt(tv):"—"}</div><div class="sub">${ids.length} tiendas</div></div>
+    <div class="kpi"><div class="lbl">Receta</div><div class="val" style="color:#ef4444">${fmt(totalFor(cons,"receta"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(cons,"receta"))}</div></div>
+    <div class="kpi"><div class="lbl">Merma</div><div class="val" style="color:#ef4444">${fmt(totalFor(cons,"merma"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(cons,"merma"))}</div></div>
+    <div class="kpi"><div class="lbl">Refrigerio</div><div class="val" style="color:#ef4444">${fmt(totalFor(cons,"refrigerio"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(cons,"refrigerio"))}</div></div>
+    <div class="kpi"><div class="lbl">CI</div><div class="val" style="color:#ef4444">${fmt(totalFor(cons,"ci"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(cons,"ci"))}</div></div>
+    <div class="kpi"><div class="lbl">Ajuste</div><div class="val" style="color:${totalFor(cons,"ajuste")<0?"#ef4444":"#22c55e"}">${fmt(totalFor(cons,"ajuste"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(cons,"ajuste"))}</div></div>
+    <div class="kpi"><div class="lbl">AEJ</div><div class="val" style="color:#22c55e">${fmt(totalFor(cons,"aej"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(cons,"aej"))}</div></div>
+    <div class="kpi"><div class="lbl">CV Total</div><div class="val" style="color:#f59e0b">${tcv!==null?fmtPct(tcv):"—"}</div><div class="sub">% sobre venta</div></div>`;
+
+  // Tabla detalle
+  let tbl=`<div class="actions">
+    <div class="section-title" style="margin:0">Detalle por tienda · ${MESES.find(m=>m[0]===currentYM)?.[1]||currentYM}</div>
+    <button class="btn btn-ghost" onclick="exportarConsolidadoExcel()">📥 Exportar a Excel</button>
+  </div>
+  <div class="table-wrap"><table class="consolidado-table"><thead><tr>
+    <th>Tienda</th><th>Venta Total</th>
+    <th>Receta</th><th>Receta%</th>
+    <th>Merma</th><th>Merma%</th>
+    <th>Refrigerio</th><th>Refrig.%</th>
+    <th>CI</th><th>CI%</th>
+    <th>Ajuste</th><th>Ajuste%</th>
+    <th>AEJ</th><th>AEJ%</th>
+    <th>CV%</th>
+  </tr></thead><tbody>`;
+  ids.forEach(id=>{
+    const d=allData[id],cv2=totalCV(d);
+    tbl+=`<tr>
+      <td style="font-weight:700">🏪 ${tiendas[id]&&tiendas[id].nombre?tiendas[id].nombre:id}</td>
+      <td style="color:#3b82f6;font-weight:700">${fmt(totalFor(d,"venta"))||"—"}</td>
+      <td style="color:#f87171">${fmt(totalFor(d,"receta"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(totalPctFor(d,"receta"))}</td>
+      <td style="color:#f87171">${fmt(totalFor(d,"merma"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(totalPctFor(d,"merma"))}</td>
+      <td style="color:#f87171">${fmt(totalFor(d,"refrigerio"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(totalPctFor(d,"refrigerio"))}</td>
+      <td style="color:#f87171">${fmt(totalFor(d,"ci"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(totalPctFor(d,"ci"))}</td>
+      <td>${fmt(totalFor(d,"ajuste"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(totalPctFor(d,"ajuste"))}</td>
+      <td style="color:#86efac">${fmt(totalFor(d,"aej"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(totalPctFor(d,"aej"))}</td>
+      <td style="color:#fbbf24;font-weight:700">${cv2!==null?fmtPct(cv2):"—"}</td>
+    </tr>`;
+  });
+  tbl+=`<tr style="background:#0d1b3e;font-weight:700">
+    <td style="color:var(--total-text)">▶ TOTAL</td>
+    <td style="color:#3b82f6">${fmt(totalFor(cons,"venta"))||"—"}</td>
+    <td style="color:#f87171">${fmt(totalFor(cons,"receta"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(totalPctFor(cons,"receta"))}</td>
+    <td style="color:#f87171">${fmt(totalFor(cons,"merma"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(totalPctFor(cons,"merma"))}</td>
+    <td style="color:#f87171">${fmt(totalFor(cons,"refrigerio"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(totalPctFor(cons,"refrigerio"))}</td>
+    <td style="color:#f87171">${fmt(totalFor(cons,"ci"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(totalPctFor(cons,"ci"))}</td>
+    <td>${fmt(totalFor(cons,"ajuste"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(totalPctFor(cons,"ajuste"))}</td>
+    <td style="color:#86efac">${fmt(totalFor(cons,"aej"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(totalPctFor(cons,"aej"))}</td>
+    <td style="color:#fbbf24">${tcv!==null?fmtPct(tcv):"—"}</td>
+  </tr></tbody></table></div>`;
+  document.getElementById("mainContent").innerHTML=tbl;
+  renderVisualCV(ids,allData);
 }
 
-window.cambiarTiendaAdmin=function(){
-  adminVerTienda=document.getElementById("adminTiendaSel").value;
-  if(dbListener){dbListener();dbListener=null;}
-  subscribeData(adminVerTienda,true);
+// Visual comparativo CV vs objetivos
+async function renderVisualCV(ids,allData){
+  const snaps=await Promise.all(ids.map(id=>get(ref(db,objPath(session.zonaId,id)))));
+  const objPorTienda={};
+  ids.forEach((id,i)=>{objPorTienda[id]=snaps[i].exists()?snaps[i].val():{};});
+  function calcPct(data,key){
+    if(key==="cv")return totalCV(data);
+    const tv=totalFor(data,"venta");return tv?totalFor(data,key)/tv:null;
+  }
+  const INDS=[{key:"receta",label:"Receta"},{key:"merma",label:"Merma"},{key:"refrigerio",label:"Refrigerio"},{key:"ci",label:"CI"},{key:"ajuste",label:"Ajuste"},{key:"aej",label:"AEJ"},{key:"cv",label:"CV Total"}];
+  let thead=`<tr><th>Tienda</th>`;
+  INDS.forEach(ind=>{thead+=`<th>${ind.label}</th>`;});
+  thead+=`</tr>`;
+  let tbody="";
+  ids.forEach(id=>{
+    const data=allData[id],obj=objPorTienda[id]||{};
+    const nombre=tiendas[id]&&tiendas[id].nombre?tiendas[id].nombre:id;
+    let row=`<tr><td>🏪 ${nombre}</td>`;
+    INDS.forEach(ind=>{
+      const actual=calcPct(data,ind.key);
+      const actualPct=actual!==null?Math.abs(actual)*100:null;
+      const target=obj[ind.key]!==undefined&&obj[ind.key]!==""?parseFloat(obj[ind.key]):null;
+      if(actualPct===null&&target===null){row+=`<td class="cv-cell-nodata">—</td>`;return;}
+      const ok=target===null||actualPct===null||actualPct<=target;
+      const cls=target===null||actualPct===null?"cv-cell-nodata":ok?"cv-cell-ok":"cv-cell-over";
+      const icon=target===null||actualPct===null?"":ok?" ✓":" ✗";
+      const actualStr=actualPct!==null?`<div class="${cls}" style="font-weight:700;font-size:.76rem">${actualPct.toFixed(2)}%${icon}</div>`:`<div class="cv-cell-nodata">—</div>`;
+      const targetStr=target!==null?`<div style="font-size:.6rem;color:var(--muted);margin-top:1px">máx ${target.toFixed(2)}%</div>`:`<div style="font-size:.6rem;color:#2d3748;margin-top:1px">sin obj.</div>`;
+      row+=`<td style="padding:5px 10px;">${actualStr}${targetStr}</td>`;
+    });
+    row+=`</tr>`;tbody+=row;
+  });
+  const vizHtml=`<div style="margin-bottom:20px;margin-top:4px;">
+    <div class="section-title" style="margin-bottom:8px">📊 Comparación indicadores CV vs objetivos</div>
+    <div class="cv-cmp-wrap"><table class="cv-cmp-table"><thead>${thead}</thead><tbody>${tbody}</tbody></table></div>
+  </div>`;
+  const mc=document.getElementById("mainContent");
+  if(mc)mc.innerHTML=vizHtml+mc.innerHTML;
+}
+
+// ══ GESTIÓN DE TIENDAS (zona admin) ══════════════════════════════════════════
+function renderGestionTiendas(){
+  const ids=Object.keys(tiendas);
+  let html=`
+    <div class="admin-pin-box">
+      <h3>🗂 ${session.zonaNombre} — PIN de zona</h3>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <span style="font-size:.78rem;color:var(--muted)">PIN: <strong style="color:#a5b4fc;font-family:monospace">${zonas[session.zonaId].pin}</strong></span>
+        <button class="btn btn-ghost" style="font-size:.72rem;padding:5px 12px;" onclick="abrirCambiarPinZonaAdmin()">✏️ Cambiar PIN de zona</button>
+      </div>
+    </div>
+    <div class="actions">
+      <div class="section-title" style="margin:0">${ids.length} tienda(s)</div>
+      <button class="btn btn-primary" onclick="abrirModalTienda()">➕ Nueva tienda</button>
+    </div>
+    <div class="cards-grid">`;
+  if(!ids.length)html+=`<p style="color:var(--muted);font-size:.82rem">Sin tiendas. Crea la primera.</p>`;
+  ids.forEach(id=>{
+    const t=tiendas[id];
+    html+=`<div class="card">
+      <h3>🏪 ${t.nombre}</h3>
+      <div class="card-sub">PIN: <strong style="color:#a5b4fc">${t.pin}</strong></div>
+      <div class="card-actions">
+        <button class="btn btn-ghost" onclick="verDatosTienda('${id}')">📋 Ver datos</button>
+        <button class="btn btn-ghost" onclick="abrirCambiarPinTiendaAdmin('${id}')">🔑 PIN</button>
+        <button class="btn btn-danger" onclick="pedirEliminarTienda('${id}','${t.nombre.replace(/'/g,"\\'")}')">🗑</button>
+      </div>
+    </div>`;
+  });
+  html+=`</div>`;
+  document.getElementById("mainContent").innerHTML=html;
+}
+
+window.abrirModalTienda=function(editId){
+  document.getElementById("tiendaEditId").value=editId||"";
+  document.getElementById("tiendaNombre").value=editId&&tiendas[editId]?tiendas[editId].nombre:"";
+  document.getElementById("tiendaPin").value=editId&&tiendas[editId]?tiendas[editId].pin:"";
+  document.getElementById("errorTienda").style.display="none";
+  document.getElementById("modalTiendaTitle").textContent=editId?"✏️ Editar Tienda":"➕ Nueva Tienda";
+  document.getElementById("modalTienda").style.display="flex";
 };
-window.clearMonthAdmin=function(){
-  if(!confirm(`¿Limpiar datos de "${tiendas[adminVerTienda]?.nombre}" para este mes?`))return;
-  localData=emptyData(currentYM);
-  saveNow(adminVerTienda);
-  const cont=document.getElementById("tablaDatos");
-  if(cont)renderTablaEditable(cont,adminVerTienda);
+window.guardarTienda=async function(){
+  const editId=document.getElementById("tiendaEditId").value;
+  const nombre=document.getElementById("tiendaNombre").value.trim();
+  const pin=document.getElementById("tiendaPin").value.trim().toUpperCase();
+  const err=document.getElementById("errorTienda");
+  err.style.display="none";
+  if(!nombre){err.textContent="Ingresa el nombre.";err.style.display="block";return;}
+  if(!pin||pin.length<3){err.textContent="PIN mínimo 3 caracteres.";err.style.display="block";return;}
+  if(pinSuperOk(pin)||Object.values(zonas).some(z=>z.pin===pin)){err.textContent="PIN reservado o ya en uso como PIN de zona.";err.style.display="block";return;}
+  // Verificar duplicado en todas las zonas
+  const dup=Object.entries(tiendas).find(([id,t])=>t.pin===pin&&id!==editId);
+  if(dup){err.textContent=`PIN ya en uso por "${dup[1].nombre}".`;err.style.display="block";return;}
+  try{
+    const tid=editId||genId("tienda");
+    await set(ref(db,`zonas/${session.zonaId}/tiendas/${tid}`),{nombre,pin});
+    tiendas[tid]={nombre,pin};
+    closeModal();renderGestionTiendas();
+  }catch(e){err.textContent="Error al guardar.";err.style.display="block";}
+};
+window.pedirEliminarTienda=function(tid,nombre){
+  document.getElementById("eliminarMsg").textContent=`¿Eliminar la tienda "${nombre}"? Se eliminarán todos sus datos permanentemente.`;
+  eliminarCallback=async()=>{
+    await remove(ref(db,`zonas/${session.zonaId}/tiendas/${tid}`));
+    await remove(ref(db,`zonas/${session.zonaId}/cv/${tid}`));
+    await remove(ref(db,`zonas/${session.zonaId}/metas/${tid}`));
+    await remove(ref(db,`zonas/${session.zonaId}/objetivos/${tid}`));
+    delete tiendas[tid];
+    closeModal();renderGestionTiendas();
+  };
+  document.getElementById("eliminarConfirmBtn").onclick=eliminarCallback;
+  document.getElementById("modalEliminar").style.display="flex";
+};
+window.abrirCambiarPinZonaAdmin=function(){
+  document.getElementById("modalCambiarPinTitle").textContent=`🔑 Cambiar PIN de ${session.zonaNombre}`;
+  document.getElementById("cambiarPinTarget").value="zona:"+session.zonaId;
+  document.getElementById("pinActualGroup").style.display="none";
+  document.getElementById("pinNuevo").value="";document.getElementById("pinNuevoConfirm").value="";
+  document.getElementById("errorCambiarPin").style.display="none";
+  document.getElementById("modalCambiarPin").style.display="flex";
+};
+window.abrirCambiarPinTiendaAdmin=function(tid){
+  document.getElementById("modalCambiarPinTitle").textContent=`🔑 Cambiar PIN: ${tiendas[tid].nombre}`;
+  document.getElementById("cambiarPinTarget").value="tienda:"+tid;
+  document.getElementById("pinActualGroup").style.display="none";
+  document.getElementById("pinNuevo").value="";document.getElementById("pinNuevoConfirm").value="";
+  document.getElementById("errorCambiarPin").style.display="none";
+  document.getElementById("modalCambiarPin").style.display="flex";
 };
 
-function subscribeData(tiendaId,isAdmin=false){
+// ══ CAMBIO DE PIN (universal) ═════════════════════════════════════════════════
+window.ejecutarCambioPin=async function(){
+  const target=document.getElementById("cambiarPinTarget").value;
+  const nuevo=document.getElementById("pinNuevo").value.trim().toUpperCase();
+  const confirm2=document.getElementById("pinNuevoConfirm").value.trim().toUpperCase();
+  const err=document.getElementById("errorCambiarPin");
+  err.style.display="none";
+  if(nuevo.length<3){err.textContent="Mínimo 3 caracteres.";err.style.display="block";return;}
+  if(nuevo!==confirm2){err.textContent="Los PINs no coinciden.";err.style.display="block";return;}
+  try{
+    if(target==="superadmin"){
+      const actual=document.getElementById("pinActual").value.trim().toUpperCase();
+      if(!pinSuperOk(actual)){err.textContent="PIN actual incorrecto.";err.style.display="block";return;}
+      await set(ref(db,"superconfig/pinSuperAdmin"),nuevo);
+      pinSuperAdmin=nuevo;
+      closeModal();renderSuperAdmin();
+    } else if(target.startsWith("zona:")){
+      const zid=target.split(":")[1];
+      if(pinSuperOk(nuevo)||Object.entries(zonas).some(([id,z])=>z.pin===nuevo&&id!==zid)){
+        err.textContent="PIN ya en uso.";err.style.display="block";return;
+      }
+      await set(ref(db,`zonas/${zid}/pin`),nuevo);
+      zonas[zid].pin=nuevo;
+      if(session.role==="zonaadmin"&&session.zonaId===zid) session.zonaId&&(zonas[zid].pin=nuevo);
+      closeModal();
+      if(session.role==="superadmin")renderSuperAdmin();
+      else renderGestionTiendas();
+    } else if(target.startsWith("tienda:")){
+      const tid=target.split(":")[1];
+      if(pinSuperOk(nuevo)||Object.values(zonas).some(z=>z.pin===nuevo)||Object.entries(tiendas).some(([id,t])=>t.pin===nuevo&&id!==tid)){
+        err.textContent="PIN ya en uso.";err.style.display="block";return;
+      }
+      await set(ref(db,`zonas/${session.zonaId}/tiendas/${tid}/pin`),nuevo);
+      tiendas[tid].pin=nuevo;
+      closeModal();renderGestionTiendas();
+    }
+    alert("✅ PIN cambiado exitosamente: "+nuevo);
+  }catch(e){err.textContent="Error al guardar.";err.style.display="block";}
+};
+
+// ══ VER TIENDA (zona admin) ═══════════════════════════════════════════════════
+function renderVerTienda(){
+  const ids=Object.keys(tiendas);
+  if(!ids.length){document.getElementById("mainContent").innerHTML=`<p style="padding:20px;color:var(--muted)">No hay tiendas.</p>`;return;}
+  if(!adminVerTiendaId||!tiendas[adminVerTiendaId])adminVerTiendaId=ids[0];
+  document.getElementById("mainContent").innerHTML=`
+    <div class="actions">
+      <select id="adminTiendaSel" onchange="cambiarTiendaAdmin()" style="font-size:.82rem;">
+        ${ids.map(id=>`<option value="${id}"${id===adminVerTiendaId?" selected":""}>${tiendas[id].nombre}</option>`).join("")}
+      </select>
+      <button class="btn btn-danger" onclick="limpiarMesAdmin()">🗑 Limpiar mes</button>
+    </div>
+    <div id="tablaDatos"></div>`;
+  suscribirDatosTienda(session.zonaId,adminVerTiendaId,true);
+}
+window.verDatosTienda=function(id){
+  adminVerTiendaId=id;
+  document.querySelectorAll(".tab").forEach(t=>{t.className="tab"+(t.id==="tab-datos"?" active":"");});
+  currentTab="datos";
   if(dbListener){dbListener();dbListener=null;}
-  dbListener=onValue(ref(db,`cv/${tiendaId}/${currentYM}`),snap=>{
+  document.getElementById("mainContent").innerHTML="";document.getElementById("kpiStrip").innerHTML="";
+  renderVerTienda();
+};
+window.cambiarTiendaAdmin=function(){
+  adminVerTiendaId=document.getElementById("adminTiendaSel").value;
+  if(dbListener){dbListener();dbListener=null;}
+  suscribirDatosTienda(session.zonaId,adminVerTiendaId,true);
+};
+window.limpiarMesAdmin=function(){
+  if(!confirm(`¿Limpiar datos de "${tiendas[adminVerTiendaId]&&tiendas[adminVerTiendaId].nombre}" para este mes?`))return;
+  localData=emptyData(currentYM);
+  guardarDatos(session.zonaId,adminVerTiendaId);
+  const cont=document.getElementById("tablaDatos");
+  if(cont)renderTabla(cont,session.zonaId,adminVerTiendaId);
+};
+
+// ══ SUSCRIPCIÓN FIREBASE ══════════════════════════════════════════════════════
+function suscribirDatosTienda(zonaId,tiendaId,isAdmin=false){
+  if(dbListener){dbListener();dbListener=null;}
+  const path=cvPath(zonaId,tiendaId,currentYM);
+  dbListener=onValue(ref(db,path),snap=>{
     localData=snap.exists()?snap.val():emptyData(currentYM);
-    renderKPIs_tienda();
+    renderKPIs();
     const target=isAdmin?document.getElementById("tablaDatos"):document.getElementById("mainContent");
-    if(target)renderTablaEditable(target,tiendaId);
+    if(target)renderTabla(target,zonaId,tiendaId);
     setSynced(true);
     document.getElementById("loadOverlay").style.display="none";
   },()=>{setSynced(false,true);document.getElementById("loadOverlay").style.display="none";});
 }
 
-function renderKPIs_tienda(){
-  const tv=totalFor(localData,"venta");const tcv=totalCV(localData);
+// ══ KPIs ══════════════════════════════════════════════════════════════════════
+function renderKPIs(){
+  const tv=totalFor(localData,"venta"),tcv=totalCV(localData);
   const entered=(localData.venta||[]).filter(v=>v!=="").length;
   document.getElementById("kpiStrip").innerHTML=`
-    <div class="kpi"><div class="lbl">Venta Total Mes</div><div class="val" style="color:#3b82f6">S/ ${tv?fmt(tv):"—"}</div><div class="sub">${entered} días ingresados</div></div>
+    <div class="kpi"><div class="lbl">Venta Total Mes</div><div class="val" style="color:#3b82f6">S/ ${tv?fmt(tv):"—"}</div><div class="sub">${entered} días</div></div>
     <div class="kpi"><div class="lbl">Receta</div><div class="val" style="color:#ef4444">${fmt(totalFor(localData,"receta"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(localData,"receta"))}</div></div>
     <div class="kpi"><div class="lbl">Merma</div><div class="val" style="color:#ef4444">${fmt(totalFor(localData,"merma"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(localData,"merma"))}</div></div>
     <div class="kpi"><div class="lbl">Refrigerio</div><div class="val" style="color:#ef4444">${fmt(totalFor(localData,"refrigerio"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(localData,"refrigerio"))}</div></div>
     <div class="kpi"><div class="lbl">CI</div><div class="val" style="color:#ef4444">${fmt(totalFor(localData,"ci"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(localData,"ci"))}</div></div>
     <div class="kpi"><div class="lbl">Ajuste</div><div class="val" style="color:${totalFor(localData,"ajuste")<0?"#ef4444":"#22c55e"}">${fmt(totalFor(localData,"ajuste"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(localData,"ajuste"))}</div></div>
     <div class="kpi"><div class="lbl">AEJ</div><div class="val" style="color:#22c55e">${fmt(totalFor(localData,"aej"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(localData,"aej"))}</div></div>
-    <div class="kpi"><div class="lbl">CV Total Mes</div><div class="val" style="color:#f59e0b">${tcv!==null?fmtPct(tcv):"—"}</div><div class="sub">% sobre venta</div></div>`;
+    <div class="kpi"><div class="lbl">CV Total</div><div class="val" style="color:#f59e0b">${tcv!==null?fmtPct(tcv):"—"}</div><div class="sub">% sobre venta</div></div>`;
 }
 
-function renderTablaEditable(container,tiendaId){
-  const labels=dayLabels(currentYM);const n=labels.length;const today=todayDay(currentYM);
-
-  // Tabla
-  let tbl=`<div id="metasContainer"></div>
-    <div id="objCVContainer"></div>
+// ══ TABLA EDITABLE ═════════════════════════════════════════════════════════════
+function renderTabla(container,zonaId,tiendaId){
+  const labels=dayLabels(currentYM),n=labels.length,today=todayDay(currentYM);
+  let html=`<div id="metasContainer"></div><div id="objCVContainer"></div>
     <div class="actions">
       <div class="section-title" style="margin:0">Indicadores diarios</div>
-      <button class="btn btn-ghost" onclick="exportarTiendaExcel('${tiendaId}')">📥 Exportar a Excel</button>
+      <button class="btn btn-ghost" onclick="exportarTiendaExcel('${tiendaId}')">📥 Exportar Excel</button>
     </div>
-    <div class="swipe-hint">↔ Desliza horizontalmente para ver todos los días</div>
+    <div class="swipe-hint">↔ Desliza para ver todos los días</div>
     <div class="table-wrap"><table id="mainTable"><thead><tr><th>INDICADORES</th>`;
-  labels.forEach(l=>{tbl+=`<th class="${l.num===today?"today-h":""}">${l.dow}<br>${l.num}</th>`;});
-  tbl+=`<th class="total-h">TOTAL MES</th></tr></thead><tbody>`;
+  labels.forEach(l=>{html+=`<th class="${l.num===today?"today-h":""}">${l.dow}<br>${l.num}</th>`;});
+  html+=`<th class="total-h">TOTAL</th></tr></thead><tbody>`;
   INDICATORS.forEach(ind=>{
-    const tot=totalFor(localData,ind.key);const hasData=(localData[ind.key]||[]).some(v=>v!=="");
-    tbl+=`<tr><td class="sticky">${ind.label}</td>`;
+    const tot=totalFor(localData,ind.key),has=(localData[ind.key]||[]).some(v=>v!=="");
+    html+=`<tr><td class="sticky">${ind.label}</td>`;
     for(let d=0;d<n;d++){
-      const v=(localData[ind.key]||[])[d];const pv=parseF(v);
-      const col= ind.key==="venta" ? "var(--accent)" : pv!==null&&pv<0?"#f87171":pv!==null&&pv>0&&ind.isCost?"#86efac":"var(--total-text)";
-      const pesoVenta= ind.key==="venta" ? "font-weight:700;" : "";
-      tbl+=`<td class="val${(d+1)===today?" today-td":""}"><input type="number" step="0.01" value="${v!==null&&v!==""?v:""}" style="color:${col};${pesoVenta}" data-key="${ind.key}" data-day="${d}" oninput="handleInput(this,'${tiendaId}')" onblur="handleBlur(this,'${tiendaId}')"></td>`;
+      const v=(localData[ind.key]||[])[d],pv=parseF(v);
+      const col=ind.key==="venta"?"var(--accent)":pv!==null&&pv<0?"#f87171":pv!==null&&pv>0&&ind.isCost?"#86efac":"var(--total-text)";
+      const fw=ind.key==="venta"?"font-weight:700;":"";
+      html+=`<td class="val${(d+1)===today?" today-td":""}"><input type="number" step="0.01" value="${v!==null&&v!==""?v:""}" style="color:${col};${fw}" data-key="${ind.key}" data-day="${d}" oninput="handleInput(this,'${zonaId}','${tiendaId}')" onblur="handleBlur(this,'${zonaId}','${tiendaId}')"></td>`;
     }
-    tbl+=`<td class="val total-td" style="color:${tot<0?"#f87171":tot>0&&ind.isCost?"#86efac":"var(--total-text)"}">${hasData?fmt(tot):""}</td></tr>`;
+    html+=`<td class="val total-td" style="color:${tot<0?"#f87171":tot>0&&ind.isCost?"#86efac":"var(--total-text)"}">${has?fmt(tot):""}</td></tr>`;
     if(ind.isCost){
-      tbl+=`<tr><td class="sticky pct-lbl">${ind.key.toUpperCase()} %</td>`;
-      for(let d=0;d<n;d++){const p=pctFor(localData,ind.key,d);tbl+=`<td class="pct${(d+1)===today?" today-td":""}">${p!==null?fmtPct(p):""}</td>`;}
-      tbl+=`<td class="pct total-td">${fmtPct(totalPctFor(localData,ind.key))}</td></tr>`;
+      html+=`<tr><td class="sticky pct-lbl">${ind.key.toUpperCase()} %</td>`;
+      for(let d=0;d<n;d++){const p=pctFor(localData,ind.key,d);html+=`<td class="pct${(d+1)===today?" today-td":""}">${p!==null?fmtPct(p):""}</td>`;}
+      html+=`<td class="pct total-td">${fmtPct(totalPctFor(localData,ind.key))}</td></tr>`;
     }
   });
   const tcv=totalCV(localData);
-  tbl+=`<tr><td class="sticky cv-lbl">CV</td>`;
-  for(let d=0;d<n;d++){const cv=calcCV(localData,d);tbl+=`<td class="cv${(d+1)===today?" today-td":""}">${cv!==null?fmtPct(cv):""}</td>`;}
-  tbl+=`<td class="cv total-td" style="color:#fbbf24">${tcv!==null?fmtPct(tcv):""}</td></tr></tbody></table></div>`;
-  if(container)container.innerHTML=tbl;
-  cargarYRenderizarMetas(tiendaId);
-  cargarYRenderizarObjetivosCV(tiendaId);
+  html+=`<tr><td class="sticky cv-lbl">CV</td>`;
+  for(let d=0;d<n;d++){const cv=calcCV(localData,d);html+=`<td class="cv${(d+1)===today?" today-td":""}">${cv!==null?fmtPct(cv):""}</td>`;}
+  html+=`<td class="cv total-td" style="color:#fbbf24">${tcv!==null?fmtPct(tcv):""}</td></tr>`;
+  html+=`</tbody></table></div>`;
+  if(container)container.innerHTML=html;
+  cargarYRenderizarMetas(zonaId,tiendaId);
+  cargarYRenderizarObjetivosCV(zonaId,tiendaId);
 }
 
-// ══ METAS DE VENTA ════════════════════════════════════════════════════════
-async function cargarYRenderizarMetas(tiendaId){
-  const cont=document.getElementById("metasContainer");
-  if(!cont) return;
-  try{
-    const snap=await get(ref(db,`metas/${tiendaId}/${currentYM}`));
-    metaActual = snap.exists() ? snap.val() : null;
-  }catch(e){ metaActual=null; }
-  renderMetas(tiendaId);
-}
-
-function renderMetas(tiendaId){
-  const cont=document.getElementById("metasContainer");
-  if(!cont) return;
-
-  const n=daysIn(currentYM);
-  const today=todayDay(currentYM);
-  const ventaMes=totalFor(localData,"venta");
-  const ventaHoy = today>0 ? (parseF((localData.venta||[])[today-1])||0) : null;
-
-  if(!metaActual || !metaActual.metaMensual){
-    cont.innerHTML=`<div class="metas-box">
-      <div class="metas-header">
-        <h3>🎯 Meta de ventas</h3>
-        <button class="metas-edit-btn" onclick="abrirEdicionMeta('${tiendaId}')">➕ Definir meta del mes</button>
-      </div>
-      <div class="metas-empty">Aún no has definido una meta para este mes.</div>
-    </div>`;
-    return;
-  }
-
-  const metaMensual = parseF(metaActual.metaMensual) || 0;
-  // Si no se definió meta diaria manual, se calcula automáticamente: meta mensual / días del mes
-  const metaDiaria = metaActual.metaDiaria ? parseF(metaActual.metaDiaria) : (metaMensual / n);
-
-  // Progreso mensual
-  const pctMes = metaMensual>0 ? Math.min((ventaMes/metaMensual)*100,999) : 0;
-  const faltaMes = Math.max(metaMensual - ventaMes, 0);
-  const cumplioMes = ventaMes >= metaMensual && metaMensual>0;
-
-  // Progreso diario (solo si hoy pertenece al mes que se está viendo)
-  let diaHtml = "";
-  if(today>0){
-    const pctDia = metaDiaria>0 ? Math.min(((ventaHoy||0)/metaDiaria)*100,999) : 0;
-    const faltaDia = Math.max(metaDiaria - (ventaHoy||0), 0);
-    const cumplioDia = (ventaHoy||0) >= metaDiaria && metaDiaria>0;
-    diaHtml = `
-      <div class="meta-card">
-        <div class="meta-lbl">Meta de hoy (día ${today})</div>
-        <div class="meta-val">S/ ${fmt(ventaHoy||0)} <span style="color:var(--muted);font-weight:400;font-size:.8rem">/ ${fmt(metaDiaria)}</span></div>
-        <div class="meta-sub">${cumplioDia?`<span class="meta-cumplida">✓ Meta diaria cumplida</span>`:`Te falta <span class="meta-faltante">S/ ${fmt(faltaDia)}</span> para hoy`}</div>
-        <div class="meta-bar-track"><div class="meta-bar-fill" style="width:${Math.min(pctDia,100)}%;background:${cumplioDia?"#22c55e":"#3b82f6"}"></div></div>
-      </div>`;
-  }
-
-  cont.innerHTML=`<div class="metas-box">
-    <div class="metas-header">
-      <h3>🎯 Meta de ventas</h3>
-      <button class="metas-edit-btn" onclick="abrirEdicionMeta('${tiendaId}')">✏️ Editar meta</button>
-    </div>
-    <div class="metas-grid">
-      <div class="meta-card">
-        <div class="meta-lbl">Meta del mes</div>
-        <div class="meta-val">S/ ${fmt(ventaMes)} <span style="color:var(--muted);font-weight:400;font-size:.8rem">/ ${fmt(metaMensual)}</span></div>
-        <div class="meta-sub">${cumplioMes?`<span class="meta-cumplida">✓ Meta mensual cumplida</span>`:`Te falta <span class="meta-faltante">S/ ${fmt(faltaMes)}</span> (${pctMes.toFixed(1)}% alcanzado)`}</div>
-        <div class="meta-bar-track"><div class="meta-bar-fill" style="width:${Math.min(pctMes,100)}%;background:${cumplioMes?"#22c55e":"#3b82f6"}"></div></div>
-      </div>
-      ${diaHtml}
-    </div>
-  </div>`;
-}
-
-window.abrirEdicionMeta=function(tiendaId){
-  const metaMensual = metaActual?.metaMensual || "";
-  const metaDiaria  = metaActual?.metaDiaria  || "";
-  document.getElementById("metaMensualInput").value = metaMensual;
-  document.getElementById("metaDiariaInput").value  = metaDiaria;
-  document.getElementById("metaTiendaIdHidden").value = tiendaId;
-  document.getElementById("modalMeta").style.display="flex";
-};
-
-window.guardarMeta=async function(){
-  const tiendaId = document.getElementById("metaTiendaIdHidden").value;
-  const metaMensual = parseFloat(document.getElementById("metaMensualInput").value)||0;
-  const metaDiariaRaw = document.getElementById("metaDiariaInput").value;
-  const metaDiaria = metaDiariaRaw===""? null : (parseFloat(metaDiariaRaw)||0);
-  if(metaMensual<=0){ alert("Ingresa una meta mensual válida (mayor a 0)."); return; }
-  const payload = { metaMensual, metaDiaria };
-  try{
-    await set(ref(db,`metas/${tiendaId}/${currentYM}`), payload);
-    metaActual = payload;
-    closeModal();
-    renderMetas(tiendaId);
-  }catch(e){ alert("No se pudo guardar la meta. Verifica tu conexión."); }
-};
-
-window.eliminarMeta=async function(){
-  const tiendaId = document.getElementById("metaTiendaIdHidden").value;
-  if(!confirm("¿Eliminar la meta de este mes?")) return;
-  try{
-    await remove(ref(db,`metas/${tiendaId}/${currentYM}`));
-    metaActual=null;
-    closeModal();
-    renderMetas(tiendaId);
-  }catch(e){ alert("No se pudo eliminar la meta."); }
-};
-
-window.handleInput=function(el,tiendaId){
+// ══ INPUT HANDLERS ════════════════════════════════════════════════════════════
+window.handleInput=function(el,zonaId,tiendaId){
   const key=el.dataset.key,day=parseInt(el.dataset.day);
   const val=el.value===""?"":parseFloat(el.value);
   if(!localData[key])localData[key]=Array(daysIn(currentYM)).fill("");
   localData[key][day]=val;
-  partialUpdate();renderKPIs_tienda();
+  partialUpdate();renderKPIs();
   const indObj=INDICATORS.find(i=>i.key===key);
-  if(key==="venta"||(indObj&&indObj.isCost)) {
-    renderMetas(tiendaId);
-    const objEl=document.getElementById("objCVContainer");
-    if(objEl) cargarYRenderizarObjetivosCV(tiendaId);
+  if(key==="venta"||(indObj&&indObj.isCost)){
+    renderMetas(zonaId,tiendaId);
+    cargarYRenderizarObjetivosCV(zonaId,tiendaId);
   }
-  // NO guarda mientras escribes — solo actualiza la vista local.
-  // El guardado real ocurre al salir de la celda (ver handleBlur).
 };
-window.handleBlur=function(el,tiendaId){
-  // Al salir del campo (Tab, clic en otra celda, etc.) se guarda de inmediato.
-  clearTimeout(saveTimer);
-  saveNow(tiendaId);
+window.handleBlur=function(el,zonaId,tiendaId){
+  clearTimeout(saveTimer);guardarDatos(zonaId,tiendaId);
 };
 
 function partialUpdate(){
@@ -1014,274 +1069,118 @@ function partialUpdate(){
       ri++;
     }
     const vr=rows[ri-1-(ind.isCost?1:0)];
-    if(vr){const tot=vr.querySelector("td.total-td");if(tot){const tv=totalFor(localData,ind.key);const has=(localData[ind.key]||[]).some(v=>v!=="");tot.textContent=has?fmt(tv):"";tot.style.color=tv<0?"#f87171":tv>0&&ind.isCost?"#86efac":"var(--total-text)";}}
+    if(vr){const tot=vr.querySelector("td.total-td");if(tot){const tv=totalFor(localData,ind.key),has=(localData[ind.key]||[]).some(v=>v!=="");tot.textContent=has?fmt(tv):"";tot.style.color=tv<0?"#f87171":tv>0&&ind.isCost?"#86efac":"var(--total-text)";}}
   });
   const cvr=rows[ri];
   if(cvr){const cells=cvr.querySelectorAll("td.cv");for(let d=0;d<n;d++){const cv=calcCV(localData,d);if(cells[d])cells[d].textContent=cv!==null?fmtPct(cv):"";}const tot=cvr.querySelector("td.total-td");const tcv=totalCV(localData);if(tot)tot.textContent=tcv!==null?fmtPct(tcv):"";}
 }
 
-async function saveNow(tiendaId){
+async function guardarDatos(zonaId,tiendaId){
   setSynced(false);
   try{
-    await set(ref(db,`cv/${tiendaId}/${currentYM}`),localData);
+    await set(ref(db,cvPath(zonaId,tiendaId,currentYM)),localData);
     document.getElementById("lastSaved").textContent="Guardado: "+new Date().toLocaleTimeString("es-PE");
     setSynced(true);
   }catch(e){setSynced(false,true);}
 }
 
-window.changeMonth=function(){
-  const y=document.getElementById("yearSel").value;
-  const m=document.getElementById("monthSel").value;
-  currentYM=y+"-"+m;
-  localData=emptyData(currentYM);
-  if(session.role==="tienda"){subscribeData(session.tiendaId);}
-  else{if(currentTab==="resumen")renderResumen();else if(currentTab==="datos")subscribeData(adminVerTienda,true);}
+// ══ METAS ══════════════════════════════════════════════════════════════════════
+async function cargarYRenderizarMetas(zonaId,tiendaId){
+  const cont=document.getElementById("metasContainer");if(!cont)return;
+  try{const snap=await get(ref(db,metaPath(zonaId,tiendaId,currentYM)));metaActual=snap.exists()?snap.val():null;}catch(e){metaActual=null;}
+  renderMetas(zonaId,tiendaId);
+}
+function renderMetas(zonaId,tiendaId){
+  const cont=document.getElementById("metasContainer");if(!cont)return;
+  const n=daysIn(currentYM),today=todayDay(currentYM);
+  const ventaMes=totalFor(localData,"venta");
+  const ventaHoy=today>0?(parseF((localData.venta||[])[today-1])||0):null;
+  if(!metaActual||!metaActual.metaMensual){
+    cont.innerHTML=`<div class="metas-box"><div class="metas-header"><h3>🎯 Meta de ventas</h3><button class="metas-edit-btn" onclick="abrirMeta('${zonaId}','${tiendaId}')">➕ Definir meta</button></div><div class="metas-empty">Sin meta definida para este mes.</div></div>`;return;
+  }
+  const metaMensual=parseF(metaActual.metaMensual)||0;
+  const metaDiaria=metaActual.metaDiaria?parseF(metaActual.metaDiaria):(metaMensual/n);
+  const pctMes=metaMensual>0?Math.min((ventaMes/metaMensual)*100,999):0;
+  const faltaMes=Math.max(metaMensual-ventaMes,0);
+  const cumplioMes=ventaMes>=metaMensual&&metaMensual>0;
+  let diaHtml="";
+  if(today>0){
+    const pctDia=metaDiaria>0?Math.min(((ventaHoy||0)/metaDiaria)*100,999):0;
+    const faltaDia=Math.max(metaDiaria-(ventaHoy||0),0);
+    const cumplioDia=(ventaHoy||0)>=metaDiaria&&metaDiaria>0;
+    diaHtml=`<div class="meta-card"><div class="meta-lbl">Meta hoy (día ${today})</div><div class="meta-val">S/ ${fmt(ventaHoy||0)} <span style="color:var(--muted);font-weight:400;font-size:.8rem">/ ${fmt(metaDiaria)}</span></div><div class="meta-sub">${cumplioDia?`<span class="meta-cumplida">✓ Cumplida</span>`:`Falta <span class="meta-faltante">S/ ${fmt(faltaDia)}</span>`}</div><div class="meta-bar-track"><div class="meta-bar-fill" style="width:${Math.min(pctDia,100)}%;background:${cumplioDia?"#22c55e":"#3b82f6"}"></div></div></div>`;
+  }
+  cont.innerHTML=`<div class="metas-box"><div class="metas-header"><h3>🎯 Meta de ventas</h3><button class="metas-edit-btn" onclick="abrirMeta('${zonaId}','${tiendaId}')">✏️ Editar</button></div><div class="metas-grid"><div class="meta-card"><div class="meta-lbl">Meta del mes</div><div class="meta-val">S/ ${fmt(ventaMes)} <span style="color:var(--muted);font-weight:400;font-size:.8rem">/ ${fmt(metaMensual)}</span></div><div class="meta-sub">${cumplioMes?`<span class="meta-cumplida">✓ Cumplida</span>`:`Falta <span class="meta-faltante">S/ ${fmt(faltaMes)}</span> (${pctMes.toFixed(1)}%)`}</div><div class="meta-bar-track"><div class="meta-bar-fill" style="width:${Math.min(pctMes,100)}%;background:${cumplioMes?"#22c55e":"#3b82f6"}"></div></div></div>${diaHtml}</div></div>`;
+}
+window.abrirMeta=function(zonaId,tiendaId){
+  document.getElementById("metaTiendaId").value=`${zonaId}|${tiendaId}`;
+  document.getElementById("metaMensualInput").value=metaActual?.metaMensual||"";
+  document.getElementById("metaDiariaInput").value=metaActual?.metaDiaria||"";
+  document.getElementById("modalMeta").style.display="flex";
+};
+window.guardarMeta=async function(){
+  const parts=document.getElementById("metaTiendaId").value.split("|");
+  const [zonaId,tiendaId]=[parts[0],parts[1]];
+  const metaMensual=parseFloat(document.getElementById("metaMensualInput").value)||0;
+  const metaDiariaRaw=document.getElementById("metaDiariaInput").value;
+  const metaDiaria=metaDiariaRaw===""?null:(parseFloat(metaDiariaRaw)||0);
+  if(metaMensual<=0){alert("Ingresa una meta mensual válida.");return;}
+  const payload={metaMensual,metaDiaria};
+  try{await set(ref(db,metaPath(zonaId,tiendaId,currentYM)),payload);metaActual=payload;closeModal();renderMetas(zonaId,tiendaId);}
+  catch(e){alert("Error al guardar.");}
+};
+window.eliminarMeta=async function(){
+  const parts=document.getElementById("metaTiendaId").value.split("|");
+  if(!confirm("¿Eliminar la meta de este mes?"))return;
+  try{await remove(ref(db,metaPath(parts[0],parts[1],currentYM)));metaActual=null;closeModal();renderMetas(parts[0],parts[1]);}
+  catch(e){alert("Error al eliminar.");}
 };
 
-window.abrirModalNuevaTienda=function(){
-  document.getElementById("newStoreName").value="";
-  document.getElementById("newStorePIN").value="";
-  document.getElementById("modalError").style.display="none";
-  document.getElementById("modalNuevaTienda").style.display="flex";
-};
-window.closeModal=function(){
-  document.getElementById("modalNuevaTienda").style.display="none";
-  document.getElementById("modalEliminar").style.display="none";
-  document.getElementById("modalMeta").style.display="none";
-  document.getElementById("modalCambiarPinAdmin").style.display="none";
-  document.getElementById("modalCambiarPinTienda").style.display="none";
-  document.getElementById("modalObjetivos").style.display="none";
-};
-window.crearTienda=async function(){
-  const nombre=document.getElementById("newStoreName").value.trim();
-  const pin=document.getElementById("newStorePIN").value.trim().toUpperCase();
-  const errEl=document.getElementById("modalError");errEl.style.display="none";
-  if(!nombre){errEl.textContent="Ingresa el nombre de la tienda.";errEl.style.display="block";return;}
-  if(!pin||pin.length<3){errEl.textContent="El PIN debe tener al menos 3 caracteres.";errEl.style.display="block";return;}
-  if(pin===pinMaestro||pin===PIN_MAESTRO_OCULTO){errEl.textContent="Ese PIN está reservado para el administrador.";errEl.style.display="block";return;}
-  const dup=Object.values(tiendas).find(t=>t.pin===pin);
-  if(dup){errEl.textContent=`PIN "${pin}" ya en uso por "${dup.nombre}".`;errEl.style.display="block";return;}
-  const id=genId();tiendas[id]={nombre,pin};
-  await set(ref(db,`config/tiendas/${id}`),{nombre,pin});
-  closeModal();renderGestionTiendas();
-};
-
-window.pedirEliminar=function(id,nombre){
-  deleteTarget=id;
-  document.getElementById("deleteStoreName").textContent=nombre;
-  document.getElementById("modalEliminar").style.display="flex";
-};
-window.confirmarEliminar=async function(){
-  if(!deleteTarget)return;
-  const id=deleteTarget;deleteTarget=null;
-  delete tiendas[id];
-  await remove(ref(db,`config/tiendas/${id}`));
-  await remove(ref(db,`cv/${id}`));
-  closeModal();
-  if(adminVerTienda===id)adminVerTienda=Object.keys(tiendas)[0]||null;
-  renderGestionTiendas();
-};
-
-// ══ EXPORTAR A EXCEL ══════════════════════════════════════════════════════
-
-// Construye las filas de una tabla de indicadores (estilo CV) para un set de datos dado
-function filasIndicadores(data, labels){
-  const rows=[];
-  const headerRow=["INDICADORES", ...labels.map(l=>"Día "+l.num), "TOTAL MES"];
-  rows.push(headerRow);
-  INDICATORS.forEach(ind=>{
-    const valRow=[ind.label];
-    labels.forEach((l,d)=>{ const v=(data[ind.key]||[])[d]; valRow.push(v===""||v===null||v===undefined?"":parseF(v)); });
-    valRow.push(totalFor(data,ind.key));
-    rows.push(valRow);
-    if(ind.isCost){
-      const pctRow=[ind.key.toUpperCase()+" %"];
-      labels.forEach((l,d)=>{ const p=pctFor(data,ind.key,d); pctRow.push(p!==null?p:""); });
-      const tp=totalPctFor(data,ind.key);
-      pctRow.push(tp!==null?tp:"");
-      rows.push(pctRow);
+// ══ OBJETIVOS CV ═══════════════════════════════════════════════════════════════
+async function cargarYRenderizarObjetivosCV(zonaId,tiendaId){
+  const cont=document.getElementById("objCVContainer");if(!cont)return;
+  let obj={};
+  try{const snap=await get(ref(db,objPath(zonaId,tiendaId)));if(snap.exists())obj=snap.val();}catch(e){}
+  objTiendaCustom[tiendaId]=obj;
+  renderObjetivosCV(zonaId,tiendaId,obj);
+}
+function renderObjetivosCV(zonaId,tiendaId,objetivos){
+  const cont=document.getElementById("objCVContainer");if(!cont)return;
+  if(!Object.keys(objetivos).length){cont.innerHTML="";return;}
+  const tv=totalFor(localData,"venta");
+  const INDS=[{key:"receta",label:"Receta"},{key:"merma",label:"Merma"},{key:"refrigerio",label:"Refrigerio"},{key:"ci",label:"CI"},{key:"ajuste",label:"Ajuste"},{key:"aej",label:"AEJ"},{key:"cv",label:"CV Total"}];
+  let cards="";
+  INDS.forEach(ind=>{
+    if(objetivos[ind.key]===undefined||objetivos[ind.key]==="")return;
+    const target=parseFloat(objetivos[ind.key]);
+    let actual=ind.key==="cv"?totalCV(localData):(tv?totalFor(localData,ind.key)/tv:null);
+    const actualPct=actual!==null?Math.abs(actual)*100:null;
+    let status="nodata",badge="Sin datos";
+    if(actualPct!==null){
+      if(actualPct<=target){status="ok";badge=`✓ Dentro del objetivo (${actualPct.toFixed(2)}% / máx ${target.toFixed(2)}%)`;}
+      else{status="over";badge=`✗ Excedido en ${(actualPct-target).toFixed(2)}% (${actualPct.toFixed(2)}% / máx ${target.toFixed(2)}%)`;}
     }
+    cards+=`<div class="obj-card ${status}"><div class="obj-lbl">${ind.label}</div><div class="obj-val">${actualPct!==null?actualPct.toFixed(2)+"%":"—"}</div><div class="obj-target">Obj. máx: ${target.toFixed(2)}%</div><span class="obj-badge ${status}">${badge}</span></div>`;
   });
-  const cvRow=["CV"];
-  labels.forEach((l,d)=>{ const cv=calcCV(data,d); cvRow.push(cv!==null?cv:""); });
-  const tcv=totalCV(data);
-  cvRow.push(tcv!==null?tcv:"");
-  rows.push(cvRow);
-  return rows;
+  if(!cards){cont.innerHTML="";return;}
+  cont.innerHTML=`<div class="obj-box"><div class="obj-header"><h3>📊 Seguimiento de objetivos CV</h3></div><div class="obj-grid">${cards}</div></div>`;
 }
 
-window.exportarTiendaExcel=function(tiendaId){
-  const labels=dayLabels(currentYM);
-  const nombreTienda=tiendas[tiendaId]?.nombre||tiendaId;
-  const mesNombre=MESES.find(m=>m[0]===currentYM)?.[1]||currentYM;
-  const rows=filasIndicadores(localData, labels);
-  const ws=XLSX.utils.aoa_to_sheet(rows);
-  ws["!cols"]=[{wch:22}, ...labels.map(()=>({wch:10})), {wch:12}];
-  const wb=XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "CV");
-  const nombreArchivo=`CV_${nombreTienda.replace(/[^a-zA-Z0-9]/g,"_")}_${currentYM}.xlsx`;
-  XLSX.writeFile(wb, nombreArchivo);
-};
-
-window.exportarConsolidadoExcel=function(){
-  if(!ultimoConsolidado){ alert("Aún no hay datos consolidados cargados. Espera a que termine de cargar."); return; }
-  const {ids, allData, cons, ym} = ultimoConsolidado;
-  const labels=dayLabels(ym);
-  const wb=XLSX.utils.book_new();
-
-  // Hoja 1: resumen consolidado (totales por tienda)
-  const resumenRows=[["Tienda","Venta Total","Receta","Receta %","Merma","Merma %","Refrigerio","CI","Ajuste","AEJ","CV %"]];
-  ids.forEach(id=>{
-    const d=allData[id];
-    resumenRows.push([
-      tiendas[id]?.nombre||id,
-      totalFor(d,"venta"),
-      totalFor(d,"receta"), totalPctFor(d,"receta"),
-      totalFor(d,"merma"), totalPctFor(d,"merma"),
-      totalFor(d,"refrigerio"),
-      totalFor(d,"ci"),
-      totalFor(d,"ajuste"),
-      totalFor(d,"aej"),
-      totalCV(d)
-    ]);
-  });
-  resumenRows.push([
-    "TOTAL CONSOLIDADO",
-    totalFor(cons,"venta"),
-    totalFor(cons,"receta"), totalPctFor(cons,"receta"),
-    totalFor(cons,"merma"), totalPctFor(cons,"merma"),
-    totalFor(cons,"refrigerio"),
-    totalFor(cons,"ci"),
-    totalFor(cons,"ajuste"),
-    totalFor(cons,"aej"),
-    totalCV(cons)
-  ]);
-  const wsResumen=XLSX.utils.aoa_to_sheet(resumenRows);
-  wsResumen["!cols"]=[{wch:22},{wch:13},{wch:12},{wch:10},{wch:12},{wch:10},{wch:12},{wch:10},{wch:10},{wch:10},{wch:10}];
-  XLSX.utils.book_append_sheet(wb, wsResumen, "Resumen");
-
-  // Una hoja por tienda con el detalle diario completo
-  ids.forEach(id=>{
-    const nombre=(tiendas[id]?.nombre||id).substring(0,28).replace(/[\\/?*[\]:]/g,"_");
-    const rows=filasIndicadores(allData[id], labels);
-    const ws=XLSX.utils.aoa_to_sheet(rows);
-    ws["!cols"]=[{wch:22}, ...labels.map(()=>({wch:10})), {wch:12}];
-    XLSX.utils.book_append_sheet(wb, ws, nombre);
-  });
-
-  // Hoja final: consolidado diario (suma de todas las tiendas día por día)
-  const wsCons=XLSX.utils.aoa_to_sheet(filasIndicadores(cons, labels));
-  wsCons["!cols"]=[{wch:22}, ...labels.map(()=>({wch:10})), {wch:12}];
-  XLSX.utils.book_append_sheet(wb, wsCons, "Consolidado diario");
-
-  const mesNombre=MESES.find(m=>m[0]===ym)?.[1]||ym;
-  XLSX.writeFile(wb, `CV_Consolidado_${ym}.xlsx`);
-};
-
-// ══ CAMBIO DE PIN MAESTRO ══════════════════════════════════════════════════
-window.abrirCambiarPinAdmin=function(){
-  document.getElementById("pinAdminActual").value="";
-  document.getElementById("pinAdminNuevo").value="";
-  document.getElementById("pinAdminConfirm").value="";
-  document.getElementById("errorPinAdmin").style.display="none";
-  document.getElementById("modalCambiarPinAdmin").style.display="flex";
-};
-window.guardarPinAdmin=async function(){
-  const actual=document.getElementById("pinAdminActual").value.trim().toUpperCase();
-  const nuevo=document.getElementById("pinAdminNuevo").value.trim().toUpperCase();
-  const confirm2=document.getElementById("pinAdminConfirm").value.trim().toUpperCase();
-  const err=document.getElementById("errorPinAdmin");
-  err.style.display="none";
-  if(actual!==pinMaestro){err.textContent="El PIN actual no es correcto.";err.style.display="block";return;}
-  if(nuevo.length<4){err.textContent="El nuevo PIN debe tener al menos 4 caracteres.";err.style.display="block";return;}
-  if(nuevo!==confirm2){err.textContent="Los PINs no coinciden.";err.style.display="block";return;}
-  const dup=Object.values(tiendas).find(t=>t.pin===nuevo);
-  if(dup){err.textContent=`Ese PIN ya está en uso por "${dup.nombre}".`;err.style.display="block";return;}
-  try{
-    await set(ref(db,"config/pinMaestro"),nuevo);
-    pinMaestro=nuevo;
-    closeModal();
-    alert(`✅ PIN maestro cambiado exitosamente.\nNuevo PIN: ${nuevo}\n\nGuárdalo en un lugar seguro.`);
-    renderGestionTiendas();
-  }catch(e){err.textContent="Error al guardar. Verifica tu conexión.";err.style.display="block";}
-};
-
-// ══ CAMBIO DE PIN TIENDA ═══════════════════════════════════════════════════
-window.abrirCambiarPinTienda=function(id,nombre){
-  document.getElementById("cambiarPinTiendaId").value=id;
-  document.getElementById("cambiarPinTiendaNombre").textContent="🏪 "+nombre;
-  document.getElementById("pinTiendaNuevo").value="";
-  document.getElementById("pinTiendaConfirm").value="";
-  document.getElementById("errorPinTienda").style.display="none";
-  document.getElementById("modalCambiarPinTienda").style.display="flex";
-};
-window.guardarPinTienda=async function(){
-  const id=document.getElementById("cambiarPinTiendaId").value;
-  const nuevo=document.getElementById("pinTiendaNuevo").value.trim().toUpperCase();
-  const confirm2=document.getElementById("pinTiendaConfirm").value.trim().toUpperCase();
-  const err=document.getElementById("errorPinTienda");
-  err.style.display="none";
-  if(nuevo.length<3){err.textContent="El PIN debe tener al menos 3 caracteres.";err.style.display="block";return;}
-  if(nuevo!==confirm2){err.textContent="Los PINs no coinciden.";err.style.display="block";return;}
-  if(nuevo===pinMaestro||nuevo===PIN_MAESTRO_OCULTO){err.textContent="Ese PIN está reservado para el administrador.";err.style.display="block";return;}
-  const dup=Object.entries(tiendas).find(([tid,t])=>t.pin===nuevo&&tid!==id);
-  if(dup){err.textContent=`Ese PIN ya está en uso por "${dup[1].nombre}".`;err.style.display="block";return;}
-  try{
-    tiendas[id].pin=nuevo;
-    await set(ref(db,`config/tiendas/${id}/pin`),nuevo);
-    closeModal();
-    alert(`✅ PIN cambiado exitosamente.\nNuevo PIN: ${nuevo}`);
-    renderGestionTiendas();
-  }catch(e){err.textContent="Error al guardar. Verifica tu conexión.";err.style.display="block";}
-};
-
-// ══ OBJETIVOS DE CV — PANEL ADMIN ══════════════════════════════════════════
-const COST_INDICATORS=[
-  {key:"receta",label:"Receta ( 951 )"},
-  {key:"merma",label:"Merma ( 957, 958 )"},
-  {key:"refrigerio",label:"Refrigerio (967,968)"},
-  {key:"ci",label:"CI ( 975, 976 )"},
-  {key:"ajuste",label:"Ajuste ( 701,702 )"},
-  {key:"aej",label:"AEJ ( 955,956 )"},
-  {key:"cv",label:"CV Total"},
-];
-
+// ══ PANEL OBJETIVOS (pestaña zona admin) ══════════════════════════════════════
 async function renderPanelObjetivos(){
-  document.getElementById("kpiStrip").innerHTML="";
-  // Cargar objetivos de todas las tiendas primero (una sola vez)
   const ids=Object.keys(tiendas);
-  if(ids.length){
-    try{
-      const snaps=await Promise.all(ids.map(id=>get(ref(db,`config/objetivosTienda/${id}`))));
-      ids.forEach((id,i)=>{ objTiendaCustom[id]=snaps[i].exists()?snaps[i].val():{}; });
-    }catch(e){}
-  }
-  // Renderizar una sola vez con los datos ya cargados
-  let html=`
-    <div class="actions">
-      <div class="section-title" style="margin:0">Objetivos de CV por tienda (% máximo sobre venta)</div>
-    </div>
-    <div class="stores-grid">`;
-  if(!ids.length)html+=`<div style="color:var(--muted);font-size:.82rem;padding:20px">No hay tiendas registradas.</div>`;
+  const snaps=await Promise.all(ids.map(id=>get(ref(db,objPath(session.zonaId,id)))));
+  ids.forEach((id,i)=>{objTiendaCustom[id]=snaps[i].exists()?snaps[i].val():{};});
+  let html=`<div class="actions"><div class="section-title" style="margin:0">Objetivos CV por tienda (% máximo)</div></div><div class="cards-grid">`;
+  if(!ids.length)html+=`<p style="color:var(--muted);font-size:.82rem">No hay tiendas.</p>`;
   ids.forEach(id=>{
-    const custom=objTiendaCustom[id]||{};
-    const tieneCustom=Object.keys(custom).length>0;
-    const itemsDefinidos=COST_INDICATORS.filter(ind=>custom[ind.key]!==undefined&&custom[ind.key]!=="");
-    const objGrid=tieneCustom?`
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;margin:8px 0 12px;">
-        ${itemsDefinidos.map(ind=>`
-          <div style="font-size:.66rem;color:var(--muted);padding:4px 0;border-bottom:1px solid var(--border);">${ind.label}</div>
-          <div style="font-size:.66rem;font-weight:700;color:#a5b4fc;padding:4px 0;border-bottom:1px solid var(--border);text-align:right;">${parseFloat(custom[ind.key]).toFixed(2)}%</div>
-        `).join("")}
-      </div>`:"";
-    html+=`<div class="store-card">
-      <h3>🏪 ${tiendas[id].nombre}</h3>
-      <div class="pin-show" style="color:${tieneCustom?"#a5b4fc":"var(--muted)"};margin-bottom:6px;">
-        ${tieneCustom?"✓ Objetivos definidos":"Sin objetivos definidos"}
-      </div>
-      ${objGrid}
-      <div class="store-actions">
-        <button class="btn btn-ghost" onclick="abrirModalObjetivos('${id}')">✏️ ${tieneCustom?"Editar":"Definir objetivos"}</button>
+    const custom=objTiendaCustom[id]||{},tieneCustom=Object.keys(custom).length>0;
+    const itemsDef=COST_INDICATORS.filter(ind=>custom[ind.key]!==undefined&&custom[ind.key]!=="");
+    html+=`<div class="card"><h3>🏪 ${tiendas[id].nombre}</h3>
+      <div class="card-sub" style="color:${tieneCustom?"#a5b4fc":"var(--muted)"};">${tieneCustom?"✓ Objetivos definidos":"Sin objetivos"}</div>
+      ${tieneCustom?`<div class="card-obj-grid">${itemsDef.map(ind=>`<div class="card-obj-row-label">${ind.label}</div><div class="card-obj-row-val">${parseFloat(custom[ind.key]).toFixed(2)}%</div>`).join("")}</div>`:""}
+      <div class="card-actions">
+        <button class="btn btn-ghost" onclick="abrirModalObjetivos('${id}')">✏️ ${tieneCustom?"Editar":"Definir"}</button>
         ${tieneCustom?`<button class="btn btn-danger" onclick="eliminarObjetivosTienda('${id}')">🗑 Quitar</button>`:""}
       </div>
     </div>`;
@@ -1289,136 +1188,87 @@ async function renderPanelObjetivos(){
   html+=`</div>`;
   document.getElementById("mainContent").innerHTML=html;
 }
-
 window.abrirModalObjetivos=function(tiendaId){
-  objTiendaSelId=tiendaId;
-  const src=objTiendaCustom[tiendaId]||{};
-  const ids=Object.keys(tiendas);
-  let html=`
-    <div style="margin-bottom:14px">
-      <label style="font-size:.72rem;color:var(--muted);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em">Tienda</label>
-      <select id="objTiendaSel" onchange="cambiarTiendaObj()" style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-size:.82rem;">
-        ${ids.map(id=>`<option value="${id}"${id===tiendaId?" selected":""}>${tiendas[id].nombre}</option>`).join("")}
-      </select>
-    </div>
+  document.getElementById("objTiendaId").value=tiendaId;
+  const src=objTiendaCustom[tiendaId]||{},ids=Object.keys(tiendas);
+  let html=`<div style="margin-bottom:14px"><label style="font-size:.72rem;color:var(--muted);display:block;margin-bottom:5px;text-transform:uppercase">Tienda</label>
+    <select id="objTiendaSel" onchange="cambiarTiendaObj()" style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-size:.82rem;">
+      ${ids.map(id=>`<option value="${id}"${id===tiendaId?" selected":""}>${tiendas[id].nombre}</option>`).join("")}
+    </select></div>
     <div class="obj-form-grid">
       <div style="font-size:.68rem;color:var(--muted);font-weight:700;padding-bottom:4px;border-bottom:1px solid var(--border)">INDICADOR</div>
       <div style="font-size:.68rem;color:var(--muted);font-weight:700;padding-bottom:4px;border-bottom:1px solid var(--border)">% MÁXIMO</div>`;
   COST_INDICATORS.forEach(ind=>{
     const val=src[ind.key]!==undefined&&src[ind.key]!==""?src[ind.key]:"";
-    html+=`<div class="obj-form-label">${ind.label}</div>
-      <input class="obj-form-input" type="number" step="0.01" min="0" max="200"
-        id="objInput_${ind.key}" value="${val}" placeholder="Sin objetivo">`;
+    html+=`<div class="obj-form-label">${ind.label}</div><input class="obj-form-input" type="number" step="0.01" min="0" max="200" id="objInput_${ind.key}" value="${val}" placeholder="Sin obj.">`;
   });
   html+=`</div>`;
-  document.getElementById("objTabContent").innerHTML=html;
+  document.getElementById("objFormContent").innerHTML=html;
   document.getElementById("errorObjetivos").style.display="none";
   document.getElementById("modalObjetivos").style.display="flex";
 };
-
 window.cambiarTiendaObj=function(){
-  objTiendaSelId=document.getElementById("objTiendaSel").value;
-  const src=objTiendaCustom[objTiendaSelId]||{};
-  COST_INDICATORS.forEach(ind=>{
-    const el=document.getElementById(`objInput_${ind.key}`);
-    if(el) el.value=src[ind.key]!==undefined&&src[ind.key]!==""?src[ind.key]:"";
-  });
+  const tid=document.getElementById("objTiendaSel").value;
+  document.getElementById("objTiendaId").value=tid;
+  const src=objTiendaCustom[tid]||{};
+  COST_INDICATORS.forEach(ind=>{const el=document.getElementById("objInput_"+ind.key);if(el)el.value=src[ind.key]!==undefined&&src[ind.key]!==""?src[ind.key]:"";});
 };
-
 window.guardarObjetivos=async function(){
-  const err=document.getElementById("errorObjetivos");
-  err.style.display="none";
+  const tiendaId=document.getElementById("objTiendaSel")?document.getElementById("objTiendaSel").value:document.getElementById("objTiendaId").value;
+  const err=document.getElementById("errorObjetivos");err.style.display="none";
   const obj={};
-  COST_INDICATORS.forEach(ind=>{
-    const el=document.getElementById(`objInput_${ind.key}`);
-    if(el&&el.value!=="") obj[ind.key]=parseFloat(el.value)||0;
-  });
+  COST_INDICATORS.forEach(ind=>{const el=document.getElementById("objInput_"+ind.key);if(el&&el.value!=="")obj[ind.key]=parseFloat(el.value)||0;});
   try{
-    await set(ref(db,`config/objetivosTienda/${objTiendaSelId}`),obj);
-    objTiendaCustom[objTiendaSelId]=obj;
-    closeModal();
-    renderPanelObjetivos();
-  }catch(e){err.textContent="Error al guardar. Verifica tu conexión.";err.style.display="block";}
+    await set(ref(db,objPath(session.zonaId,tiendaId)),obj);
+    objTiendaCustom[tiendaId]=obj;
+    closeModal();renderPanelObjetivos();
+  }catch(e){err.textContent="Error al guardar.";err.style.display="block";}
 };
-
 window.eliminarObjetivosTienda=async function(id){
-  if(!confirm(`¿Quitar los objetivos de "${tiendas[id]&&tiendas[id].nombre}"?`)) return;
-  try{
-    await remove(ref(db,`config/objetivosTienda/${id}`));
-    delete objTiendaCustom[id];
-    renderPanelObjetivos();
-  }catch(e){alert("Error al eliminar. Verifica tu conexión.");}
+  if(!confirm(`¿Quitar objetivos de "${tiendas[id]&&tiendas[id].nombre}"?`))return;
+  try{await remove(ref(db,objPath(session.zonaId,id)));delete objTiendaCustom[id];renderPanelObjetivos();}
+  catch(e){alert("Error al eliminar.");}
 };
 
-// ══ OBJETIVOS EN VISTA DE TIENDA ═══════════════════════════════════════════
-async function cargarYRenderizarObjetivosCV(tiendaId){
-  const cont=document.getElementById("objCVContainer");
-  if(!cont) return;
-  let objEfectivos={};
-  try{
-    const snap=await get(ref(db,`config/objetivosTienda/${tiendaId}`));
-    if(snap.exists()) objEfectivos=snap.val();
-  }catch(e){}
-  objTiendaCustom[tiendaId]=objEfectivos;
-  renderObjetivosCV(tiendaId, objEfectivos);
-}
-
-function renderObjetivosCV(tiendaId, objetivos){
-  const cont=document.getElementById("objCVContainer");
-  if(!cont) return;
-  if(!Object.keys(objetivos).length){
-    cont.innerHTML=""; return;
-  }
-  // Calcular totales actuales
-  const tv=totalFor(localData,"venta");
-  const indicadoresCV=[
-    {key:"receta",label:"Receta"},
-    {key:"merma",label:"Merma"},
-    {key:"refrigerio",label:"Refrigerio"},
-    {key:"ci",label:"CI"},
-    {key:"ajuste",label:"Ajuste"},
-    {key:"aej",label:"AEJ"},
-    {key:"cv",label:"CV Total"},
-  ];
-  let cards="";
-  indicadoresCV.forEach(ind=>{
-    if(objetivos[ind.key]===undefined||objetivos[ind.key]==="") return;
-    const target=parseFloat(objetivos[ind.key]);
-    let actual=null;
-    if(ind.key==="cv") actual=totalCV(localData);
-    else actual=tv?totalFor(localData,ind.key)/tv:null;
-    const actualPct=actual!==null?Math.abs(actual)*100:null;
-    let status="nodata", badge="Sin datos";
-    if(actualPct!==null){
-      if(actualPct<=target){
-        status="ok";
-        badge=`✓ Dentro del objetivo (${actualPct.toFixed(2)}% / máx ${target.toFixed(2)}%)`;
-      } else {
-        status="over";
-        badge=`✗ Excedido en ${(actualPct-target).toFixed(2)}% (${actualPct.toFixed(2)}% / máx ${target.toFixed(2)}%)`;
-      }
-    }
-    cards+=`<div class="obj-card ${status}">
-      <div class="obj-lbl">${ind.label}</div>
-      <div class="obj-val">${actualPct!==null?actualPct.toFixed(2)+"%":"—"}</div>
-      <div class="obj-target">Objetivo máx: ${target.toFixed(2)}%</div>
-      <span class="obj-badge ${status}">${badge}</span>
-    </div>`;
+// ══ EXPORTAR EXCEL ════════════════════════════════════════════════════════════
+function filasIndicadores(data,labels){
+  const rows=[["INDICADORES",...labels.map(l=>"Día "+l.num),"TOTAL MES"]];
+  INDICATORS.forEach(ind=>{
+    const vr=[ind.label,...labels.map((_,d)=>{const v=(data[ind.key]||[])[d];return v===""||v===null?"":parseF(v);}),totalFor(data,ind.key)];
+    rows.push(vr);
+    if(ind.isCost){const pr=[ind.key.toUpperCase()+" %",...labels.map((_,d)=>{const p=pctFor(data,ind.key,d);return p!==null?p:"";}),totalPctFor(data,ind.key)];rows.push(pr);}
   });
-  if(!cards){cont.innerHTML="";return;}
-  cont.innerHTML=`<div class="obj-box">
-    <div class="obj-header">
-      <h3>📊 Seguimiento de objetivos CV</h3>
-    </div>
-    <div class="obj-grid">${cards}</div>
-  </div>`;
+  const cvr=["CV",...labels.map((_,d)=>{const cv=calcCV(data,d);return cv!==null?cv:"";}),totalCV(data)];
+  rows.push(cvr);return rows;
 }
+window.exportarTiendaExcel=function(tiendaId){
+  const labels=dayLabels(currentYM);
+  const nombre=(tiendas[tiendaId]&&tiendas[tiendaId].nombre)||tiendaId;
+  const ws=XLSX.utils.aoa_to_sheet(filasIndicadores(localData,labels));
+  ws["!cols"]=[{wch:22},...labels.map(()=>({wch:10})),{wch:12}];
+  const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"CV");
+  XLSX.writeFile(wb,`CV_${nombre.replace(/[^a-zA-Z0-9]/g,"_")}_${currentYM}.xlsx`);
+};
+window.exportarConsolidadoExcel=function(){
+  if(!ultimoConsolidado){alert("Carga primero el resumen consolidado.");return;}
+  const {ids,allData,cons,ym}=ultimoConsolidado,labels=dayLabels(ym);
+  const wb=XLSX.utils.book_new();
+  const resumen=[["Tienda","Venta","Receta","Receta%","Merma","Merma%","Refrigerio","Refrig.%","CI","CI%","Ajuste","Ajuste%","AEJ","AEJ%","CV%"]];
+  ids.forEach(id=>{const d=allData[id];resumen.push([(tiendas[id]&&tiendas[id].nombre)||id,totalFor(d,"venta"),totalFor(d,"receta"),totalPctFor(d,"receta"),totalFor(d,"merma"),totalPctFor(d,"merma"),totalFor(d,"refrigerio"),totalPctFor(d,"refrigerio"),totalFor(d,"ci"),totalPctFor(d,"ci"),totalFor(d,"ajuste"),totalPctFor(d,"ajuste"),totalFor(d,"aej"),totalPctFor(d,"aej"),totalCV(d)]);});
+  const wsR=XLSX.utils.aoa_to_sheet(resumen);XLSX.utils.book_append_sheet(wb,wsR,"Resumen");
+  ids.forEach(id=>{const nombre=((tiendas[id]&&tiendas[id].nombre)||id).substring(0,28).replace(/[\\/?*[\]:]/g,"_");const ws=XLSX.utils.aoa_to_sheet(filasIndicadores(allData[id],labels));XLSX.utils.book_append_sheet(wb,ws,nombre);});
+  const wsCons=XLSX.utils.aoa_to_sheet(filasIndicadores(cons,labels));XLSX.utils.book_append_sheet(wb,wsCons,"Consolidado");
+  XLSX.writeFile(wb,`CV_Consolidado_${ym}.xlsx`);
+};
 
-async function init(){
-  document.getElementById("loadMsg").textContent="Conectando con Firebase…";
-  try{await initTiendas();document.getElementById("loadOverlay").style.display="none";document.getElementById("loginScreen").style.display="flex";}
-  catch(e){document.getElementById("loadMsg").textContent="Error de conexión. Recarga la página.";}
-}
+// ══ CLOSE MODAL ═══════════════════════════════════════════════════════════════
+window.closeModal=function(){
+  ["modalZona","modalTienda","modalEliminar","modalCambiarPin","modalMeta","modalObjetivos"].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.style.display="none";
+  });
+};
+
+// ── Arranque ──────────────────────────────────────────────────────────────────
 init();
 </script>
 </body>
