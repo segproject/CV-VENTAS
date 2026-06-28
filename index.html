@@ -162,7 +162,26 @@ input[type=number]:focus{background:rgba(59,130,246,.1);border-radius:3px;}
 .admin-pin-box{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px;}
 .admin-pin-box h3{font-size:.82rem;font-weight:700;margin-bottom:10px;color:#a5b4fc;}
 
-/* ZONAS — SUPER ADMIN */
+/* FILTRO DE RANGO DE DÍAS */
+.filtro-box{background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.filtro-box label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-weight:600;}
+.filtro-box input[type=number]{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:5px 8px;border-radius:6px;font-size:.82rem;width:60px;text-align:center;outline:none;font-variant-numeric:tabular-nums;}
+.filtro-box input[type=number]:focus{border-color:var(--accent);}
+.filtro-sep{color:var(--muted);font-size:.8rem;}
+.filtro-tag{font-size:.7rem;color:#a5b4fc;background:rgba(99,102,241,.12);border:1px solid rgba(99,102,241,.3);border-radius:5px;padding:2px 8px;margin-left:4px;}
+
+.backup-box{background:linear-gradient(135deg,#0d1b3e,#1a2a6c);border:1px solid var(--accent2);border-radius:11px;padding:16px 20px;margin-bottom:16px;}
+.backup-box h3{font-size:.82rem;font-weight:700;color:#a5b4fc;margin-bottom:6px;}
+.backup-box p{font-size:.72rem;color:var(--muted);margin-bottom:12px;}
+.backup-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.backup-status{font-size:.72rem;margin-top:8px;padding:6px 10px;border-radius:6px;display:none;}
+.backup-status.ok{background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.3);}
+.backup-status.err{background:rgba(239,68,68,.12);color:#fca5a5;border:1px solid rgba(239,68,68,.3);}
+.backup-status.loading{background:rgba(59,130,246,.12);color:#93c5fd;border:1px solid rgba(59,130,246,.3);}
+#importFileInput{display:none;}
+.import-label{background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:7px;padding:6px 13px;font-size:.73rem;font-weight:600;cursor:pointer;min-height:36px;display:inline-flex;align-items:center;gap:6px;}
+.import-label:hover{border-color:var(--accent);color:var(--accent);}
+
 .zona-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:18px;position:relative;}
 .zona-card h3{font-size:1rem;font-weight:700;margin-bottom:4px;color:#e2e8f0;}
 .zona-card .zona-pin{font-size:.72rem;color:var(--muted);margin-bottom:6px;font-family:monospace;}
@@ -248,6 +267,7 @@ footer{text-align:center;padding:10px;font-size:.65rem;color:var(--muted);border
   <div class="kpi-strip" id="kpiStrip"></div>
   <main id="mainContent"></main>
   <footer>CV Dashboard · Firebase · GitHub Pages</footer>
+  <input type="file" id="importFileInput" accept=".json" onchange="procesarImportJSON(this)">
 </div>
 
 <!-- MODALES -->
@@ -389,6 +409,8 @@ let objTiendaCustom={};
 let ultimoConsolidado=null;
 let eliminarCallback=null;
 let cambiarPinCallback=null;
+let filtroDesde=null; // día inicio del filtro (null = sin filtro)
+let filtroHasta=null; // día fin del filtro
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 const parseF=v=>{if(v===""||v===null||v===undefined)return null;const n=parseFloat(v);return isNaN(n)?null:n;};
@@ -404,6 +426,16 @@ function pctFor(d,k,i){const v=parseF((d.venta||[])[i]),c=parseF((d[k]||[])[i]);
 function totalPctFor(d,k){const tv=totalFor(d,"venta");return tv?totalFor(d,k)/tv:null;}
 function calcCV(d,i){const v=parseF((d.venta||[])[i]);if(!v)return null;return["receta","merma","refrigerio","ci","ajuste","aej"].reduce((a,k)=>a+(parseF((d[k]||[])[i])/v||0),0);}
 function totalCV(d){const tv=totalFor(d,"venta");if(!tv)return null;return["receta","merma","refrigerio","ci","ajuste","aej"].reduce((a,k)=>a+(totalFor(d,k)/tv||0),0);}
+
+// Versiones filtradas por rango de días (usan filtroDesde/filtroHasta globales)
+function totalFilt(d,k){
+  const fd=(filtroDesde||1)-1, fh=(filtroHasta||daysIn(currentYM))-1;
+  return(d[k]||[]).reduce((a,v,i)=>i<fd||i>fh?a:a+(parseF(v)||0),0);
+}
+function totalPctFilt(d,k){const tv=totalFilt(d,"venta");return tv?totalFilt(d,k)/tv:null;}
+function totalCVFilt(d){const tv=totalFilt(d,"venta");if(!tv)return null;return["receta","merma","refrigerio","ci","ajuste","aej"].reduce((a,k)=>a+(totalFilt(d,k)/tv||0),0);}
+function hasDatosFilt(d,k){const fd=(filtroDesde||1)-1,fh=(filtroHasta||daysIn(currentYM))-1;return(d[k]||[]).some((v,i)=>i>=fd&&i<=fh&&v!=="");}
+function esFiltroActivo(){const n=daysIn(currentYM);return filtroDesde!==null&&filtroHasta!==null&&(filtroDesde!==1||filtroHasta!==n);}
 function genId(prefix){return(prefix||"id")+"-"+Date.now().toString(36);}
 function setSynced(ok,err=false){
   const dot=document.getElementById("syncDot");if(dot)dot.className="dot"+(ok?" on":err?" err":"");
@@ -565,6 +597,7 @@ window.changeMonth=function(){
   const m=document.getElementById("monthSel").value;
   currentYM=y+"-"+m;
   localData=emptyData(currentYM);
+  filtroDesde=1; filtroHasta=daysIn(currentYM); // resetear filtro al cambiar mes
   if(session.role==="zonaadmin"){
     if(currentTab==="resumen")renderResumen();
     else if(currentTab==="datos"&&adminVerTiendaId)suscribirDatosTienda(session.zonaId,adminVerTiendaId,true);
@@ -579,6 +612,15 @@ function renderSuperAdmin(){
   document.getElementById("mainContent").innerHTML="";
   const ids=Object.keys(zonas);
   let html=`
+    <div class="backup-box">
+      <h3>💾 Respaldo de datos</h3>
+      <p>Exporta toda la información (zonas, tiendas, datos CV, metas y objetivos) a un archivo JSON. Guárdalo como copia de seguridad y úsalo para restaurar si es necesario.</p>
+      <div class="backup-actions">
+        <button class="btn btn-primary" onclick="exportarRespaldoJSON()">⬇ Exportar respaldo JSON</button>
+        <label class="import-label" for="importFileInput">⬆ Importar desde JSON</label>
+      </div>
+      <div class="backup-status" id="backupStatus"></div>
+    </div>
     <div class="admin-pin-box">
       <h3>🔐 PIN Super Administrador</h3>
       <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
@@ -706,61 +748,87 @@ async function renderResumen(){
   if(!ids.length){document.getElementById("mainContent").innerHTML=`<p style="padding:20px;color:var(--muted)">No hay tiendas registradas.</p>`;return;}
   const snaps=await Promise.all(ids.map(id=>get(ref(db,cvPath(session.zonaId,id,currentYM)))));
   const allData={};ids.forEach((id,i)=>{allData[id]=snaps[i].exists()?snaps[i].val():emptyData(currentYM);});
-  const cons=emptyData(currentYM);
+  // Consolidado suma día a día
   const n=daysIn(currentYM);
+  const cons=emptyData(currentYM);
   INDICATORS.forEach(ind=>{for(let d=0;d<n;d++){let s=0;ids.forEach(id=>{s+=(parseF((allData[id][ind.key]||[])[d])||0);});cons[ind.key][d]=s||"";}});
   ultimoConsolidado={ids,allData,cons,ym:currentYM};
-  const tv=totalFor(cons,"venta"),tcv=totalCV(cons);
+
+  // Rango de filtro
+  const fd=Math.max(1,filtroDesde||1);
+  const fh=Math.min(n,filtroHasta||n);
+  const filtroActivo=esFiltroActivo();
+  const filtroLabel=filtroActivo?` · <span style="color:#a5b4fc">Días ${fd}–${fh}</span>`:"";
+
+  // Usar funciones filtradas para el consolidado
+  function tFilt(d,k){const f=fd-1,t=fh-1;return(d[k]||[]).reduce((a,v,i)=>i<f||i>t?a:a+(parseF(v)||0),0);}
+  function pFilt(d,k){const tv=tFilt(d,"venta");return tv?tFilt(d,k)/tv:null;}
+  function cvFilt(d){const tv=tFilt(d,"venta");if(!tv)return null;return["receta","merma","refrigerio","ci","ajuste","aej"].reduce((a,k)=>a+(tFilt(d,k)/tv||0),0);}
+
+  const tv=tFilt(cons,"venta"),tcv=cvFilt(cons);
+  const filtroTag=filtroActivo?` <span style="font-size:.6rem;color:#a5b4fc;background:rgba(99,102,241,.15);border-radius:4px;padding:1px 6px">Días ${fd}–${fh}</span>`:"";
 
   // KPIs
   document.getElementById("kpiStrip").innerHTML=`
-    <div class="kpi"><div class="lbl">Venta Consolidada</div><div class="val" style="color:#3b82f6">S/ ${tv?fmt(tv):"—"}</div><div class="sub">${ids.length} tiendas</div></div>
-    <div class="kpi"><div class="lbl">Receta</div><div class="val" style="color:#ef4444">${fmt(totalFor(cons,"receta"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(cons,"receta"))}</div></div>
-    <div class="kpi"><div class="lbl">Merma</div><div class="val" style="color:#ef4444">${fmt(totalFor(cons,"merma"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(cons,"merma"))}</div></div>
-    <div class="kpi"><div class="lbl">Refrigerio</div><div class="val" style="color:#ef4444">${fmt(totalFor(cons,"refrigerio"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(cons,"refrigerio"))}</div></div>
-    <div class="kpi"><div class="lbl">CI</div><div class="val" style="color:#ef4444">${fmt(totalFor(cons,"ci"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(cons,"ci"))}</div></div>
-    <div class="kpi"><div class="lbl">Ajuste</div><div class="val" style="color:${totalFor(cons,"ajuste")<0?"#ef4444":"#22c55e"}">${fmt(totalFor(cons,"ajuste"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(cons,"ajuste"))}</div></div>
-    <div class="kpi"><div class="lbl">AEJ</div><div class="val" style="color:#22c55e">${fmt(totalFor(cons,"aej"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(cons,"aej"))}</div></div>
+    <div class="kpi"><div class="lbl">Venta Consolidada${filtroTag}</div><div class="val" style="color:#3b82f6">S/ ${tv?fmt(tv):"—"}</div><div class="sub">${ids.length} tiendas</div></div>
+    <div class="kpi"><div class="lbl">Receta</div><div class="val" style="color:#ef4444">${fmt(tFilt(cons,"receta"))||"—"}</div><div class="sub">${fmtPctV(pFilt(cons,"receta"))}</div></div>
+    <div class="kpi"><div class="lbl">Merma</div><div class="val" style="color:#ef4444">${fmt(tFilt(cons,"merma"))||"—"}</div><div class="sub">${fmtPctV(pFilt(cons,"merma"))}</div></div>
+    <div class="kpi"><div class="lbl">Refrigerio</div><div class="val" style="color:#ef4444">${fmt(tFilt(cons,"refrigerio"))||"—"}</div><div class="sub">${fmtPctV(pFilt(cons,"refrigerio"))}</div></div>
+    <div class="kpi"><div class="lbl">CI</div><div class="val" style="color:#ef4444">${fmt(tFilt(cons,"ci"))||"—"}</div><div class="sub">${fmtPctV(pFilt(cons,"ci"))}</div></div>
+    <div class="kpi"><div class="lbl">Ajuste</div><div class="val" style="color:${tFilt(cons,"ajuste")<0?"#ef4444":"#22c55e"}">${fmt(tFilt(cons,"ajuste"))||"—"}</div><div class="sub">${fmtPctV(pFilt(cons,"ajuste"))}</div></div>
+    <div class="kpi"><div class="lbl">AEJ</div><div class="val" style="color:#22c55e">${fmt(tFilt(cons,"aej"))||"—"}</div><div class="sub">${fmtPctV(pFilt(cons,"aej"))}</div></div>
     <div class="kpi"><div class="lbl">CV Total</div><div class="val" style="color:#f59e0b">${tcv!==null?fmtPct(tcv):"—"}</div><div class="sub">% sobre venta</div></div>`;
 
-  // Tabla detalle
-  let tbl=`<div class="actions">
-    <div class="section-title" style="margin:0">Detalle por tienda · ${MESES.find(m=>m[0]===currentYM)?.[1]||currentYM}</div>
-    <button class="btn btn-ghost" onclick="exportarConsolidadoExcel()">📥 Exportar a Excel</button>
-  </div>
-  <div class="table-wrap"><table class="consolidado-table"><thead><tr>
-    <th>Tienda</th><th>Venta Total</th>
-    <th>Receta</th><th>Receta%</th>
-    <th>Merma</th><th>Merma%</th>
-    <th>Refrigerio</th><th>Refrig.%</th>
-    <th>CI</th><th>CI%</th>
-    <th>Ajuste</th><th>Ajuste%</th>
-    <th>AEJ</th><th>AEJ%</th>
-    <th>CV%</th>
-  </tr></thead><tbody>`;
+  // Tabla detalle con filtro de rango
+  let tbl=`
+    <div class="filtro-box">
+      <label>Rango de días:</label>
+      <label style="font-size:.78rem;color:var(--muted)">Del</label>
+      <input type="number" id="filtroDesdeInput" min="1" max="${n}" value="${fd}" onchange="aplicarFiltroResumen(this)">
+      <span class="filtro-sep">→</span>
+      <label style="font-size:.78rem;color:var(--muted)">Al</label>
+      <input type="number" id="filtroHastaInput" min="1" max="${n}" value="${fh}" onchange="aplicarFiltroResumen(this)">
+      <label style="font-size:.78rem;color:var(--muted)">de ${n} días</label>
+      ${filtroActivo?`<span class="filtro-tag">📅 Días ${fd}–${fh} (${fh-fd+1} días)</span>`:""}
+      ${filtroActivo?`<button class="btn btn-ghost" style="font-size:.68rem;padding:3px 9px;" onclick="resetFiltroResumen()">✕ Ver mes completo</button>`:""}
+    </div>
+    <div class="actions">
+      <div class="section-title" style="margin:0">Detalle por tienda · ${MESES.find(m=>m[0]===currentYM)?.[1]||currentYM}${filtroLabel}</div>
+      <button class="btn btn-ghost" onclick="exportarConsolidadoExcel()">📥 Exportar a Excel</button>
+    </div>
+    <div class="table-wrap"><table class="consolidado-table"><thead><tr>
+      <th>Tienda</th><th>Venta Total</th>
+      <th>Receta</th><th>Receta%</th>
+      <th>Merma</th><th>Merma%</th>
+      <th>Refrigerio</th><th>Refrig.%</th>
+      <th>CI</th><th>CI%</th>
+      <th>Ajuste</th><th>Ajuste%</th>
+      <th>AEJ</th><th>AEJ%</th>
+      <th>CV%</th>
+    </tr></thead><tbody>`;
   ids.forEach(id=>{
-    const d=allData[id],cv2=totalCV(d);
+    const d=allData[id],cv2=cvFilt(d);
     tbl+=`<tr>
       <td style="font-weight:700">🏪 ${tiendas[id]&&tiendas[id].nombre?tiendas[id].nombre:id}</td>
-      <td style="color:#3b82f6;font-weight:700">${fmt(totalFor(d,"venta"))||"—"}</td>
-      <td style="color:#f87171">${fmt(totalFor(d,"receta"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(totalPctFor(d,"receta"))}</td>
-      <td style="color:#f87171">${fmt(totalFor(d,"merma"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(totalPctFor(d,"merma"))}</td>
-      <td style="color:#f87171">${fmt(totalFor(d,"refrigerio"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(totalPctFor(d,"refrigerio"))}</td>
-      <td style="color:#f87171">${fmt(totalFor(d,"ci"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(totalPctFor(d,"ci"))}</td>
-      <td>${fmt(totalFor(d,"ajuste"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(totalPctFor(d,"ajuste"))}</td>
-      <td style="color:#86efac">${fmt(totalFor(d,"aej"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(totalPctFor(d,"aej"))}</td>
+      <td style="color:#3b82f6;font-weight:700">${fmt(tFilt(d,"venta"))||"—"}</td>
+      <td style="color:#f87171">${fmt(tFilt(d,"receta"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(pFilt(d,"receta"))}</td>
+      <td style="color:#f87171">${fmt(tFilt(d,"merma"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(pFilt(d,"merma"))}</td>
+      <td style="color:#f87171">${fmt(tFilt(d,"refrigerio"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(pFilt(d,"refrigerio"))}</td>
+      <td style="color:#f87171">${fmt(tFilt(d,"ci"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(pFilt(d,"ci"))}</td>
+      <td>${fmt(tFilt(d,"ajuste"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(pFilt(d,"ajuste"))}</td>
+      <td style="color:#86efac">${fmt(tFilt(d,"aej"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(pFilt(d,"aej"))}</td>
       <td style="color:#fbbf24;font-weight:700">${cv2!==null?fmtPct(cv2):"—"}</td>
     </tr>`;
   });
   tbl+=`<tr style="background:#0d1b3e;font-weight:700">
     <td style="color:var(--total-text)">▶ TOTAL</td>
-    <td style="color:#3b82f6">${fmt(totalFor(cons,"venta"))||"—"}</td>
-    <td style="color:#f87171">${fmt(totalFor(cons,"receta"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(totalPctFor(cons,"receta"))}</td>
-    <td style="color:#f87171">${fmt(totalFor(cons,"merma"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(totalPctFor(cons,"merma"))}</td>
-    <td style="color:#f87171">${fmt(totalFor(cons,"refrigerio"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(totalPctFor(cons,"refrigerio"))}</td>
-    <td style="color:#f87171">${fmt(totalFor(cons,"ci"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(totalPctFor(cons,"ci"))}</td>
-    <td>${fmt(totalFor(cons,"ajuste"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(totalPctFor(cons,"ajuste"))}</td>
-    <td style="color:#86efac">${fmt(totalFor(cons,"aej"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(totalPctFor(cons,"aej"))}</td>
+    <td style="color:#3b82f6">${fmt(tv)||"—"}</td>
+    <td style="color:#f87171">${fmt(tFilt(cons,"receta"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(pFilt(cons,"receta"))}</td>
+    <td style="color:#f87171">${fmt(tFilt(cons,"merma"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(pFilt(cons,"merma"))}</td>
+    <td style="color:#f87171">${fmt(tFilt(cons,"refrigerio"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(pFilt(cons,"refrigerio"))}</td>
+    <td style="color:#f87171">${fmt(tFilt(cons,"ci"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(pFilt(cons,"ci"))}</td>
+    <td>${fmt(tFilt(cons,"ajuste"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(pFilt(cons,"ajuste"))}</td>
+    <td style="color:#86efac">${fmt(tFilt(cons,"aej"))||"—"}</td><td style="color:#94a3b8">${fmtPctV(pFilt(cons,"aej"))}</td>
     <td style="color:#fbbf24">${tcv!==null?fmtPct(tcv):"—"}</td>
   </tr></tbody></table></div>`;
   document.getElementById("mainContent").innerHTML=tbl;
@@ -772,9 +840,11 @@ async function renderVisualCV(ids,allData){
   const snaps=await Promise.all(ids.map(id=>get(ref(db,objPath(session.zonaId,id)))));
   const objPorTienda={};
   ids.forEach((id,i)=>{objPorTienda[id]=snaps[i].exists()?snaps[i].val():{};});
-  function calcPct(data,key){
-    if(key==="cv")return totalCV(data);
-    const tv=totalFor(data,"venta");return tv?totalFor(data,key)/tv:null;
+  const fd=(filtroDesde||1)-1, fh=(filtroHasta||daysIn(currentYM))-1;
+  function calcPctFilt(data,key){
+    const reduce=(k)=>(data[k]||[]).reduce((a,v,i)=>i<fd||i>fh?a:a+(parseF(v)||0),0);
+    if(key==="cv"){const tv=reduce("venta");if(!tv)return null;return["receta","merma","refrigerio","ci","ajuste","aej"].reduce((a,k)=>a+(reduce(k)/tv||0),0);}
+    const tv=reduce("venta");return tv?reduce(key)/tv:null;
   }
   const INDS=[{key:"receta",label:"Receta"},{key:"merma",label:"Merma"},{key:"refrigerio",label:"Refrigerio"},{key:"ci",label:"CI"},{key:"ajuste",label:"Ajuste"},{key:"aej",label:"AEJ"},{key:"cv",label:"CV Total"}];
   let thead=`<tr><th>Tienda</th>`;
@@ -786,7 +856,7 @@ async function renderVisualCV(ids,allData){
     const nombre=tiendas[id]&&tiendas[id].nombre?tiendas[id].nombre:id;
     let row=`<tr><td>🏪 ${nombre}</td>`;
     INDS.forEach(ind=>{
-      const actual=calcPct(data,ind.key);
+      const actual=calcPctFilt(data,ind.key);
       const actualPct=actual!==null?Math.abs(actual)*100:null;
       const target=obj[ind.key]!==undefined&&obj[ind.key]!==""?parseFloat(obj[ind.key]):null;
       if(actualPct===null&&target===null){row+=`<td class="cv-cell-nodata">—</td>`;return;}
@@ -799,8 +869,9 @@ async function renderVisualCV(ids,allData){
     });
     row+=`</tr>`;tbody+=row;
   });
+  const filtroLabel=esFiltroActivo()?` · Días ${filtroDesde}–${filtroHasta}`:"";
   const vizHtml=`<div style="margin-bottom:20px;margin-top:4px;">
-    <div class="section-title" style="margin-bottom:8px">📊 Comparación indicadores CV vs objetivos</div>
+    <div class="section-title" style="margin-bottom:8px">📊 Comparación indicadores CV vs objetivos${filtroLabel}</div>
     <div class="cv-cmp-wrap"><table class="cv-cmp-table"><thead>${thead}</thead><tbody>${tbody}</tbody></table></div>
   </div>`;
   const mc=document.getElementById("mainContent");
@@ -962,6 +1033,7 @@ window.verDatosTienda=function(id){
 };
 window.cambiarTiendaAdmin=function(){
   adminVerTiendaId=document.getElementById("adminTiendaSel").value;
+  filtroDesde=1; filtroHasta=daysIn(currentYM);
   if(dbListener){dbListener();dbListener=null;}
   suscribirDatosTienda(session.zonaId,adminVerTiendaId,true);
 };
@@ -989,51 +1061,113 @@ function suscribirDatosTienda(zonaId,tiendaId,isAdmin=false){
 
 // ══ KPIs ══════════════════════════════════════════════════════════════════════
 function renderKPIs(){
-  const tv=totalFor(localData,"venta"),tcv=totalCV(localData);
-  const entered=(localData.venta||[]).filter(v=>v!=="").length;
+  const fd=filtroDesde||1, fh=filtroHasta||daysIn(currentYM);
+  const tv=totalFilt(localData,"venta"),tcv=totalCVFilt(localData);
+  const entered=(localData.venta||[]).filter((v,i)=>i>=fd-1&&i<=fh-1&&v!=="").length;
+  const filtroLabel=esFiltroActivo()?` <span style="font-size:.6rem;color:#a5b4fc;background:rgba(99,102,241,.15);border-radius:4px;padding:1px 6px">Días ${fd}–${fh}</span>`:"";
   document.getElementById("kpiStrip").innerHTML=`
-    <div class="kpi"><div class="lbl">Venta Total Mes</div><div class="val" style="color:#3b82f6">S/ ${tv?fmt(tv):"—"}</div><div class="sub">${entered} días</div></div>
-    <div class="kpi"><div class="lbl">Receta</div><div class="val" style="color:#ef4444">${fmt(totalFor(localData,"receta"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(localData,"receta"))}</div></div>
-    <div class="kpi"><div class="lbl">Merma</div><div class="val" style="color:#ef4444">${fmt(totalFor(localData,"merma"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(localData,"merma"))}</div></div>
-    <div class="kpi"><div class="lbl">Refrigerio</div><div class="val" style="color:#ef4444">${fmt(totalFor(localData,"refrigerio"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(localData,"refrigerio"))}</div></div>
-    <div class="kpi"><div class="lbl">CI</div><div class="val" style="color:#ef4444">${fmt(totalFor(localData,"ci"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(localData,"ci"))}</div></div>
-    <div class="kpi"><div class="lbl">Ajuste</div><div class="val" style="color:${totalFor(localData,"ajuste")<0?"#ef4444":"#22c55e"}">${fmt(totalFor(localData,"ajuste"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(localData,"ajuste"))}</div></div>
-    <div class="kpi"><div class="lbl">AEJ</div><div class="val" style="color:#22c55e">${fmt(totalFor(localData,"aej"))||"—"}</div><div class="sub">${fmtPctV(totalPctFor(localData,"aej"))}</div></div>
+    <div class="kpi"><div class="lbl">Venta Total${filtroLabel}</div><div class="val" style="color:#3b82f6">S/ ${tv?fmt(tv):"—"}</div><div class="sub">${entered} días</div></div>
+    <div class="kpi"><div class="lbl">Receta</div><div class="val" style="color:#ef4444">${fmt(totalFilt(localData,"receta"))||"—"}</div><div class="sub">${fmtPctV(totalPctFilt(localData,"receta"))}</div></div>
+    <div class="kpi"><div class="lbl">Merma</div><div class="val" style="color:#ef4444">${fmt(totalFilt(localData,"merma"))||"—"}</div><div class="sub">${fmtPctV(totalPctFilt(localData,"merma"))}</div></div>
+    <div class="kpi"><div class="lbl">Refrigerio</div><div class="val" style="color:#ef4444">${fmt(totalFilt(localData,"refrigerio"))||"—"}</div><div class="sub">${fmtPctV(totalPctFilt(localData,"refrigerio"))}</div></div>
+    <div class="kpi"><div class="lbl">CI</div><div class="val" style="color:#ef4444">${fmt(totalFilt(localData,"ci"))||"—"}</div><div class="sub">${fmtPctV(totalPctFilt(localData,"ci"))}</div></div>
+    <div class="kpi"><div class="lbl">Ajuste</div><div class="val" style="color:${totalFilt(localData,"ajuste")<0?"#ef4444":"#22c55e"}">${fmt(totalFilt(localData,"ajuste"))||"—"}</div><div class="sub">${fmtPctV(totalPctFilt(localData,"ajuste"))}</div></div>
+    <div class="kpi"><div class="lbl">AEJ</div><div class="val" style="color:#22c55e">${fmt(totalFilt(localData,"aej"))||"—"}</div><div class="sub">${fmtPctV(totalPctFilt(localData,"aej"))}</div></div>
     <div class="kpi"><div class="lbl">CV Total</div><div class="val" style="color:#f59e0b">${tcv!==null?fmtPct(tcv):"—"}</div><div class="sub">% sobre venta</div></div>`;
 }
 
 // ══ TABLA EDITABLE ═════════════════════════════════════════════════════════════
 function renderTabla(container,zonaId,tiendaId){
   const labels=dayLabels(currentYM),n=labels.length,today=todayDay(currentYM);
+
+  // Inicializar filtro al mes completo si no está definido
+  if(filtroDesde===null) filtroDesde=1;
+  if(filtroHasta===null) filtroHasta=n;
+  // Clamping por si cambia el mes
+  const fd=Math.max(1,Math.min(filtroDesde,n));
+  const fh=Math.max(fd,Math.min(filtroHasta,n));
+
+  // Calcular totales filtrados (solo días en el rango)
+  function totalFiltrado(key){
+    return (localData[key]||[]).reduce((a,v,i)=>{
+      if(i<fd-1||i>fh-1) return a;
+      return a+(parseF(v)||0);
+    },0);
+  }
+  function pctFiltradoTotal(key){
+    const tv=totalFiltrado("venta");
+    return tv?totalFiltrado(key)/tv:null;
+  }
+  function calcCVFiltrado(){
+    const tv=totalFiltrado("venta");
+    if(!tv) return null;
+    return ["receta","merma","refrigerio","ci","ajuste","aej"].reduce((a,k)=>a+(totalFiltrado(k)/tv||0),0);
+  }
+  const esFiltrado=fd!==1||fh!==n;
+
   let html=`<div id="metasContainer"></div><div id="objCVContainer"></div>
+
+    <!-- FILTRO DE RANGO -->
+    <div class="filtro-box">
+      <label>Rango de días:</label>
+      <label style="font-size:.78rem;color:var(--muted)">Del</label>
+      <input type="number" id="filtroDesdeInput" min="1" max="${n}" value="${fd}"
+        onchange="aplicarFiltro('${zonaId}','${tiendaId}')">
+      <span class="filtro-sep">→</span>
+      <label style="font-size:.78rem;color:var(--muted)">Al</label>
+      <input type="number" id="filtroHastaInput" min="1" max="${n}" value="${fh}"
+        onchange="aplicarFiltro('${zonaId}','${tiendaId}')">
+      <label style="font-size:.78rem;color:var(--muted)">de ${n} días</label>
+      ${esFiltrado?`<span class="filtro-tag">📅 Días ${fd}–${fh} (${fh-fd+1} días)</span>`:""}
+      ${esFiltrado?`<button class="btn btn-ghost" style="font-size:.68rem;padding:3px 9px;" onclick="resetFiltro('${zonaId}','${tiendaId}')">✕ Ver mes completo</button>`:""}
+    </div>
+
     <div class="actions">
-      <div class="section-title" style="margin:0">Indicadores diarios</div>
-      <button class="btn btn-ghost" onclick="exportarTiendaExcel('${tiendaId}')">📥 Exportar Excel</button>
+      <div class="section-title" style="margin:0">Indicadores diarios${esFiltrado?` · Días ${fd}–${fh}`:""}</div>
+      <button class="btn btn-ghost" onclick="exportarTiendaExcel('${tiendaId}','${fd}','${fh}')">📥 Exportar Excel</button>
     </div>
     <div class="swipe-hint">↔ Desliza para ver todos los días</div>
     <div class="table-wrap"><table id="mainTable"><thead><tr><th>INDICADORES</th>`;
-  labels.forEach(l=>{html+=`<th class="${l.num===today?"today-h":""}">${l.dow}<br>${l.num}</th>`;});
-  html+=`<th class="total-h">TOTAL</th></tr></thead><tbody>`;
+
+  labels.forEach(l=>{
+    const atenuado=(l.num<fd||l.num>fh)?" style='opacity:.35;'":"";
+    html+=`<th class="${l.num===today?"today-h":""}"${atenuado}>${l.dow}<br>${l.num}</th>`;
+  });
+  html+=`<th class="total-h">${esFiltrado?`Días ${fd}–${fh}`:"TOTAL MES"}</th></tr></thead><tbody>`;
+
   INDICATORS.forEach(ind=>{
-    const tot=totalFor(localData,ind.key),has=(localData[ind.key]||[]).some(v=>v!=="");
+    const totFilt=totalFiltrado(ind.key);
+    const hasFilt=(localData[ind.key]||[]).some((v,i)=>i>=fd-1&&i<=fh-1&&v!=="");
     html+=`<tr><td class="sticky">${ind.label}</td>`;
     for(let d=0;d<n;d++){
       const v=(localData[ind.key]||[])[d],pv=parseF(v);
       const col=ind.key==="venta"?"var(--accent)":pv!==null&&pv<0?"#f87171":pv!==null&&pv>0&&ind.isCost?"#86efac":"var(--total-text)";
       const fw=ind.key==="venta"?"font-weight:700;":"";
-      html+=`<td class="val${(d+1)===today?" today-td":""}"><input type="number" step="0.01" value="${v!==null&&v!==""?v:""}" style="color:${col};${fw}" data-key="${ind.key}" data-day="${d}" oninput="handleInput(this,'${zonaId}','${tiendaId}')" onblur="handleBlur(this,'${zonaId}','${tiendaId}')"></td>`;
+      const fuera=(d<fd-1||d>fh-1)?" style='opacity:.35;'":"";
+      html+=`<td class="val${(d+1)===today?" today-td":""}"${fuera}><input type="number" step="0.01" value="${v!==null&&v!==""?v:""}" style="color:${col};${fw}" data-key="${ind.key}" data-day="${d}" oninput="handleInput(this,'${zonaId}','${tiendaId}')" onblur="handleBlur(this,'${zonaId}','${tiendaId}')"></td>`;
     }
-    html+=`<td class="val total-td" style="color:${tot<0?"#f87171":tot>0&&ind.isCost?"#86efac":"var(--total-text)"}">${has?fmt(tot):""}</td></tr>`;
+    html+=`<td class="val total-td" style="color:${totFilt<0?"#f87171":totFilt>0&&ind.isCost?"#86efac":"var(--total-text)"}">${hasFilt?fmt(totFilt):""}</td></tr>`;
+
     if(ind.isCost){
+      const pFilt=pctFiltradoTotal(ind.key);
       html+=`<tr><td class="sticky pct-lbl">${ind.key.toUpperCase()} %</td>`;
-      for(let d=0;d<n;d++){const p=pctFor(localData,ind.key,d);html+=`<td class="pct${(d+1)===today?" today-td":""}">${p!==null?fmtPct(p):""}</td>`;}
-      html+=`<td class="pct total-td">${fmtPct(totalPctFor(localData,ind.key))}</td></tr>`;
+      for(let d=0;d<n;d++){
+        const p=pctFor(localData,ind.key,d);
+        const fuera=(d<fd-1||d>fh-1)?" style='opacity:.35;'":"";
+        html+=`<td class="pct${(d+1)===today?" today-td":""}"${fuera}>${p!==null?fmtPct(p):""}</td>`;
+      }
+      html+=`<td class="pct total-td">${pFilt!==null?fmtPct(pFilt):""}</td></tr>`;
     }
   });
-  const tcv=totalCV(localData);
+
+  const tcvFilt=calcCVFiltrado();
   html+=`<tr><td class="sticky cv-lbl">CV</td>`;
-  for(let d=0;d<n;d++){const cv=calcCV(localData,d);html+=`<td class="cv${(d+1)===today?" today-td":""}">${cv!==null?fmtPct(cv):""}</td>`;}
-  html+=`<td class="cv total-td" style="color:#fbbf24">${tcv!==null?fmtPct(tcv):""}</td></tr>`;
+  for(let d=0;d<n;d++){
+    const cv=calcCV(localData,d);
+    const fuera=(d<fd-1||d>fh-1)?" style='opacity:.35;'":"";
+    html+=`<td class="cv${(d+1)===today?" today-td":""}"${fuera}>${cv!==null?fmtPct(cv):""}</td>`;
+  }
+  html+=`<td class="cv total-td" style="color:#fbbf24">${tcvFilt!==null?fmtPct(tcvFilt):""}</td></tr>`;
   html+=`</tbody></table></div>`;
   if(container)container.innerHTML=html;
   cargarYRenderizarMetas(zonaId,tiendaId);
@@ -1093,24 +1227,32 @@ async function cargarYRenderizarMetas(zonaId,tiendaId){
 function renderMetas(zonaId,tiendaId){
   const cont=document.getElementById("metasContainer");if(!cont)return;
   const n=daysIn(currentYM),today=todayDay(currentYM);
-  const ventaMes=totalFor(localData,"venta");
+  const fd=filtroDesde||1, fh=filtroHasta||n;
+  const filtroActivo=esFiltroActivo();
+  // Venta del rango filtrado
+  const ventaRango=totalFilt(localData,"venta");
+  // Venta de hoy (siempre día actual, sin filtro)
   const ventaHoy=today>0?(parseF((localData.venta||[])[today-1])||0):null;
   if(!metaActual||!metaActual.metaMensual){
     cont.innerHTML=`<div class="metas-box"><div class="metas-header"><h3>🎯 Meta de ventas</h3><button class="metas-edit-btn" onclick="abrirMeta('${zonaId}','${tiendaId}')">➕ Definir meta</button></div><div class="metas-empty">Sin meta definida para este mes.</div></div>`;return;
   }
   const metaMensual=parseF(metaActual.metaMensual)||0;
   const metaDiaria=metaActual.metaDiaria?parseF(metaActual.metaDiaria):(metaMensual/n);
-  const pctMes=metaMensual>0?Math.min((ventaMes/metaMensual)*100,999):0;
-  const faltaMes=Math.max(metaMensual-ventaMes,0);
-  const cumplioMes=ventaMes>=metaMensual&&metaMensual>0;
+  // Meta proporcional al rango filtrado
+  const diasRango=fh-fd+1;
+  const metaRango=filtroActivo?(metaDiaria*diasRango):metaMensual;
+  const pctRango=metaRango>0?Math.min((ventaRango/metaRango)*100,999):0;
+  const faltaRango=Math.max(metaRango-ventaRango,0);
+  const cumplioRango=ventaRango>=metaRango&&metaRango>0;
+  const rangoLabel=filtroActivo?`Días ${fd}–${fh} (${diasRango} días)`:"del mes";
   let diaHtml="";
-  if(today>0){
+  if(today>0&&today>=fd&&today<=fh){
     const pctDia=metaDiaria>0?Math.min(((ventaHoy||0)/metaDiaria)*100,999):0;
     const faltaDia=Math.max(metaDiaria-(ventaHoy||0),0);
     const cumplioDia=(ventaHoy||0)>=metaDiaria&&metaDiaria>0;
     diaHtml=`<div class="meta-card"><div class="meta-lbl">Meta hoy (día ${today})</div><div class="meta-val">S/ ${fmt(ventaHoy||0)} <span style="color:var(--muted);font-weight:400;font-size:.8rem">/ ${fmt(metaDiaria)}</span></div><div class="meta-sub">${cumplioDia?`<span class="meta-cumplida">✓ Cumplida</span>`:`Falta <span class="meta-faltante">S/ ${fmt(faltaDia)}</span>`}</div><div class="meta-bar-track"><div class="meta-bar-fill" style="width:${Math.min(pctDia,100)}%;background:${cumplioDia?"#22c55e":"#3b82f6"}"></div></div></div>`;
   }
-  cont.innerHTML=`<div class="metas-box"><div class="metas-header"><h3>🎯 Meta de ventas</h3><button class="metas-edit-btn" onclick="abrirMeta('${zonaId}','${tiendaId}')">✏️ Editar</button></div><div class="metas-grid"><div class="meta-card"><div class="meta-lbl">Meta del mes</div><div class="meta-val">S/ ${fmt(ventaMes)} <span style="color:var(--muted);font-weight:400;font-size:.8rem">/ ${fmt(metaMensual)}</span></div><div class="meta-sub">${cumplioMes?`<span class="meta-cumplida">✓ Cumplida</span>`:`Falta <span class="meta-faltante">S/ ${fmt(faltaMes)}</span> (${pctMes.toFixed(1)}%)`}</div><div class="meta-bar-track"><div class="meta-bar-fill" style="width:${Math.min(pctMes,100)}%;background:${cumplioMes?"#22c55e":"#3b82f6"}"></div></div></div>${diaHtml}</div></div>`;
+  cont.innerHTML=`<div class="metas-box"><div class="metas-header"><h3>🎯 Meta de ventas${filtroActivo?` <span style="font-size:.65rem;color:#a5b4fc;font-weight:400">· Días ${fd}–${fh}</span>`:""}</h3><button class="metas-edit-btn" onclick="abrirMeta('${zonaId}','${tiendaId}')">✏️ Editar</button></div><div class="metas-grid"><div class="meta-card"><div class="meta-lbl">Meta ${rangoLabel}</div><div class="meta-val">S/ ${fmt(ventaRango)} <span style="color:var(--muted);font-weight:400;font-size:.8rem">/ ${fmt(metaRango)}</span></div><div class="meta-sub">${cumplioRango?`<span class="meta-cumplida">✓ Cumplida</span>`:`Falta <span class="meta-faltante">S/ ${fmt(faltaRango)}</span> (${pctRango.toFixed(1)}%)`}</div><div class="meta-bar-track"><div class="meta-bar-fill" style="width:${Math.min(pctRango,100)}%;background:${cumplioRango?"#22c55e":"#3b82f6"}"></div></div></div>${diaHtml}</div></div>`;
 }
 window.abrirMeta=function(zonaId,tiendaId){
   document.getElementById("metaTiendaId").value=`${zonaId}|${tiendaId}`;
@@ -1147,13 +1289,16 @@ async function cargarYRenderizarObjetivosCV(zonaId,tiendaId){
 function renderObjetivosCV(zonaId,tiendaId,objetivos){
   const cont=document.getElementById("objCVContainer");if(!cont)return;
   if(!Object.keys(objetivos).length){cont.innerHTML="";return;}
-  const tv=totalFor(localData,"venta");
+  const fd=filtroDesde||1, fh=filtroHasta||daysIn(currentYM);
+  const filtroActivo=esFiltroActivo();
+  // Usar totales filtrados
+  const tv=totalFilt(localData,"venta");
   const INDS=[{key:"receta",label:"Receta"},{key:"merma",label:"Merma"},{key:"refrigerio",label:"Refrigerio"},{key:"ci",label:"CI"},{key:"ajuste",label:"Ajuste"},{key:"aej",label:"AEJ"},{key:"cv",label:"CV Total"}];
   let cards="";
   INDS.forEach(ind=>{
     if(objetivos[ind.key]===undefined||objetivos[ind.key]==="")return;
     const target=parseFloat(objetivos[ind.key]);
-    let actual=ind.key==="cv"?totalCV(localData):(tv?totalFor(localData,ind.key)/tv:null);
+    let actual=ind.key==="cv"?totalCVFilt(localData):(tv?totalFilt(localData,ind.key)/tv:null);
     const actualPct=actual!==null?Math.abs(actual)*100:null;
     let status="nodata",badge="Sin datos";
     if(actualPct!==null){
@@ -1163,7 +1308,8 @@ function renderObjetivosCV(zonaId,tiendaId,objetivos){
     cards+=`<div class="obj-card ${status}"><div class="obj-lbl">${ind.label}</div><div class="obj-val">${actualPct!==null?actualPct.toFixed(2)+"%":"—"}</div><div class="obj-target">Obj. máx: ${target.toFixed(2)}%</div><span class="obj-badge ${status}">${badge}</span></div>`;
   });
   if(!cards){cont.innerHTML="";return;}
-  cont.innerHTML=`<div class="obj-box"><div class="obj-header"><h3>📊 Seguimiento de objetivos CV</h3></div><div class="obj-grid">${cards}</div></div>`;
+  const filtroLabel=filtroActivo?` <span style="font-size:.65rem;color:#a5b4fc;font-weight:400">· Días ${fd}–${fh}</span>`:"";
+  cont.innerHTML=`<div class="obj-box"><div class="obj-header"><h3>📊 Seguimiento de objetivos CV${filtroLabel}</h3></div><div class="obj-grid">${cards}</div></div>`;
 }
 
 // ══ PANEL OBJETIVOS (pestaña zona admin) ══════════════════════════════════════
@@ -1230,6 +1376,47 @@ window.eliminarObjetivosTienda=async function(id){
   catch(e){alert("Error al eliminar.");}
 };
 
+// ══ FILTRO DE RANGO DE DÍAS ═══════════════════════════════════════════════════
+window.aplicarFiltro=function(zonaId,tiendaId){
+  const n=daysIn(currentYM);
+  const desdeEl=document.getElementById("filtroDesdeInput");
+  const hastaEl=document.getElementById("filtroHastaInput");
+  if(!desdeEl||!hastaEl) return;
+  let fd=parseInt(desdeEl.value)||1;
+  let fh=parseInt(hastaEl.value)||n;
+  fd=Math.max(1,Math.min(fd,n));
+  fh=Math.max(fd,Math.min(fh,n));
+  desdeEl.value=fd; hastaEl.value=fh;
+  filtroDesde=fd; filtroHasta=fh;
+  const target=currentTab==="datos"?document.getElementById("tablaDatos"):document.getElementById("mainContent");
+  if(target) renderTabla(target,zonaId,tiendaId);
+};
+
+window.resetFiltro=function(zonaId,tiendaId){
+  filtroDesde=1; filtroHasta=daysIn(currentYM);
+  const target=currentTab==="datos"?document.getElementById("tablaDatos"):document.getElementById("mainContent");
+  if(target) renderTabla(target,zonaId,tiendaId);
+};
+
+window.aplicarFiltroResumen=function(){
+  const n=daysIn(currentYM);
+  const desdeEl=document.getElementById("filtroDesdeInput");
+  const hastaEl=document.getElementById("filtroHastaInput");
+  if(!desdeEl||!hastaEl) return;
+  let fd=parseInt(desdeEl.value)||1;
+  let fh=parseInt(hastaEl.value)||n;
+  fd=Math.max(1,Math.min(fd,n));
+  fh=Math.max(fd,Math.min(fh,n));
+  desdeEl.value=fd; hastaEl.value=fh;
+  filtroDesde=fd; filtroHasta=fh;
+  renderResumen();
+};
+
+window.resetFiltroResumen=function(){
+  filtroDesde=1; filtroHasta=daysIn(currentYM);
+  renderResumen();
+};
+
 // ══ EXPORTAR EXCEL ════════════════════════════════════════════════════════════
 function filasIndicadores(data,labels){
   const rows=[["INDICADORES",...labels.map(l=>"Día "+l.num),"TOTAL MES"]];
@@ -1241,13 +1428,25 @@ function filasIndicadores(data,labels){
   const cvr=["CV",...labels.map((_,d)=>{const cv=calcCV(data,d);return cv!==null?cv:"";}),totalCV(data)];
   rows.push(cvr);return rows;
 }
-window.exportarTiendaExcel=function(tiendaId){
+window.exportarTiendaExcel=function(tiendaId,fdStr,fhStr){
   const labels=dayLabels(currentYM);
+  const n=labels.length;
+  const fd=fdStr?parseInt(fdStr):1;
+  const fh=fhStr?parseInt(fhStr):n;
+  const labelsFilt=labels.filter(l=>l.num>=fd&&l.num<=fh);
   const nombre=(tiendas[tiendaId]&&tiendas[tiendaId].nombre)||tiendaId;
-  const ws=XLSX.utils.aoa_to_sheet(filasIndicadores(localData,labels));
-  ws["!cols"]=[{wch:22},...labels.map(()=>({wch:10})),{wch:12}];
-  const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"CV");
-  XLSX.writeFile(wb,`CV_${nombre.replace(/[^a-zA-Z0-9]/g,"_")}_${currentYM}.xlsx`);
+  // Datos filtrados por rango
+  const dataFilt={};
+  INDICATORS.forEach(ind=>{
+    dataFilt[ind.key]=(localData[ind.key]||[]).filter((_,i)=>i>=fd-1&&i<=fh-1);
+  });
+  const ws=XLSX.utils.aoa_to_sheet(filasIndicadores(dataFilt,labelsFilt));
+  ws["!cols"]=[{wch:22},...labelsFilt.map(()=>({wch:10})),{wch:12}];
+  const wb=XLSX.utils.book_new();
+  const sheetName=fd===1&&fh===n?"CV":`CV_Días_${fd}-${fh}`;
+  XLSX.utils.book_append_sheet(wb,ws,sheetName);
+  const sufijo=fd===1&&fh===n?"":`_días${fd}-${fh}`;
+  XLSX.writeFile(wb,`CV_${nombre.replace(/[^a-zA-Z0-9]/g,"_")}_${currentYM}${sufijo}.xlsx`);
 };
 window.exportarConsolidadoExcel=function(){
   if(!ultimoConsolidado){alert("Carga primero el resumen consolidado.");return;}
@@ -1259,6 +1458,110 @@ window.exportarConsolidadoExcel=function(){
   ids.forEach(id=>{const nombre=((tiendas[id]&&tiendas[id].nombre)||id).substring(0,28).replace(/[\\/?*[\]:]/g,"_");const ws=XLSX.utils.aoa_to_sheet(filasIndicadores(allData[id],labels));XLSX.utils.book_append_sheet(wb,ws,nombre);});
   const wsCons=XLSX.utils.aoa_to_sheet(filasIndicadores(cons,labels));XLSX.utils.book_append_sheet(wb,wsCons,"Consolidado");
   XLSX.writeFile(wb,`CV_Consolidado_${ym}.xlsx`);
+};
+
+// ══ RESPALDO JSON ════════════════════════════════════════════════════════════
+function mostrarEstadoBackup(msg, tipo){
+  const el=document.getElementById("backupStatus");
+  if(!el) return;
+  el.textContent=msg;
+  el.className=`backup-status ${tipo}`;
+  el.style.display="block";
+  if(tipo==="ok") setTimeout(()=>{el.style.display="none";},4000);
+}
+
+window.exportarRespaldoJSON=async function(){
+  mostrarEstadoBackup("⏳ Exportando todos los datos…","loading");
+  try{
+    // Descargar todo desde Firebase
+    const snap=await get(ref(db,"/"));
+    if(!snap.exists()){mostrarEstadoBackup("No hay datos para exportar.","err");return;}
+    const datos=snap.val();
+    // Agregar metadatos del respaldo
+    const respaldo={
+      _meta:{
+        fechaExportacion:new Date().toISOString(),
+        version:"2.0",
+        app:"CV Dashboard",
+        exportadoPor:"Super Admin"
+      },
+      ...datos
+    };
+    const json=JSON.stringify(respaldo,null,2);
+    const blob=new Blob([json],{type:"application/json"});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    const fecha=new Date().toISOString().slice(0,10); // YYYY-MM-DD
+    a.href=url;
+    a.download=`respaldo_CV_${fecha}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    mostrarEstadoBackup(`✅ Respaldo exportado: respaldo_CV_${fecha}.json`,"ok");
+  }catch(e){
+    console.error(e);
+    mostrarEstadoBackup("❌ Error al exportar. Verifica tu conexión.","err");
+  }
+};
+
+window.procesarImportJSON=async function(input){
+  const file=input.files[0];
+  if(!file) return;
+  // Resetear input para permitir volver a seleccionar el mismo archivo
+  input.value="";
+  if(!file.name.endsWith(".json")){
+    mostrarEstadoBackup("❌ Solo se aceptan archivos .json","err");return;
+  }
+  // Confirmación con advertencia clara
+  const confirmar=confirm(
+    `⚠️ IMPORTAR RESPALDO\n\n` +
+    `Archivo: ${file.name}\n\n` +
+    `Esto reemplazará TODOS los datos actuales (zonas, tiendas, datos CV, metas y objetivos) con los del archivo seleccionado.\n\n` +
+    `Esta acción NO se puede deshacer.\n\n` +
+    `¿Estás seguro que deseas continuar?`
+  );
+  if(!confirmar) return;
+
+  mostrarEstadoBackup("⏳ Importando datos… Por favor espera.","loading");
+  try{
+    const texto=await file.text();
+    let datos;
+    try{datos=JSON.parse(texto);}
+    catch(e){mostrarEstadoBackup("❌ Archivo JSON inválido o corrupto.","err");return;}
+
+    // Remover metadatos del respaldo antes de importar
+    const {_meta,...datosLimpios}=datos;
+
+    // Verificar que tenga la estructura correcta
+    if(!datosLimpios.zonas&&!datosLimpios.superconfig){
+      mostrarEstadoBackup("❌ El archivo no parece ser un respaldo válido de esta app.","err");return;
+    }
+
+    // Escribir en Firebase
+    await set(ref(db,"/"),datosLimpios);
+
+    // Recargar el estado local
+    const pinSnap=await get(ref(db,"superconfig/pinSuperAdmin"));
+    if(pinSnap.exists()) pinSuperAdmin=pinSnap.val();
+
+    const zonasSnap=await get(ref(db,"zonas"));
+    zonas={};
+    if(zonasSnap.exists()){
+      const raw=zonasSnap.val();
+      Object.keys(raw).forEach(zid=>{
+        zonas[zid]={nombre:raw[zid].nombre||zid,pin:raw[zid].pin||""};
+      });
+    }
+
+    mostrarEstadoBackup(`✅ Respaldo importado exitosamente desde "${file.name}". Datos restaurados.`,"ok");
+    // Re-renderizar el panel
+    setTimeout(()=>renderSuperAdmin(),1500);
+
+  }catch(e){
+    console.error(e);
+    mostrarEstadoBackup("❌ Error al importar. Verifica tu conexión y el archivo.","err");
+  }
 };
 
 // ══ CLOSE MODAL ═══════════════════════════════════════════════════════════════
